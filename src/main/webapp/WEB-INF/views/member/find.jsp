@@ -1,0 +1,126 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="cpath" value="${pageContext.request.contextPath }"/>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	section {
+		width: 600px;
+		height: 600px;
+	}
+	
+	div.find {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-25%, -25%);
+	}
+	
+	
+	.find > button {
+		all: unset;
+		width: 200px;
+		height: 50px;
+		border: 2px solid skyblue;
+		border-radius: 12px;
+		text-align: center;
+		font-weight: 300;
+		font-size: 20px;
+		margin-bottom: 10px;
+	}
+	
+	.find > button:hover {
+		cursor: pointer;
+		background-color: lightskyblue;
+	}
+	
+	p {
+		margin: 0;
+	}
+	
+	p > input {
+		width: 200px;
+		height: 50px;
+	}
+	
+	form {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+</style>
+</head>
+<body>
+
+	<section>
+		<h2 align="center" style="font-weight: 200;">ID/PW찾기</h2>
+		<div class="find">		
+			<button id="findID">ID찾기</button>
+			<button id="findPW">PW찾기</button>
+		</div>
+	</section>
+	
+	<script>
+		const sec = document.querySelector('section')
+		const findPW = document.getElementById('findPW')
+		findPW.onclick = () => {
+			sec.innerHTML = ''
+			let tag = ''
+			tag += '<h2 align="center" style="font-weight: 200;">PW찾기</h2>'
+			tag += '<div>'
+			tag += '	<form>'
+			tag += '		<p><input type="text" name="userid" placeholder="ID"></p>'
+			tag += '		<p><input type="text" name="username" placeholder="NAME"></p>'
+			tag += '		<p><input type="email" name="email" placeholder="EMAIL"></p>'
+			tag += '		<input style="margin-top: 10px;" type="submit" value="찾기">'
+			tag += '	</form>'
+			tag += '	<div style="display: flex; width: 300px; margin: 10px auto;">'
+			tag += '		<input type="text" name="verify" placeholder="인증번호 입력" disabled="true">'
+			tag += '		<button style="margin-left: 10px;" id="verify">확인</button>'
+			tag += '	</div>'
+			tag += '</div>'
+			sec.innerHTML = tag
+			sec.querySelector('form').onsubmit = async function(event) {
+				event.preventDefault()
+				const url = '${cpath}/sendEmail'
+				const ob = {
+						userid: event.target.querySelector('input[name="userid"]').value,
+						username: event.target.querySelector('input[name="username"]').value,
+						email: event.target.querySelector('input[name="email"]').value
+				}
+				const opt = {
+					method: 'POST',
+					body: JSON.stringify(ob),
+					headers: {
+						'Content-Type': 'application/json; charset=utf-8'
+					}
+				}
+				const result = await fetch(url,opt).then(resp => resp.text())
+				if(result == 'fail') {
+					alert('계정정보가 일치하지 않습니다. 올바르게 입력해주세요')
+				}
+				else {
+					const verify = event.target.parentNode.querySelector('input[name="verify"]')
+					verify.disabled = false
+					alert('인증 번호를 발송했습니다. 메일을 확인해주세요')
+					const verifyBtn = document.getElementById('verify')
+					verifyBtn.onclick = function() {
+						if(verify.value == result) {
+							location.href = '${cpath}/member/resetPass'
+						}
+						else {
+							alert('인증번호를 잘못 입력하셨습니다. 다시 확인해주세요.')
+						}
+					}
+				}
+			}
+		}
+	</script>
+
+</body>
+</html>
