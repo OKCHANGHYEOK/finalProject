@@ -1,23 +1,19 @@
 package com.itbank.model;
 
-//	이름       널?       유형            
-//	-------- -------- ------------- 
-//	IDX      NOT NULL NUMBER        
-//	USERID   NOT NULL VARCHAR2(100) 
-//	USERPW   NOT NULL VARCHAR2(500) 
-//	USERNAME NOT NULL VARCHAR2(100) 
-//	GENDER            VARCHAR2(50)  
-//	EMAIL    NOT NULL VARCHAR2(200) 
+import java.sql.Date;
 
 public class MemberDTO {
+	
 	private int idx;
 	private String userid;
 	private String userpw;
 	private String username;
-	private String gender;
-	private int age;
 	private String email;
-	
+	private String gender;
+	private String phoneNumber;
+	private Date birthDay;
+	private Date joinDate;
+	private Date lastLoginDate;
 	
 	public int getIdx() {
 		return idx;
@@ -43,24 +39,48 @@ public class MemberDTO {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getAge() {
-		return age;
+	public String getGender() {
+		return gender;
 	}
-	public void setAge(int age) {
-		this.age = age;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	public Date getBirthDay() {
+		return birthDay;
+	}
+	public void setBirthDay(Date birthDay) {
+		this.birthDay = birthDay;
+	}
+	public Date getJoinDate() {
+		return joinDate;
+	}
+	public void setJoinDate(Date joinDate) {
+		this.joinDate = joinDate;
+	}
+	public Date getLastLoginDate() {
+		return lastLoginDate;
+	}
+	public void setLastLoginDate(Date lastLoginDate) {
+		this.lastLoginDate = lastLoginDate;
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 }

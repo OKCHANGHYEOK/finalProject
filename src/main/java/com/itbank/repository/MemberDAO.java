@@ -2,13 +2,14 @@ package com.itbank.repository;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.itbank.model.MemberDTO;
 
 public interface MemberDAO {
 
-	@Insert("insert into member(userid, userpw, username, gender, age, email) "
-			+ "values(#{userid}, #{userpw}, #{username}, #{gender}, #{age}, #{email})")
+	@Insert("insert into member(userid, userpw, username, email, gender, phoneNumber, birthDay) "
+			+ "values(#{userid}, #{userpw}, #{username}, #{email}, #{gender}, #{phoneNumber}, #{birthDay})")
 	int join(MemberDTO dto);
 
 	@Select("select count(*) from member "
@@ -20,5 +21,11 @@ public interface MemberDAO {
 
 	@Select("select * from member where userid = #{userid} and username = #{username} and email = #{email}")
 	MemberDTO selectCheck(MemberDTO dto);
-
+	
+	@Update("update member "
+	         + "      set"
+	         + "         userpw = #{userpw} "
+	         + "      where"
+	         + "         userid = #{userid} and email = #{email}")
+	   int updatePassword(MemberDTO dto);
 }

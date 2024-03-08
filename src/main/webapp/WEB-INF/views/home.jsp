@@ -16,9 +16,21 @@
 	}
 </style>
 
+<c:if test="${not empty login}">
+   <div style="width: fit-content; position: absolute; z-index: 5;">
+      <div style="width: 140px;">${login.userid }님이 로그인중</div>
+      <button id="logout">로그아웃</button>
+   </div>
+</c:if>
+
 <main>
 
 </main>
+
+<script>
+   const logout = document.getElementById('logout')
+   logout.onclick = () => {location.href = '${cpath }/member/logout'}
+</script>
 
 </body>
 </html>

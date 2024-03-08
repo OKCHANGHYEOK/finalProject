@@ -24,7 +24,9 @@ public class MemberController {
 	@PostMapping("/join")
 	public ModelAndView join(MemberDTO dto) {
 		ModelAndView mav = new ModelAndView("alert");
-		int row = ms.join(dto);
+		System.out.println("anjsnajdjksf");
+		int row =0;
+		row = ms.join(dto);
 		String msg = row != 0 ? "가입완료" : " 가입실패";
 		mav.addObject("msg", msg);
 		return mav;
@@ -47,10 +49,29 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
-	
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+    	session.invalidate();
+    	return "redirect:/";
+   }
 	@GetMapping("/find")
 	public void find() {}
 	
 	@GetMapping("/resetPass")
 	public void resetPass() {}
+	
+	@PostMapping("/resetPass")
+	   public ModelAndView resetPass(MemberDTO dto) {
+	      ModelAndView mav = new ModelAndView("alert");
+	      String pass = ms.resetPass(dto);
+	      mav.addObject("msg", "변경된 비밀번호는 [" + pass + "] 입니다.");
+	      mav.addObject("url", pass != null ? "/member/login" : "");
+	      return mav;
+	}
+	@GetMapping("/mypage")
+	   public void mypage() {}
+	   
+    @GetMapping("/mpmodify")
+    public void mpmodify() {}
+
 }

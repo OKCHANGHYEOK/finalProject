@@ -185,7 +185,7 @@
 				<ul>
 					<li class="link" id="loginLink" category="guide">로그인</li>
 					<li class="link" id="joinLink" category="guide">회원가입</li>
-					<li>테스트</li>
+					<li class="link" id="mypageLink" category="guide">마이페이지</li>
 					<li>테스트</li>
 					<li>테스트</li>
 					<li>테스트</li>
@@ -233,6 +233,9 @@
 	
 		const loginLink = document.getElementById('loginLink')
 		loginLink.onclick = () => {location.href = '${cpath}/member/login'}
+		
+		const mypageLink = document.getElementById('mypageLink')
+	    mypageLink.onclick = () => {location.href = '${cpath}/member/mypage'}
 		
 		const links = document.querySelectorAll('.link')
 		const menus = document.querySelectorAll('#menu > li')

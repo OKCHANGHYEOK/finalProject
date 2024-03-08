@@ -181,13 +181,31 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.16.1</version>
 		</dependency>
-		
+		<!-- 스프링에서 웹소켓을 처리할 수 있도록 하는 라이브러리 -->
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-mail</artifactId>
-		    <version>2.6.4</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<!-- 스프링에서 STOMP을 처리할 수 있도록 하는 라이브러리 -->
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-stomp</artifactId>
+			<version>5.4.13</version>
 		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>jakarta.mail</artifactId>
+		    <version>2.0.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
 	</dependencies>
     <build>
         <plugins>
