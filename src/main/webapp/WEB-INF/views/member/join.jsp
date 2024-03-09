@@ -264,6 +264,7 @@
 		else {
 			message.innerText = '인증 실패'
 			message.style.color = 'red'
+			joinBtn.disabled = true
 		}
 	}
 </script>
