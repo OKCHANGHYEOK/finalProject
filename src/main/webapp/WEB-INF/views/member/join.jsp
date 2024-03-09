@@ -44,6 +44,10 @@
 		color: lightgray;
 	}
 	
+	label:first-child {
+		margin-right: 5px;
+	}
+	
 	input[type="radio"] {
 		all: unset;
 		display: inline-block;
@@ -77,8 +81,13 @@
 		font-weight: bold;
 	}
 	
-	#joinBtn:hover {
+	button:hover {
 		cursor: pointer;
+	}
+	
+	#joinBtn:disabled {
+		background-color: lightgrey;
+		cursor: not-allowed;
 	}
 	
 	#check {
@@ -105,7 +114,7 @@
 		height: 50px;
 		border: 1px solid lightgrey;
 		position: relative;
-		color: lightgray;
+		color: inherit;
 		padding: 5px 10px;
 		font-size: 16px;
 	}
@@ -121,6 +130,8 @@
 	.hidden {
  		display: none;
  	}
+ 	
+
 </style>
 
 <section>
@@ -159,8 +170,8 @@
 					</p>
 					<p class="mailMessage"></p>
 				</div>
-				<input class="inputframe" type="text" name="phoneNumber" placeholder="전화번호">
-				<button id="joinBtn">가입하기</button>
+				<input class="inputframe" type="text" name="phoneNumber" placeholder="전화번호" required>
+				<button id="joinBtn" disabled>가입하기</button>
 			</form>
 		</div>
 	</div>
@@ -192,13 +203,11 @@
 		if(lengthCheck && combCheck && prefixCheck && duplicateCheck) {
 			check.innerText = '✅'
 			joinBtn.disabled = false
-			joinBtn.style.backgroundColor = 'blue'
 			duplicate.style.display = 'none'
 		}
 		else {
 			check.innerText = '❌︎'
 			joinBtn.disabled = true
-			joinBtn.style.backgroundColor = 'lightgrey'
 			if(!duplicateCheck) {
 				duplicate.style.display = 'block'
 			}
@@ -250,6 +259,7 @@
 		if(result == 1){
 			message.innerText = '인증 성공'
 			message.style.color = 'blue'
+			joinBtn.disabled = false
 		}
 		else {
 			message.innerText = '인증 실패'
