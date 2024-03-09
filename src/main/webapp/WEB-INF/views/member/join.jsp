@@ -27,8 +27,6 @@
 		align-items: center;
 	}
 	
-
-	
 	.inputframe {
 		width: 500px;
 		height: 60px;
@@ -44,6 +42,10 @@
 		border: 1px solid lightgrey;
 		position: relative;
 		color: lightgray;
+	}
+	
+	label:first-child {
+		margin-right: 5px;
 	}
 	
 	input[type="radio"] {
@@ -79,8 +81,13 @@
 		font-weight: bold;
 	}
 	
-	#joinBtn:hover {
+	button:hover {
 		cursor: pointer;
+	}
+	
+	#joinBtn:disabled {
+		background-color: lightgrey;
+		cursor: not-allowed;
 	}
 	
 	#check {
@@ -99,6 +106,32 @@
 		margin: 0;
 		margin-top: 5px;
 	}
+	
+/* 	다빈수정(240308) */
+	.mailSend > p > input,
+	.mailAuth > p > input{
+		width: 350px;
+		height: 50px;
+		border: 1px solid lightgrey;
+		position: relative;
+		color: inherit;
+		padding: 5px 10px;
+		font-size: 16px;
+	}
+	#mailBtn,
+	#authBtn {
+		width: 130px;
+		border: 1px solid lightgrey;
+		background-color: blue;
+		color: white;
+		text-align: center;
+		font-weight: bold;
+	}
+	.hidden {
+ 		display: none;
+ 	}
+ 	
+
 </style>
 
 <section>
@@ -122,9 +155,23 @@
 						<span class="radiotext">여성</span>		
 					</label>
 				</div>
-				<input class="inputframe" type="number" name="age" placeholder="나이" required>
-				<input class="inputframe" type="email" name="email" placeholder="이메일">
-				<button id="joinBtn">가입하기</button>
+				<input class="inputframe" type="date" name="birthDay" placeholder="생년월일" required>
+				<div class="mailSend">
+					<p style="display: flex;">
+						<input type="email" name="email" placeholder="이메일">
+						<button id="mailBtn">인증요청</button>
+					</p>
+					<p class="mailMessage"></p>
+				</div>
+				<div class="mailAuth hidden">
+					<p style="display: flex;">
+						<input type="text" name="authNumber" placeholder="인증번호 입력">
+						<button id="authBtn">확인</button>
+					</p>
+					<p class="mailMessage"></p>
+				</div>
+				<input class="inputframe" type="text" name="phoneNumber" placeholder="전화번호" required>
+				<button id="joinBtn" disabled>가입하기</button>
 			</form>
 		</div>
 	</div>
@@ -156,13 +203,11 @@
 		if(lengthCheck && combCheck && prefixCheck && duplicateCheck) {
 			check.innerText = '✅'
 			joinBtn.disabled = false
-			joinBtn.style.backgroundColor = 'blue'
 			duplicate.style.display = 'none'
 		}
 		else {
 			check.innerText = '❌︎'
 			joinBtn.disabled = true
-			joinBtn.style.backgroundColor = 'lightgrey'
 			if(!duplicateCheck) {
 				duplicate.style.display = 'block'
 			}
@@ -173,6 +218,54 @@
 	}
 	const IdInput = document.querySelector('input[name="userid"]')
 	IdInput.addEventListener('keyup', IdCheckHandler)
+	
+	const mailBtn = document.getElementById('mailBtn')
+	const authBtn = document.getElementById('authBtn')
+	const mailAuth = document.querySelector('.mailAuth')
+	const mailSend = document.querySelector('.mailSend')
+	
+	mailBtn.onclick = async function(event){
+		event.preventDefault()
+		const url = '${cpath}/ajax/sendMail'
+		const opt = {
+			method: 'POST',
+			body: JSON.stringify({
+				address: mailSend.querySelector('input[name="email"]').value
+			}),
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			}
+		}
+		const result = await fetch(url, opt).then(resp => resp.text())
+		const message = mailSend.querySelector('p.mailMessage')
+		if(result == 1){
+			message.innerText = '인증번호를 발송하였습니다'
+			message.style.color = 'blue'
+			mailAuth.classList.remove('hidden')
+		}
+		else {
+			message.innerText = '메일을 보낼 수 없습니다'
+			message.style.color = 'red'
+		}
+	}
+	
+	authBtn.onclick = async function(event){
+		event.preventDefault()
+		const inputNumber = mailAuth.querySelector('input[name="authNumber"]').value
+		const url = '${cpath}/ajax/authNumber/' + inputNumber
+		const result = await fetch(url).then(resp => resp.text())
+		const message = mailAuth.querySelector('p.mailMessage')
+		
+		if(result == 1){
+			message.innerText = '인증 성공'
+			message.style.color = 'blue'
+			joinBtn.disabled = false
+		}
+		else {
+			message.innerText = '인증 실패'
+			message.style.color = 'red'
+		}
+	}
 </script>
 
 </body>
