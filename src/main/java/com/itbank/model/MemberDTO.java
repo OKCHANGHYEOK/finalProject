@@ -2,6 +2,20 @@ package com.itbank.model;
 
 import java.sql.Date;
 
+//	IDX           NOT NULL NUMBER        
+//	USERID        NOT NULL VARCHAR2(100) 
+//	USERPW        NOT NULL VARCHAR2(200) 
+//	USERNAME      NOT NULL VARCHAR2(100) 
+//	EMAIL         NOT NULL VARCHAR2(100) 
+//	GENDER                 VARCHAR2(20)  
+//	PHONENUMBER   NOT NULL VARCHAR2(100) 
+//	BIRTHYEAR     NOT NULL NUMBER        
+//	BIRTHMONTH    NOT NULL NUMBER        
+//	BIRTHDAY      NOT NULL NUMBER        
+//	JOINDATE               DATE          
+//	LASTLOGINDATE          DATE  
+
+
 public class MemberDTO {
 	
 	private int idx;
@@ -11,7 +25,9 @@ public class MemberDTO {
 	private String email;
 	private String gender;
 	private String phoneNumber;
-	private Date birthDay;
+	private int birthYear;
+	private int birthMonth;
+	private int birthDay;
 	private Date joinDate;
 	private Date lastLoginDate;
 	
@@ -57,10 +73,22 @@ public class MemberDTO {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	public Date getBirthDay() {
+	public int getBirthYear() {
+		return birthYear;
+	}
+	public void setBirthYear(int birthYear) {
+		this.birthYear = birthYear;
+	}
+	public int getBirthMonth() {
+		return birthMonth;
+	}
+	public void setBirthMonth(int birthMonth) {
+		this.birthMonth = birthMonth;
+	}
+	public int getBirthDay() {
 		return birthDay;
 	}
-	public void setBirthDay(Date birthDay) {
+	public void setBirthDay(int birthDay) {
 		this.birthDay = birthDay;
 	}
 	public Date getJoinDate() {
@@ -75,10 +103,6 @@ public class MemberDTO {
 	public void setLastLoginDate(Date lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
 	}
-	
-	
-	
-	
 	
 	
 	
