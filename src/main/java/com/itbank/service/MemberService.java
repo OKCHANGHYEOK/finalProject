@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itbank.component.HashComponent;
+import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
 import com.itbank.repository.MemberDAO;
 
@@ -46,5 +47,9 @@ public class MemberService {
 	      int row = dao.updatePassword(dto);
 	      return row != 0 ? newPassword : null;
 	   }
+
+public int insertCondition(ConditionDTO dto) {
+	return dao.insertCondition(dto);
+}
 
 }

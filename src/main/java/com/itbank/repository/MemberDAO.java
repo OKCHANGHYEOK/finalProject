@@ -4,12 +4,13 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
 
 public interface MemberDAO {
 
-	@Insert("insert into member(userid, userpw, username, email, gender, phoneNumber, birthYear, birthMonth, birthDay) "
-			+ "values(#{userid}, #{userpw}, #{username}, #{email}, #{gender}, #{phoneNumber}, #{birthYear}, #{birthMonth}, #{birthDay})")
+	@Insert("insert into member(userid, userpw, username, email, gender, phoneNumber, birthDay) "
+			+ "values(#{userid}, #{userpw}, #{username}, #{email}, #{gender}, #{phoneNumber}, #{birthDay})")
 	int join(MemberDTO dto);
 
 	@Select("select count(*) from member "
@@ -28,4 +29,11 @@ public interface MemberDAO {
 	         + "      where"
 	         + "         userid = #{userid} and email = #{email}")
 	   int updatePassword(MemberDTO dto);
+
+	@Insert("insert into condition(userid, marriedCount, residence,"
+			+ " education, job, salary, "
+			+ "religion, estate, owncar, height) "
+			+ "values(#{userid}, #{marriedCount}, #{residence}, #{education}, #{job}, "
+			+ "#{salary}, #{religion}, #{estate}, #{owncar}, #{height})")
+	int insertCondition(ConditionDTO dto);
 }

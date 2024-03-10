@@ -256,4 +256,15 @@
 				})
 			})
 		})
+		
+		const header = document.querySelector('header')
+		window.onscroll = function() {
+			const scrollY = window.scrollY
+			if(scrollY > 100) {
+				header.style.backgroundColor = 'white'
+			}
+			else {
+				header.style.backgroundColor = ''
+			}
+		}
 </script>
