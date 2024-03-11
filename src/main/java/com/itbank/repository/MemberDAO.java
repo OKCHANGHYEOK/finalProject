@@ -9,9 +9,10 @@ import com.itbank.model.MemberDTO;
 
 public interface MemberDAO {
 
-	@Insert("insert into member(userid, userpw, username, email, gender, phoneNumber, birthDay) "
-			+ "values(#{userid}, #{userpw}, #{username}, #{email}, #{gender}, #{phoneNumber}, #{birthDay})")
+	@Insert("insert into member(userid, userpw, username, email, gender, phoneNumber, birthYear, birthMonth, birthDay) "
+	         + "values(#{userid}, #{userpw}, #{username}, #{email}, #{gender}, #{phoneNumber}, #{birthYear}, #{birthMonth}, #{birthDay})")
 	int join(MemberDTO dto);
+
 
 	@Select("select count(*) from member "
 			+ "where userid = #{userid}")
