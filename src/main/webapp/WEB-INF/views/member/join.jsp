@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp"%>
 <style>
+/* 다빈이가 한 주석처리 */
 header {
 	color: black;
 }
