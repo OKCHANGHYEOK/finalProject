@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itbank.component.MailComponent;
+import com.itbank.model.ConditionDTO;
 import com.itbank.service.MemberService;
 
 @RestController
@@ -56,7 +58,13 @@ public class AjaxController {
 		return row;
 	}
 
-		
+	@GetMapping(value="/member/spec", produces="application/json; charset=utf-8")
+	   public ConditionDTO selectSpec(@RequestParam String userid) {
+	      System.out.println(userid);
+	      ConditionDTO dto = ms.selectCondition(userid);
+	      return dto;
+	      
+	   }
 
 	
 }

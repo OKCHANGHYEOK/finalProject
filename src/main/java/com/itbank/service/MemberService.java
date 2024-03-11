@@ -1,5 +1,9 @@
 package com.itbank.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,8 @@ public class MemberService {
 
    @Autowired private MemberDAO dao;
    @Autowired private HashComponent hash;
+   
+   private String saveDirectory = "C:\\upload";
    
    public int join(MemberDTO dto) {
 	  String hashPass = hash.getHash(dto.getUserpw());
@@ -48,8 +54,26 @@ public class MemberService {
 	      return row != 0 ? newPassword : null;
 	   }
 
-public int insertCondition(ConditionDTO dto) {
-	return dao.insertCondition(dto);
-}
-
+   public int insertCondition(ConditionDTO dto) {
+		String fileName = dto.getUpload().getOriginalFilename();
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss_");
+		String today = sdf.format(date);
+		
+		fileName = today + fileName;
+		
+		File f = new File(saveDirectory, fileName);
+		
+		try {
+			dto.getUpload().transferTo(f);
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		dto.setProfile(fileName);
+		return dao.insertCondition(dto);
+		}
+   
+   public ConditionDTO selectCondition(String userid) {
+	      return dao.selectCondition(userid);
+   }
 }

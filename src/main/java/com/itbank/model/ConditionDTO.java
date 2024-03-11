@@ -1,21 +1,7 @@
 package com.itbank.model;
 
-//	이름           널?       유형             
-//	------------ -------- -------------- 
-//	IDX          NOT NULL NUMBER         
-//	USERID       NOT NULL VARCHAR2(100)  
-//	MARRIEDCOUNT NOT NULL NUMBER         
-//	RESIDENCE    NOT NULL VARCHAR2(50)   
-//	EDUCATION    NOT NULL VARCHAR2(50)   
-//	JOB          NOT NULL VARCHAR2(20)   
-//	SALARY       NOT NULL NUMBER         
-//	RELIGION     NOT NULL VARCHAR2(20)   
-//	ESTATE                NUMBER         
-//	OWNCAR                NUMBER         
-//	HEIGHT       NOT NULL NUMBER         
-//	PROFILE      NOT NULL VARCHAR2(500)  
-//	INTRODUCE    NOT NULL VARCHAR2(1000) 
-//	ISME                  NUMBER         
+import org.springframework.web.multipart.MultipartFile;
+    
 
 
 public class ConditionDTO {
@@ -30,7 +16,18 @@ public class ConditionDTO {
 	private int estate;
 	private int owncar;
 	private int height;
+	private String profile;
+	private String introduce;
+	private int isMe;
 	
+	private MultipartFile upload;
+	
+	public MultipartFile getUpload() {
+		return upload;
+	}
+	public void setUpload(MultipartFile upload) {
+		this.upload = upload;
+	}
 	public int getIdx() {
 		return idx;
 	}
@@ -115,7 +112,4 @@ public class ConditionDTO {
 	public void setIsMe(int isMe) {
 		this.isMe = isMe;
 	}
-	private String profile;
-	private String introduce;
-	private int isMe;
 }

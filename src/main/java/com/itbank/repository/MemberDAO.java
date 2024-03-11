@@ -34,8 +34,13 @@ public interface MemberDAO {
 
 	@Insert("insert into condition(userid, marriedCount, residence,"
 			+ " education, job, salary, "
-			+ "religion, estate, owncar, height) "
+			+ "religion, estate, owncar, "
+			+ "height, profile, introduce) "
 			+ "values(#{userid}, #{marriedCount}, #{residence}, #{education}, #{job}, "
-			+ "#{salary}, #{religion}, #{estate}, #{owncar}, #{height})")
+			+ "#{salary}, #{religion}, #{estate}, #{owncar}, "
+			+ "#{height}, #{profile}, #{introduce})")
 	int insertCondition(ConditionDTO dto);
+	
+	@Select("select * from condition where userid = #{userid}")
+	ConditionDTO selectCondition(String userid);
 }

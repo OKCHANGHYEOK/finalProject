@@ -183,7 +183,7 @@ p {
 		</div>
 		<div class="stepContainer">
 			<ul id="step">
-				<li><small>STEP1</small>
+				<li style="color: #105dae; font-weight: bold;"><small>STEP1</small>
 					<p>회원정보입력</p></li>
 				<li id="arrow">></li>
 				<li><small>STEP2</small>
@@ -400,7 +400,7 @@ p {
 			pwLength.classList.add('hidden')
 		}
 		else {
-			joinBtn.desabled = true
+			joinBtn.disabled = true
 			pwLength.classList.remove('hidden')
 		}
 	}
@@ -455,6 +455,14 @@ p {
 			joinBtn.disabled = true
 		}
 	}
+	
+	joinBtn.addEventListener('click', (event) => {
+		const message = mailAuth.querySelector('p.mailMessage')
+		if(message.innerText != '인증 성공') {
+			event.preventDefault()
+			alert('이메일 인증이 완료되지 않았습니다!')
+		}
+	})
 </script>
 
 </body>
