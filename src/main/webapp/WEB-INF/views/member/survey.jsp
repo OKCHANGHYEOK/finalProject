@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp" %>
 <style>
+/* 창혁 주석 */
 	header {
 		color: black;
 		border-bottom: 1px solid lightgrey;
