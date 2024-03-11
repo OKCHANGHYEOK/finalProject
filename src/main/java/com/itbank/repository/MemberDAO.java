@@ -13,6 +13,7 @@ public interface MemberDAO {
 	         + "values(#{userid}, #{userpw}, #{username}, #{email}, #{gender}, #{phoneNumber}, #{birthYear}, #{birthMonth}, #{birthDay})")
 	int join(MemberDTO dto);
 
+	// 제은
 
 	@Select("select count(*) from member "
 			+ "where userid = #{userid}")
