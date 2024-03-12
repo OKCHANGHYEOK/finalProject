@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
@@ -25,14 +26,11 @@ public class MemberController {
 	}
 
 	@PostMapping("/join")
-	public ModelAndView join(MemberDTO dto) {
+	public String join(MemberDTO dto, RedirectAttributes rttr) {
 		ModelAndView mav = new ModelAndView("alert");
-		System.out.println("anjsnajdjksf");
-		int row = 0;
-		row = ms.join(dto);
-		String msg = row != 0 ? "가입 성공" : "가입 실패";
-		mav.addObject("msg", msg);
-		return mav;
+		int row = ms.join(dto);
+		rttr.addFlashAttribute("userid", dto.getUserid());
+		return "redirect:/member/survey";
 	}
 
 	@GetMapping("/survey")

@@ -162,7 +162,7 @@
 				<li>듀세요소개</li>
 				<li category="guide">가입안내</li>
 				<li>고객문의</li>
-				<li>회원&성혼</li>
+            	<li category="marrige">회원&성혼</li>
 				<li>러브테스트</li>
 				<li>파티&이벤트</li>
 			</ul>
@@ -199,7 +199,7 @@
 					<li>테스트</li>
 				</ul>
 				<ul>
-					<li>테스트</li>
+               		<li class="link" id="marrigeReviewLink" category="marrige">성혼커플 인터뷰</li>
 					<li>테스트</li>
 					<li>테스트</li>
 					<li>테스트</li>
@@ -236,6 +236,11 @@
 		
 		const mypageLink = document.getElementById('mypageLink')
 	    mypageLink.onclick = () => {location.href = '${cpath}/member/mypage'}
+	    
+	    const marrigeReviewLink = document.getElementById('marrigeReviewLink')
+	    marrigeReviewLink.onclick = () => {location.href = '${cpath}/review/list'}
+	       
+
 		
 		const links = document.querySelectorAll('.link')
 		const menus = document.querySelectorAll('#menu > li')
