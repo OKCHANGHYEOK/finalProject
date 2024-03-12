@@ -30,7 +30,14 @@ public class MemberDTO {
 	private int birthDay;
 	private Date joinDate;
 	private Date lastLoginDate;
+	private int isManager;
 	
+	public int getIsManager() {
+		return isManager;
+	}
+	public void setIsManager(int isManager) {
+		this.isManager = isManager;
+	}
 	public int getIdx() {
 		return idx;
 	}
@@ -103,8 +110,4 @@ public class MemberDTO {
 	public void setLastLoginDate(Date lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;
 	}
-	
-	
-	
-	
 }

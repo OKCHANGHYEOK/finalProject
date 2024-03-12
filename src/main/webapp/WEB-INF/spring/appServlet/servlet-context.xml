@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -28,15 +30,25 @@
 		<beans:property name="defaultEncoding" value="utf-8" />
 	</beans:bean>
 	
-<!-- 	<interceptors> -->
-<!-- 		<interceptor> -->
-<!-- 			<mapping path="/account/logout"/> -->
-<!-- 			<mapping path="/review/write"/> -->
-			
-<!-- 			<beans:bean class="com.itbank.interceptor.AccountInterceptor" /> -->
-<!-- 		</interceptor> -->
-
-<!-- 	</interceptors> -->
+	<websocket:message-broker application-destination-prefix="/app">
+		<websocket:stomp-endpoint path="/endpoint">
+			<websocket:sockjs websocket-enabled="true" />
+		</websocket:stomp-endpoint>
+		<websocket:simple-broker prefix="/broker"/>
+	</websocket:message-broker>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/review/write"/>
+			<beans:bean class="com.itbank.interceptor.LoginInterceptor" />
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/"/>
+			<beans:bean class="com.itbank.interceptor.HomeInterceptor" />
+		</interceptor>
+	
+	</interceptors>
 	
 	<context:component-scan base-package="com.itbank.controller" />
 	

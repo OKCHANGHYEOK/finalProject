@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ include file="header.jsp" %>
 <style>
+   header {
+   		color: white;
+   }
+
    main {
       position: absolute;
       top: -200px;
@@ -21,7 +25,6 @@
    <video src="${cpath }/upload/duseo_main.mp4" autoplay loop muted></video>
 </main>
 
-<!-- ㅁㄴㄹㄵㄷ -->
 
 </body>
 </html>

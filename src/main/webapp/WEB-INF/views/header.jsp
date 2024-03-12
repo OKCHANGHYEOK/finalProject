@@ -14,7 +14,7 @@
 	
 	header {
 		position: fixed;
-		color: white;
+		color: black;
 		z-index: 1;
 		top: 0;
 		left: 0;
@@ -43,6 +43,12 @@
 		max-height: 40px;
 	}
 	
+	.frame {
+		width: 900px;
+		margin: 0 auto;
+		padding: 95px 0;
+	}
+	
 	#menu {
 		display: flex;
 		justify-content: space-around;
@@ -63,7 +69,7 @@
 		text-align: center;
 	}
 	
-	#consult {
+	#loginUser {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -166,8 +172,8 @@
 				<li>러브테스트</li>
 				<li>파티&이벤트</li>
 			</ul>
-			<div id="consult">
-				<h2 style="color: inherit;">상담문의</h2>
+			<div id="loginUser">
+				<h2 style="color: inherit;" class="${empty login ? 'hidden' : '' }">${login.username } 님 로그인 중</h2>
 			</div>
 		</div>
 		<hr style="border: 0; height: 1px; background-color: lightgrey;">
@@ -183,7 +189,7 @@
 					<li>테스트</li>
 				</ul>
 				<ul>
-					<li class="link" id="loginLink" category="guide">로그인</li>
+					<li class="link" id="logLink" value="${empty login ? 'login' : 'logout' }" category="guide">${empty login ? '로그인' : '로그아웃' }</li>
 					<li class="link" id="joinLink" category="guide">회원가입</li>
 					<li class="link" id="mypageLink" category="guide">마이페이지</li>
 					<li>테스트</li>
@@ -227,12 +233,15 @@
 		</div>
 	</header>
 
-	<script>
+	<script>	
 		const joinLink = document.getElementById('joinLink')
 		joinLink.onclick = () => {location.href = '${cpath}/member/join'}
 	
-		const loginLink = document.getElementById('loginLink')
-		loginLink.onclick = () => {location.href = '${cpath}/member/login'}
+		const logLink = document.getElementById('logLink')
+		logLink.onclick = function(event) {
+			const href = event.target.getAttribute('value')
+			location.href = '${cpath}/member/' + href
+		}
 		
 		const mypageLink = document.getElementById('mypageLink')
 	    mypageLink.onclick = () => {location.href = '${cpath}/member/mypage'}

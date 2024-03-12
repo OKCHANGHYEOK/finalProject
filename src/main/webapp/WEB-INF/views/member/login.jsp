@@ -122,8 +122,8 @@
 			<div style="width: 300px; display: flex; justify-content: space-between;">
 				<span id="find">ID/PW찾기</span>
 				<span id="save">
-					로그인 정보 저장
-					<input type="checkbox" name="save">
+					 7일간 자동 로그인
+					<input type="checkbox" name="save" value="1">
 				</span>
 			</div>
 			
@@ -146,6 +146,7 @@
         let options = 'width=' + width + ',height=' + height + ',top=' + top + ',left=' + left
 		window.open('${cpath}/member/find', 'popupWindow', options)
 	}
+	
 </script>
 
 </body>

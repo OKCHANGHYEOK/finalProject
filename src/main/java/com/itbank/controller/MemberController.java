@@ -1,5 +1,7 @@
 package com.itbank.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,6 @@ public class MemberController {
 
 	@PostMapping("/join")
 	public String join(MemberDTO dto, RedirectAttributes rttr) {
-		ModelAndView mav = new ModelAndView("alert");
 		int row = ms.join(dto);
 		rttr.addFlashAttribute("userid", dto.getUserid());
 		return "redirect:/member/survey";
@@ -48,12 +49,17 @@ public class MemberController {
 	}
 
 	@PostMapping("/login")
-	public String login(MemberDTO dto, HttpSession session) {
+	public String login(MemberDTO dto, HttpSession session, String save, HttpServletResponse response) {
 		MemberDTO login = ms.selectOne(dto);
 		if (login == null) {
 			return "redirect:/alert";
 		}
-
+		if(save != null) {
+			Cookie cookie = new Cookie("save", dto.getUserid());
+			cookie.setMaxAge(604800);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+		}
 		session.setAttribute("login", login);
 
 		return "redirect:/";
