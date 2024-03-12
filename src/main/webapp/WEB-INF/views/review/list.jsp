@@ -7,7 +7,6 @@
 	    width: 100%;
 	    height: 920px;
 	    justify-content: center;
-	   
 	}
 	#nocontent {
 	    content: "";
@@ -23,7 +22,9 @@
 	    height: 100%;
 	    margin: auto;
 	}
-	#marriageImg > a > img{
+	.marriageImg > a {
+		background-size: auto 100%;
+		display: block;
 		width: 340px;
 		height: 440px;
 	}
@@ -32,7 +33,7 @@
 		flex-flow: wrap;
 		margin: auto;
 	}
-	#marriageContent {
+	.marriageContent {
 		padding: 5px 30px;
 	}
 </style>
@@ -46,13 +47,29 @@
     	<div><a href="${cpath }/review/write"><button>커플후기작성</button></a></div>
    		<div id="marriageList">
     	<c:forEach var="dto" items="${list }">
-	    	<div id="marriageContent">
-	        	<div id="marriageImg"><a href="${cpath }/review/view/${dto.idx}"><img src="${cpath }/upload/${dto.img}"></a></div>
+	    	<div class="marriageContent">
+	        	<div class="marriageImg"><a href="${cpath }/review/view/${dto.idx}" style="background-image: url('${cpath}/upload/${dto.img}');"></a></div>
 	       		<div>${dto.title }</div>
 	   			<div>${dto.writer }</div>
 	    	</div>
     	</c:forEach>
    		</div>
+   		<div id="marriageListPage">
+   			<form>
+   				<input type="text" name="search" value="${param.search }">
+   				<button>검색</button>
+   			</form>
+   			<c:if test="${paging.prev }">
+   				<a href="${cpath }/review/list/${paging.begin - 3}">◀</a>
+   			</c:if>
+   			<c:forEach var="i" begin="${paging.begin }" end="${paging.end }">
+   				<a class="${paging.page == i ? 'bold' : '' }"
+   					href="${cpath }/review/list/${i}?search=${param.search}">${i}</a>
+   			</c:forEach>
+			<c:if test="${paging.next }">
+				<a href="${cpath }/review/list/${paging.end + 1}?search=${param.search}">▶</a>
+			</c:if>
+		</div>
      </div>
 </section>
 
