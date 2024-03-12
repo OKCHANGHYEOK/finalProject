@@ -24,12 +24,14 @@ public class HomeInterceptor implements HandlerInterceptor {
 				
 		if(login == null) {
 			Cookie[] cookies = request.getCookies();
-			for(Cookie c : cookies) {
-				if(c.getName().equals("save")) {
-					MemberDTO dto = ms.selectOneById(c.getValue());
-					session.setAttribute("login", dto);
-					break;
-				}
+			if(cookies != null) {
+				for(Cookie c : cookies) {
+					if(c.getName().equals("save")) {
+						MemberDTO dto = ms.selectOneById(c.getValue());
+						session.setAttribute("login", dto);
+						break;
+					}
+				}	
 			}
 		}
 		
