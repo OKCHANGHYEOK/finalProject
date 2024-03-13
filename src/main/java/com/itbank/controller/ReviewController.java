@@ -45,7 +45,7 @@ public class ReviewController {
 	public String reviewWrite(ReviewDTO dto) {
 		int row = rs.write(dto);
 		System.out.println(row != 0 ? "후기 작성 성공" : "후기 작성 실패");
-		return "redirect:/review/list";
+		return "redirect:/review/list/1";
 	}
 	
 	@GetMapping("/view/{idx}")
