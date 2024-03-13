@@ -142,7 +142,7 @@ p {
 	align-items: center;
 }
 
-#mpmodifyBtn, #pwmodifyBtn, #specmodifyBtn {
+#mpmodifyBtn, #pwmodifyBtn, #specmodifyBtn, #withdrawBtn {
 	margin-top: 20px;
 	width: 400px;
 	height: 50px;
@@ -228,11 +228,16 @@ input[type="radio"]:checked+.resText {
 }
 
 div.profile {
+	height: 300px;
+	position: relative;
 	display: flex;
 	flex-flow: column;
 }
 
 div.preview {
+	position: absolute;
+	top: 0;
+	left: 0;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -240,6 +245,17 @@ div.preview {
 	height: 300px;
 	border: 2px dashed black;
 	border-radius: 50%;
+}
+
+#profileReg {
+	all: unset;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 300px;
+	height: 300px;
+	border-radius: 50%;
+	opacity: 0;
 }
 
 textarea.introduce {
@@ -250,6 +266,31 @@ textarea.introduce {
 	color: black;
 	box-sizing: border-box;
 	padding: 5px 5px;
+}
+#pwForm {
+   position: relative;
+   display: flex;
+   flex-flow: column;
+   justify-content: center;
+   align-items: center;
+}
+#pwBtn, #cancleBtn {
+   margin-top: 20px;
+   margin-bottom: 10px;
+   width: 400px;
+   height: 50px;
+   border: 1px solid lightgrey;
+   background-color: #105dae;
+   font-size: 20px;
+   color: white;
+   text-align: center;
+   font-weight: bold;
+}
+
+#cancleBtn {
+   background-color: #EEEEEE;
+   margin-top: 0;
+   color: #ABABAB;
 }
 </style>
 
@@ -267,6 +308,7 @@ textarea.introduce {
 
 
 <script>
+	const cpath = '${cpath}'
 	
 	const menuItems = document.querySelectorAll('.menu > .item')
 // 	const contentItems = document.querySelectorAll('.content > .item')
@@ -288,90 +330,170 @@ textarea.introduce {
 	
 	
    const myInfoLoadHandler = function() {
-		const getmyInfo = function(){
-			let tag = '';
+      const getmyInfo = function(){
+         content.innerHTML = '';
+         
+         let tag = '';
 
-		      tag += '<div class="mpmodify">';
-		      tag += '    <div class="mpmodify_inner">';
-		      tag += '        <h1 align="center">회원 정보 수정</h1>';
-		      tag += '        <div>';
-		      tag += '            <form id="mpmodifyForm">';
-		      tag += '                <input class="inputframe" type="text" value="' + '${login.userid}' + '" name="userid" readonly required>';
-		      tag += '                <input class="inputframe" type="text" value="' + '${login.username}' + '" name="username" placeholder="이름" required>';
-		      tag += '                <div style="display: flex;">';
-		      tag += '                    <label>';
-		      tag += '                        <input type="radio" name="gender" value="남성"';
-		      tag += '${login.gender}' == '남성' ? ' checked' : '';
-		      tag += ' required>';
-		      tag += '                        <span class="radiotext">남성</span>';
-		      tag += '                    </label>';
-		      tag += '                    <label>';
-		      tag += '                        <input type="radio" name="gender" value="여성"';
-		      tag += '${login.gender}' == '여성' ? ' checked' : '';
-		      tag += ' required>';
-		      tag += '                        <span class="radiotext">여성</span>';
-		      tag += '                    </label>';
-		      tag += '                </div>';
-		      tag += '                <div class="birthday">';
-		      tag += '                    <select class="birthYear_sel" title="출생년"  name="birthYear" style="padding: 5px 10px;">';
-		      tag += '                        <option value="">출생년</option>';
-		      for (var year = 1944; year <= 2005; year++) {
-		          tag += '<option value="' + year + '">' + year + '년</option>';
-		      }
-		      tag += '                    </select>';
-		      tag += '                    <select class="birthMonth_sel" title="월 선택" name="birthMonth" style="padding: 5px 10px;">';
-		      tag += '                        <option value="">월 선택</option>';
-		      for (var month = 1; month <= 12; month++) {
-		          tag += '<option value="' + month + '">' + month + '월</option>';
-		      }
-		      tag += '                    </select>'; 
-		      tag += '                    <select class="birthDay_sel" title="일 선택" name="birthDay" style="padding: 5px 10px;">';
-		      tag += '                        <option value="">일 선택</option>';
-		      for (var day = 1; day <= 31; day++) {
-		          tag += '<option value="' + day + '">' + day + '일</option>';
-		      }
-		      tag += '                    </select>';
-		      tag += '                </div>';
-		      tag += '                <input class="inputframe" type="text" value="' + '${login.phoneNumber}' + '" name="phoneNumber" placeholder="전화번호" required>';
-		      tag += '                <div class="modifyBtn">';
-		      tag += '                    <button id="mpmodifyBtn" type="submit">정보수정</button>';
-		      tag += '                </div>';
-		      tag += '                <div class="modifyBtn">';
-		      tag += '                    <button id="pwmodifyBtn">비밀번호 변경</button>';
-		      tag += '                </div>';
-		      tag += '            </form>';
-		      tag += '        </div>';
-		      tag += '    </div>';
-		      tag += '</div>';
-		      content.innerHTML = tag;
-		}
+            tag += '<div class="mpmodify">';
+            tag += '    <div class="mpmodify_inner">';
+            tag += '        <h1 align="center">회원 정보 수정</h1>';
+            tag += '        <div>';
+            tag += '            <form id="mpmodifyForm">';
+            tag += '                <input class="inputframe" type="text" value="' + '${login.userid}' + '" name="userid" readonly required>';
+            tag += '                <input class="inputframe" type="text" value="' + '${login.username}' + '" name="username" placeholder="이름" required>';
+            tag += '                <div style="display: flex;">';
+            tag += '                    <label>';
+            tag += '                        <input type="radio" name="gender" value="남성"';
+            tag += '${login.gender}' == '남성' ? ' checked' : '';
+            tag += ' required>';
+            tag += '                        <span class="radiotext">남성</span>';
+            tag += '                    </label>';
+            tag += '                    <label>';
+            tag += '                        <input type="radio" name="gender" value="여성"';
+            tag += '${login.gender}' == '여성' ? ' checked' : '';
+            tag += ' required>';
+            tag += '                        <span class="radiotext">여성</span>';
+            tag += '                    </label>';
+            tag += '                </div>';
+            tag += '                <div class="birthday">';
+            tag += '                    <select class="birthYear_sel" title="출생년"  name="birthYear" style="padding: 5px 10px;">';
+            tag += '                        <option value="">출생년</option>';
+            for (var year = 1944; year <= 2005; year++) {
+                tag += '<option value="' + year + '">' + year + '년</option>';
+            }
+            tag += '                    </select>';
+            tag += '                    <select class="birthMonth_sel" title="월 선택" name="birthMonth" style="padding: 5px 10px;">';
+            tag += '                        <option value="">월 선택</option>';
+            for (var month = 1; month <= 12; month++) {
+                tag += '<option value="' + month + '">' + month + '월</option>';
+            }
+            tag += '                    </select>'; 
+            tag += '                    <select class="birthDay_sel" title="일 선택" name="birthDay" style="padding: 5px 10px;">';
+            tag += '                        <option value="">일 선택</option>';
+            for (var day = 1; day <= 31; day++) {
+                tag += '<option value="' + day + '">' + day + '일</option>';
+            }
+            tag += '                    </select>';
+            tag += '                </div>';
+            tag += '                <input class="inputframe" type="text" value="' + '${login.phoneNumber}' + '" name="phoneNumber" placeholder="전화번호" required>';
+            tag += '                <div class="modifyBtn">';
+            tag += '                    <button id="mpmodifyBtn" type="submit">정보수정</button>';
+            tag += '                </div>';
+            tag += '                <div class="modifyBtn">';
+            tag += '                    <button id="pwmodifyBtn">비밀번호 변경</button>';
+            tag += '                </div>';
+            tag += '                <div class="modifyBtn">';
+            tag += '                    <button id="withdrawBtn">회원 탈퇴</button>';
+            tag += '                </div>';        
+            tag += '            </form>';
+            tag += '        </div>';
+            tag += '    </div>';
+            tag += '</div>';
+            content.innerHTML = tag;
+      }
       
-	  getmyInfo()
+     getmyInfo()                  // 선언한 함수 호출
 
-	  const form = document.forms[0]
-	  form.onsubmit = async function(event) {
-		   event.preventDefault()
-		   const url = '${cpath}/ajax/mpmodify?userid=${login.userid}'
-		   const formData = new FormData(event.target)
-		   const ob = {}
-		   for(let key of formData.entries()) {
-			   ob[key[0]] = key[1]
-		   }
-		   console.log(ob)
-		   const opt = {
-			   method: 'POST',
-			   body: JSON.stringify(ob),
-			   headers: {
-				   'Content-Type' : 'application/json;charset=utf-8'
-			   }
-		   }
-		   const result = await fetch(url, opt).then(resp => resp.text())
-		   if(result == 1) {
-			   getmyInfo()
-		   }
-		}
-	  
-	}
+     const form = document.forms[0]
+     form.onsubmit = async function(event) {
+         event.preventDefault()
+         const url = '${cpath}/ajax/mpmodify?userid=${login.userid}'
+         const formData = new FormData(event.target)         // form의 값들을 다 불러오기
+         const ob = {}
+         for(let key of formData.entries()) {               // form을 순회하면서 값 저장
+            ob[key[0]] = key[1]
+         }
+         console.log(ob)
+         const opt = {
+            method: 'POST',
+            body: JSON.stringify(ob),
+            headers: {
+               'Content-Type' : 'application/json;charset=utf-8'
+            }
+         }
+         const result = await fetch(url, opt).then(resp => resp.json())
+         alert(result.message)
+         location.href = '${cpath}/member/logout?mypage=1'
+      }
+     
+     const pwmodifyBtn = document.getElementById('pwmodifyBtn')
+     
+     
+     pwmodifyBtn.onclick = function() {
+        content.innerHTML = '';
+        
+        let tag = '';
+
+        tag += '<div>';
+        tag += '<h1 style="text-align: center;">비밀번호 변경</h1>';
+        tag += '<p style="text-align: center; font-size: 14px; color: red;">';
+        tag += '   · 다른 아이디/사이트에서 사용한 적 없는 비밀번호</p>';
+        tag += '<p style="text-align: center; font-size: 14px; color: red;">';
+        tag += '   · 이전에 사용한 적 없는 비밀번호가 안전합니다.</p>';
+        tag += '</div>';
+        
+        tag += '<div class="mpmodify_inner">'
+        tag += '   <form id="pwForm">';
+        tag += '      <p><input id="inputPw1" class="inputframe" type="password" name="userpw"';
+        tag += '          placeholder="새 비밀번호" required></p>';
+
+        tag += '      <p id="pwLength" class="hidden"';
+        tag += '          style="width: 500px; font-size: 13px; color: #105dae;">';
+        tag += '       비밀번호는 8글자 이상 15글자 이하의 영문자 + 숫자로만 조합할 수 있습니다.</p>';
+        
+//         tag += '      <p><input id="inputPw2" class="inputframe" type="password" name="userpw"';
+//         tag += '          placeholder="새 비밀번호 확인" required></p>';
+
+        tag += '      <input type="hidden" value="${login.userid}" name="userid">'
+        tag += '      <button id="pwBtn" type="submit" disabled>확인</button>';
+        tag += '      <button id="cancleBtn" disabled>취소</button>';
+        tag += '   </form>';
+          tag += '</div>';
+        content.innerHTML = tag;
+        
+      function PasswordCheckHandler(event){
+         var password = event.target.value
+         var regex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,15}$/;
+         var pwCheck = regex.test(password)
+         const pwLength = document.getElementById('pwLength')
+         if(pwCheck){
+            pwBtn.disabled = false
+            pwLength.classList.add('hidden')
+         }
+         else {
+            pwBtn.disabled = true
+            pwLength.classList.remove('hidden')
+         }
+      }
+      const pwInput = document.querySelector('input[name="userpw"]')
+      pwInput.addEventListener('keyup', PasswordCheckHandler)
+        
+      const resetPassForm = document.forms[0]
+      resetPassForm.onsubmit = async function(event) {
+         event.preventDefault()
+         const url = '${cpath}/ajax/newPw?userid=${login.userid}'
+         const ob = { userpw : event.target.querySelector('input[name="userpw"]').value }
+         console.log(ob)
+         
+         const opt = {
+            method: 'POST',
+            body: JSON.stringify(ob),
+            headers: {
+               'Content-Type' : 'application/json;charset=utf-8'
+            }
+         }
+         const result = await fetch(url, opt).then(resp => resp.json())
+         alert(result.message)
+         location.href = '${cpath}/member/logout?mypage=1'
+      }
+     }
+     
+   
+   
+   
+   
+   }
 	
    const selectHandler = function() {
       var loginBirthYear = "${login.birthYear}";
@@ -417,11 +539,13 @@ textarea.introduce {
     var contentDiv = document.querySelector('.content')
     
     const url = '${cpath}/member/spec?userid=${login.userid}'
-    const dto = await fetch(url).then(resp => resp.json())
-    
+    const map = await fetch(url).then(resp => resp.json())
+    const dto = map.dto
+    const profile = map.profile
     const getSpec = function(){
     	contentDiv.innerHTML = '';
-
+		
+		
         var tag = "";
         tag += '<form method="POST" enctype="multipart/form-data">';
         tag += '    <div>';
@@ -578,12 +702,12 @@ textarea.introduce {
     	tag += '    </div>';
     	tag += '    <div>';
     	tag += '        <h2>프로필 사진</h2>';
-    	tag += '        <div class="profile">';
-    	tag += '            <div class="preview">';
+    	tag += '        <div class="profile" style=\"background-image: url(\'' + cpath + '/upload/' + profile +  '\')\">;'
+    	tag += '			<div class="preview">';
     	tag += '                파일을 끌어서 놓거나 <br>';
     	tag += '                직접 선택하세요.';
     	tag += '            </div>';
-    	tag += '            <input type="file" name="upload" placeholder="프로필 이미지 선택" style="margin-top: 10px;" required>';
+    	tag += '            <input id="profileReg" type="file" name="upload" placeholder="프로필 이미지 선택" style="margin-top: 10px;" required>';
     	tag += '        </div>';
     	tag += '    </div>';
     	tag += '    <div>';
@@ -597,8 +721,7 @@ textarea.introduce {
     	
 //     	content.innerHTML += tag
        
-        contentDiv.innerHTML += tag;
-    	
+        contentDiv.innerHTML = tag;
     }
     
     getSpec()
@@ -621,12 +744,42 @@ textarea.introduce {
     	}
     }
     
-
+    const inputFile = document.querySelector('input[name="upload"]')
+	const preview = document.querySelector('.preview')
+	
+	function previewHandler(event) {
+        if(event.target.files && event.target.files[0]) {
+            const reader = new FileReader()
+            reader.onload = function(e) {
+                preview.style.backgroundImage = 'url(' + e.target.result + ')'
+                preview.style.backgroundSize = '100%'
+                preview.style.fontSize = 0
+            }
+            reader.readAsDataURL(event.target.files[0])
+        }
+        else {
+        	preview.style.fontSize = '14px'		
+        }
+	}
+	
+	inputFile.onchange = previewHandler
+	preview.onchange = previewHandler
+    
    
 }
 	
 	menuItems[1].onclick = specModify
 
+	// 회원 탈퇴
+	document.addEventListener('DOMContentLoaded', function() {
+// 	event.preventDefault()
+    const withdrawBtn = document.getElementById('withdrawBtn');
+	
+    withdrawBtn.addEventListener('click', function(event) {
+    	event.preventDefault()	
+    	location.href = '${cpath}/member/withdrawMember/${login.idx}'; 
+    })
+})
 
 	
 	
