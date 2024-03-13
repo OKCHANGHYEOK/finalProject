@@ -330,6 +330,14 @@ ul#step {
 	
 	inputFile.onchange = previewHandler
 	preview.onchange = previewHandler
+	
+	const conditionForm = document.forms[0]
+	conditionForm.onsubmit = function(event) {
+		const userid = '${userid}'
+		event.preventDefault()
+		stomp.send('/app/register', {}, userid)
+		conditionForm.submit()
+	}
 </script>
 
 

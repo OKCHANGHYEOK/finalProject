@@ -98,4 +98,21 @@ public class MemberService {
 		int row = dao.conditionUpdate(dto);
 		return row;
 	}
+
+	public int newPw(MemberDTO dto) {
+		String hashPass = hash.getHash(dto.getUserpw());
+		dto.setUserpw(hashPass);
+		int row = dao.pwUpdate(dto);
+		return row;
+	}
+
+	public MemberDTO memberOne(int idx) {
+		return dao.memberOne(idx);
+	}
+
+	public int memberDelete(MemberDTO dto) {
+		String hashPass = hash.getHash(dto.getUserpw());
+		dto.setUserpw(hashPass);
+		return dao.memberDelete(dto);
+	}
 }

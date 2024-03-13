@@ -2,6 +2,7 @@ package com.itbank.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -54,4 +55,13 @@ public interface MemberDAO {
 			+ "      height = #{height}," + "      profile = #{profile}," + "      introduce = #{introduce}" + " where"
 			+ "      userid = #{userid}")
 	int conditionUpdate(ConditionDTO dto);
+
+	@Update("update member " + " set" + "   userpw = #{userpw}" + "where" + "   userid = #{userid}")
+	int pwUpdate(MemberDTO dto);
+
+	@Select("select * from member where idx = #{idx}")
+	MemberDTO memberOne(int idx);
+
+	@Delete("delete from member where userid = #{userid} and userpw = #{userpw}")
+	int memberDelete(MemberDTO dto);
 }

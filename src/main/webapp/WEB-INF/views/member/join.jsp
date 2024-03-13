@@ -412,8 +412,11 @@ p {
 	const mailAuth = document.querySelector('.mailAuth')
 	const mailSend = document.querySelector('.mailSend')
 	
+	let limit = 300
+	
 	mailBtn.onclick = async function(event){
 		event.preventDefault()
+		limit = 300
 		const url = '${cpath}/ajax/sendMail'
 		const opt = {
 			method: 'POST',
@@ -430,12 +433,33 @@ p {
 			message.innerText = '인증번호를 발송하였습니다'
 			message.style.color = '#105dae'
 			mailAuth.classList.remove('hidden')
+			const timer = document.getElementById('timer')
+			if(timer != null) {
+				mailSend.removeChild(timer)
+			}
+			
+			const newTimer = document.createElement('p')
+			newTimer.id = 'timer'
+			mailSend.appendChild(newTimer)
+			
+			function countDownHandler() {
+				limit--
+				newTimer.innerText = '0' + Math.floor(limit / 60) + ':' + (limit % 60 < 10 ? 0 : '') + Math.floor(limit % 60)
+				if(limit < 0) {
+					limit = 0
+				}
+			}
+			
+			setInterval(countDownHandler, 1000)
 		}
 		else {
 			message.innerText = '메일을 보낼 수 없습니다'
 			message.style.color = 'red'
 		}
 	}
+	
+	
+	
 	
 	authBtn.onclick = async function(event){
 		event.preventDefault()

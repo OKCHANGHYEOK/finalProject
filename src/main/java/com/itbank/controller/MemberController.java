@@ -1,12 +1,14 @@
 package com.itbank.controller;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +24,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService ms;
+
+	@Autowired
+	private StompController sc;
 
 	@GetMapping("/join")
 	public void join() {
@@ -54,7 +59,7 @@ public class MemberController {
 		if (login == null) {
 			return "redirect:/alert";
 		}
-		if(save != null) {
+		if (save != null) {
 			Cookie cookie = new Cookie("save", dto.getUserid());
 			cookie.setMaxAge(604800);
 			cookie.setPath("/");
@@ -66,9 +71,20 @@ public class MemberController {
 	}
 
 	@GetMapping("/logout")
-	public String logout(HttpSession session) {
+	public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response, String mypage) {
 		session.invalidate();
-		return "redirect:/";
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie c : cookies) {
+				if (c.getName().equals("save")) {
+					c.setMaxAge(0);
+					c.setPath("/");
+					response.addCookie(c);
+					break;
+				}
+			}
+		}
+		return mypage != null ? "redirect:/member/login" : "redirect:/";
 	}
 
 	@GetMapping("/find")
@@ -96,4 +112,18 @@ public class MemberController {
 	public void mpmodify() {
 	}
 
+	@GetMapping("/withdrawMember/{idx}")
+	public ModelAndView withdrawMember(@PathVariable("idx") int idx) {
+		ModelAndView mav = new ModelAndView("/member/withdrawMember");
+		MemberDTO dto = ms.memberOne(idx);
+		mav.addObject("dto", dto);
+		return mav;
+	}
+
+	@PostMapping("/withdrawMember/{idx}")
+	public String withdrawMemberPost(MemberDTO dto) {
+		int row = ms.memberDelete(dto);
+		System.out.println(row != 0 ? "삭제 성공" : "삭제 실패");
+		return "redirect:/member/logout";
+	}
 }
