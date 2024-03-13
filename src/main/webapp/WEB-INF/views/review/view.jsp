@@ -8,7 +8,10 @@ section {
 	height: 920px;
 	justify-content: center;
 }
-
+.sa {
+	display: flex;
+	justify-content: space-around;
+}
 #marriageView_inner {
 	width: 1200px;
 	height: 100%;
@@ -20,6 +23,9 @@ section {
 	margin: auto;
 	border-bottom: 1px solid grey;
 	border-top: 1px solid grey;
+}
+
+#reviewTitle {
 	padding: 40px;
 	text-align: center;
 }
@@ -66,25 +72,51 @@ section {
 	width: 200px;
 	height: 250px;
 }
+#reviewReplyWriteForm {
+	height: auto;
 
+}
 .reviewReply {
 	width: 900px;
-	height : 300px;
-	border: 1px solid #cdcdcd;
+/* 	border: 1px solid #cdcdcd; */
 	margin: auto;
+}
+#reviewReplyBtn {
+	background-color: #105dae;
+	color: white;
+	padding: 5px;
+	border: 0;
 }
 
 textarea[name="content"] {
 	resize: none;
+	width: 880px;
+	height: 100px;
+	margin: auto;
 }
+#reviewReplyListForm{
+	width: 900px;
+	margin: 0 auto;
+}
+.replycontent {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid #cdcdcd;
+	padding: 15px 15px;
+}
+
+
 </style>
 
 
 <section>
 	<div id="marriageView_inner">
 		<div id="reviewHeader">
-			<div>${dto.title }</div>
-			<div>${dto.writer } 🩷 배우자</div>
+			<div id="reviewTitle">
+				<div>${dto.title }</div>
+				<div>${dto.writer } 🩷 배우자</div>
+			</div>
+			<div id="reviewLike">좋아요 넣자 다빈아</div>
 		</div>
 		<div style="text-align: center;">
 			<div id="marriageReviewImg"></div>
@@ -92,7 +124,23 @@ textarea[name="content"] {
 		</div>
 		<button id="reviewBtn">목록보기</button>
 		
-		<div id="reviewReplyRoot"></div>
+		<div id="reviewReplyWriteForm">
+		<div class="reviewReply">
+		    <div class="reviewReplyWrite ${empty login ? 'hidden' : ''}">
+		    	<form id="reviewReplyForm">
+		    		<div style="display: flex; justify-content: space-between; width: 150px; margin: 5px;">
+		    			<div>🧑🏻 ${login.userid }</div>
+		    			<div><button id="reviewReplyBtn" type="submit">댓글 작성</button></div>
+		    		</div>
+		    		<textarea name="content" required></textarea>
+		    		<input type="hidden" name="board_idx" value="${dto.idx }">
+		    		<input type="hidden" name="writer" value="${login.userid }">
+		    		
+		    	</form>
+		    </div>
+		</div>
+		<div id="reviewReplyListForm"></div>
+		</div>
 		
 		<div id="reviewRecommend">
 			<h2 style="text-align: center;">다른 추천 인터뷰</h2>
@@ -111,34 +159,86 @@ textarea[name="content"] {
 
 <script>
 	const reviewBtn = document.getElementById('reviewBtn')
-	reviewBtn.onclick = () => {location.href = '${cpath}/review/list'}
+	reviewBtn.onclick = () => {location.href = '${cpath}/review/list/1'}
 	
-	const reviewReplyRoot = document.getElementById('reviewReplyRoot')
+	const reviewReplyWriteForm = document.getElementById('reviewReplyWriteForm')
+	const reviewReplyListForm = document.getElementById('reviewReplyListForm')
+	
 	const ReplyLoadHandler = function() {
-		let tag = '';
-		tag += '<div class="reviewReply">';
-		tag += '	<div class="reviewReplyWrite ${empty login ? 'hidden' : ''}">';
-		tag += '		<form id="reviewReplyForm">';
-		tag += '			<div>🧑🏻 ${login.userid }</div>'
-		tag += '			<textarea name="content" rows="5" cols="80" required></textarea>';
-		tag += '			<input type="hidden" name="board_idx" value="' + '${dto.idx}' + '">';
-		tag += '			<input type="hidden" name="writer" value="' + '${login.userid}' + '">';
-		tag += '			<button id="reviewReplyBtn" type="submit">등록</button>';
-		tag += '		</form>';
-		tag += '	</div>';
-		tag += '</div>';
-		reviewReplyRoot.innerHTML = tag;
+
+		reviewReplyListForm.innerHTML = ''
+		const url = '${cpath}/reviewAjax/view/${idx}'
+		fetch(url)
+			.then(resp => resp.json())
+			.then(json => {
+				const arr = json				
+				for(let i = 0; i < arr.length; i++){
+					const dto = arr[i]
+					
+					const longToDateString = function(num){
+						const d = new Date(num)
+						let yyyy = d.getFullYear()
+						let mm = d.getMonth() + 1
+						let dd = d.getDate()
+						let h = d.getHours()
+						let m = d.getMinutes()
+						if(mm < 10)		mm = '0' + mm
+						if(dd < 10)		dd = '0' + dd
+						if(h < 10)		h = '0' + h
+						if(m < 10)		m = '0' + m
+						return yyyy + '.' + mm + '.'+ dd + ' ' + h + ':' + m
+					}
+					
+					let tag = '<div class="replycontent">';
+					tag += '	<div class="replyContent_L">'
+					tag += '		<div style="display: flex;">'
+					tag += '			<div style="padding-right: 5px;">[' + dto.idx +']</div>'
+					tag += '			<div style="font-weight: bold;">' + dto.writer +'</div>'
+					tag += '		</div>'
+					tag += '		<div>' + dto.content + '</div>'
+					tag += '	</div>'
+					tag += '	<div class="replyContent_R">'
+					tag += '		<div>' + longToDateString(dto.writeDate) + '</div>'
+					tag += '	</div>'
+					tag += '</div>'
+					reviewReplyListForm.innerHTML += tag;
+				}
+			}
+		)
 	}
+		
+	const form = document.getElementById('reviewReplyForm')
+	form.onsubmit = async function(event){
+		event.preventDefault()
+		const url = '${cpath}/reviewAjax/write'
+		const formData = new FormData(event.target)
+		const ob = {}
+		for(let key of formData.entries()){
+			ob[key[0]] = key[1]
+		}
+		console.log(ob)
+		const opt = {
+			 method: 'POST',
+			 body: JSON.stringify(ob),
+			 headers: {
+			   'Content-Type' : 'application/json;charset=utf-8'
+			 }
+		}
+		const result = await fetch(url, opt).then(resp => resp.text())
+		if(result == 1){
+			console.log(result)
+			ReplyLoadHandler()
+		}
+		ReplyLoadHandler()
+	}
+	
+	const like = document.getElementById('reviewLike')
+	
+	
 	document.addEventListener('DOMContentLoaded', ReplyLoadHandler)
 	
-// 	async function reviewReplyWrite(){
-// 		const url = '${cpath}/review/write'
-// 		const dto = await fetch(url).then(resp => resp.json())
-		
-		
-		
-// 	}
 	
+		
 </script>
 
 </body>
