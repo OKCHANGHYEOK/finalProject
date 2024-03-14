@@ -104,7 +104,17 @@ textarea[name="content"] {
 	border-bottom: 1px solid #cdcdcd;
 	padding: 15px 15px;
 }
-
+#reviewLike{
+	display: flex;
+	width: 50px;
+	justify-content: space-between;
+}
+#heartCount {
+	margin: 5px;
+}
+#heartIcon > img {
+	width: 30px;
+}
 
 </style>
 
@@ -116,7 +126,10 @@ textarea[name="content"] {
 				<div>${dto.title }</div>
 				<div>${dto.writer } 🩷 배우자</div>
 			</div>
-			<div id="reviewLike">좋아요 넣자 다빈아</div>
+			<div id="reviewLike">
+				<div id="heartIcon"><img src="${cpath }/resources/image/${check}.jpg"></div>
+				<div id="heartCount"></div>
+			</div>
 		</div>
 		<div style="text-align: center;">
 			<div id="marriageReviewImg"></div>
@@ -232,12 +245,52 @@ textarea[name="content"] {
 		ReplyLoadHandler()
 	}
 	
-	const like = document.getElementById('reviewLike')
+	const count = document.getElementById('heartCount')
+	const CountLikeHandler = async function(){
+		const url = '${cpath}/reviewAjax/count'
+		const ob = {board_idx : ${dto.idx}}
+		console.log(ob)
+		const opt = {
+			method: 'POST',
+			body: JSON.stringify(ob),
+			headers: {
+				'Content-Type' : 'application/json;charset=utf-8'
+			}
+		}
+		const result = await fetch(url, opt).then(resp => resp.text())
+		count.innerText = result
+		}
+	document.addEventListener('DOMContentLoaded', CountLikeHandler)
 	
-	
+	const like = document.querySelector('#heartIcon > img')
+	console.log(like)
+	like.onclick = async function(event){
+		event.preventDefault()
+		const url = '${cpath}/reviewAjax/like'
+		const ob = { userid : '${login.userid}', board_idx : ${dto.idx}}
+		console.log(ob)
+		const opt = {
+			method: 'POST',
+			body: JSON.stringify(ob),
+			headers: {
+				'Content-Type' : 'application/json;charset=utf-8'
+			}
+		}
+		const result = await fetch(url, opt).then(resp => resp.text())
+		console.log(result)
+		if(result == '좋아요'){
+			console.log(event.target)
+			event.target.src = '${cpath }/resources/image/꽉찬하트.jpg'
+			
+		}
+		else {
+			event.target.src = '${cpath }/resources/image/빈하트.jpg'
+			
+		}
+		CountLikeHandler();
+	}
 	document.addEventListener('DOMContentLoaded', ReplyLoadHandler)
-	
-	
+
 		
 </script>
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itbank.model.ReviewDTO;
+import com.itbank.model.ReviewLikeDTO;
 import com.itbank.repository.ReviewDAO;
 
 @Service
@@ -39,5 +40,19 @@ public class ReviewService {
 	public int getBoardCount(String search) {
 		return dao.boardCount(search);
 	}
+	public ReviewLikeDTO selectLike(ReviewLikeDTO like) {
+		return dao.selectLike(like);
+	}
+	public int addLike(ReviewLikeDTO like) {
+		return dao.insertLike(like);
+	}
+	public int deleteLike(ReviewLikeDTO like) {
+		return dao.deleteLike(like);
+	}
+	public int getLikeCount(ReviewLikeDTO like) {
+		return dao.selectCount(like);
+	}
+
+
 
 }

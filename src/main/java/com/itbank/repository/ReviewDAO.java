@@ -3,11 +3,13 @@ package com.itbank.repository;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import com.itbank.model.ReviewDTO;
+import com.itbank.model.ReviewLikeDTO;
 
 @Repository
 public interface ReviewDAO {
@@ -26,5 +28,18 @@ public interface ReviewDAO {
 	
 	@Select("select count(*) from review where (title like '%' || #{search} || '%' or content like '%' || #{search} || '%' or writer like '%' || #{search} || '%')")
 	int boardCount(String search);
+
+	@Select("select * from reviewLike where userid = #{userid} and board_idx = #{board_idx}")
+	ReviewLikeDTO selectLike(ReviewLikeDTO like);
+
+	@Insert("insert into reviewLike (userid, board_idx) values (#{userid}, #{board_idx})")
+	int insertLike(ReviewLikeDTO like);
+
+	@Delete("delete from reviewLike where userid = #{userid} and board_idx = #{board_idx}")
+	int deleteLike(ReviewLikeDTO like);
+	
+	@Select("select count(*) from reviewLike where board_idx = #{board_idx}")
+	int selectCount(ReviewLikeDTO like);
+	
 
 }

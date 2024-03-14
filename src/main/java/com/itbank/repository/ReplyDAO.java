@@ -16,6 +16,5 @@ public interface ReplyDAO {
 	
 	@Insert("insert into reviewReply (board_idx, writer, content) values (#{board_idx}, #{writer}, #{content})")
 	int insertWrite(ReviewReplyDTO dto);
-
 	
 }

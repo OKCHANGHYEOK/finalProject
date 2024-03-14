@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.itbank.component.Paging;
+import com.itbank.model.MemberDTO;
 import com.itbank.model.ReviewDTO;
+import com.itbank.model.ReviewLikeDTO;
 import com.itbank.service.ReviewService;
 
 @Controller
@@ -49,12 +53,19 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/view/{idx}")
-	public ModelAndView getReviewOne(@PathVariable("idx") int idx) {
+	public ModelAndView getReviewOne(@PathVariable("idx") int idx, HttpSession session) {
 		ModelAndView mav = new ModelAndView("/review/view");
+		MemberDTO login = (MemberDTO) session.getAttribute("login");
 		ReviewDTO dto = rs.selectOne(idx);
+		ReviewLikeDTO rld = new ReviewLikeDTO();
+		rld.setBoard_idx(idx);
+		rld.setUserid(login.getUserid());
+		ReviewLikeDTO like = rs.selectLike(rld);
 		List<ReviewDTO> list = rs.recommendList(idx);
 		mav.addObject("dto", dto);
 		mav.addObject("list", list);
+		String check = like == null ? "빈하트" : "꽉찬하트";
+		mav.addObject("check", check);
 		return mav;
 	}
 
