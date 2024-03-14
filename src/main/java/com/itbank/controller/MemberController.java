@@ -56,11 +56,10 @@ public class MemberController {
 	@PostMapping("/login")
 	public String login(MemberDTO dto, HttpSession session, String save, HttpServletResponse response) {
 		MemberDTO login = ms.selectOne(dto);
-		int row = ms.updateLastLogin(login.getUserid());
-
 		if (login == null) {
 			return "redirect:/alert";
 		}
+		int row = ms.updateLastLogin(login.getUserid());
 		if (save != null) {
 			Cookie cookie = new Cookie("save", dto.getUserid());
 			cookie.setMaxAge(604800);
