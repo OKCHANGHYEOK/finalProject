@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.itbank.component.HashComponent;
 import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
+import com.itbank.model.ProfileDTO;
 import com.itbank.repository.MemberDAO;
 
 @Service
@@ -114,5 +115,13 @@ public class MemberService {
 		String hashPass = hash.getHash(dto.getUserpw());
 		dto.setUserpw(hashPass);
 		return dao.memberDelete(dto);
+	}
+
+	public int updateLastLogin(String userid) {
+		return dao.updateLastLogin(userid);
+	}
+
+	public ProfileDTO selectProfile(String userid) {
+		return dao.selectProfile(userid);
 	}
 }

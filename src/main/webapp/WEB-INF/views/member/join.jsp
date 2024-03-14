@@ -339,6 +339,7 @@ p {
 						<button id="authBtn">확인</button>
 					</p>
 					<p class="mailMessage"></p>
+					<span id="timer"></span>
 				</div>
 				<input class="inputframe" type="text" name="phoneNumber"
 					placeholder="전화번호" required>
@@ -434,23 +435,17 @@ p {
 			message.style.color = '#105dae'
 			mailAuth.classList.remove('hidden')
 			const timer = document.getElementById('timer')
-			if(timer != null) {
-				mailSend.removeChild(timer)
-			}
 			
-			const newTimer = document.createElement('p')
-			newTimer.id = 'timer'
-			mailSend.appendChild(newTimer)
 			
 			function countDownHandler() {
 				limit--
-				newTimer.innerText = '0' + Math.floor(limit / 60) + ':' + (limit % 60 < 10 ? 0 : '') + Math.floor(limit % 60)
-				if(limit < 0) {
-					limit = 0
+				timer.innerText = '남은 시간 : ' + '0' + Math.floor(limit / 60) + ':' + (limit % 60 < 10 ? 0 : '') + Math.floor(limit % 60)
+				if(limit == 0) {
+					clearInterval(timering)
 				}
 			}
 			
-			setInterval(countDownHandler, 1000)
+			const timering = setInterval(countDownHandler, 1000)
 		}
 		else {
 			message.innerText = '메일을 보낼 수 없습니다'

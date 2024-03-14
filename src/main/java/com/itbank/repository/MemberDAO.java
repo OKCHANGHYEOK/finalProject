@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
+import com.itbank.model.ProfileDTO;
 
 public interface MemberDAO {
 
@@ -45,8 +46,8 @@ public interface MemberDAO {
 	List<MemberDTO> selectList();
 
 	@Update("update member " + " set" + "      username = #{username}," + "      gender = #{gender},"
-			+ "      birthYear = #{birthYear}," + "      birthMonth = #{birthMonth}," + "      birthDay = #{birthDay}"
-			+ " where" + "      userid = #{userid}")
+			+ "      birthYear = #{birthYear}," + "      birthMonth = #{birthMonth}," + "      birthDay = #{birthDay},"
+			+ "      phoneNumber = #{phoneNumber}" + " where" + "      userid = #{userid}")
 	int update(MemberDTO dto);
 
 	@Update("update condition " + " set" + "      marriedCount = #{marriedCount}," + "      residence = #{residence},"
@@ -56,7 +57,7 @@ public interface MemberDAO {
 			+ "      userid = #{userid}")
 	int conditionUpdate(ConditionDTO dto);
 
-	@Update("update member " + " set" + "   userpw = #{userpw}" + "where" + "   userid = #{userid}")
+	@Update("update member set userpw = #{userpw} where userid = #{userid}")
 	int pwUpdate(MemberDTO dto);
 
 	@Select("select * from member where idx = #{idx}")
@@ -64,4 +65,10 @@ public interface MemberDAO {
 
 	@Delete("delete from member where userid = #{userid} and userpw = #{userpw}")
 	int memberDelete(MemberDTO dto);
+
+	@Update("update member " + " set" + " lastLoginDate = sysdate" + " where userid = #{userid}")
+	int updateLastLogin(String userid);
+
+	@Select("select * from MemberInfo")
+	ProfileDTO selectProfile(String userid);
 }

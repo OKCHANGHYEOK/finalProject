@@ -56,6 +56,8 @@ public class MemberController {
 	@PostMapping("/login")
 	public String login(MemberDTO dto, HttpSession session, String save, HttpServletResponse response) {
 		MemberDTO login = ms.selectOne(dto);
+		int row = ms.updateLastLogin(login.getUserid());
+
 		if (login == null) {
 			return "redirect:/alert";
 		}

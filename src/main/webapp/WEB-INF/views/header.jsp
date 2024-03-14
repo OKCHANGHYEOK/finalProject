@@ -201,7 +201,7 @@ h1, h2 {
 					<li>테스트</li>
 				</ul>
 				<ul>
-					<li>테스트</li>
+					<li class="link" id="reportLink" category="inquiry">신고</li>
 					<li>테스트</li>
 					<li>테스트</li>
 					<li>테스트</li>
@@ -256,7 +256,8 @@ h1, h2 {
 	    const marrigeReviewLink = document.getElementById('marrigeReviewLink')
 	    marrigeReviewLink.onclick = () => {location.href = '${cpath}/review/list/1'}
 	       
-
+	    const reportLink = document.getElementById('reportLink')
+	    reportLink.onclick = () => {location.href = '${cpath}/report/myreport'}
 		
 		const links = document.querySelectorAll('.link')
 		const menus = document.querySelectorAll('#menu > li')

@@ -37,6 +37,24 @@
 	#managerMenu > li {
 		margin-right: 10px;
 	}
+	
+	#ManagerMessage {
+		position: fixed;
+		right: 10px;
+		bottom: 15px;
+		width: 300px;
+		height: 40px;
+		background-color: white;
+		box-shadow: 1px 1px 1px grey;
+		border-radius: 20px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 14px;
+		transition-duration: 1s;
+		opacity: 0;
+		z-index: 0;
+	}
 </style>
 </head>
 <body>
@@ -49,12 +67,25 @@
 	</ul>
 </header>
 
+<div id="ManagerMessage">
+	
+</div>
+
 <script>
 	const cpath = '${cpath}'
 
 	// 회원이 조건 입력까지 완료했을 때 관리자가 받을 메시지
-	function onReceive(text) {
-		alert(text)
+	function onReceive(chat) {
+		const content = JSON.parse(chat.body)
+		const text = content.text
+		const ManagerMessage = document.getElementById('ManagerMessage')
+		ManagerMessage.innerText = text
+		ManagerMessage.style.opacity = 1
+		ManagerMessage.style.zIndex = 3
+		setTimeout(function() {
+			ManagerMessage.style.opacity = 0
+			ManagerMessage.style.zIndex = 0
+		}, 5000)
 	}
 
 	// 관리자가 admin 채널을 구독하는 함수
@@ -63,6 +94,7 @@
 	    stomp.subscribe('/broker/admin', onReceive)      
 	 }
 	
+	// 웹소켓 연결을 유지하기 위해 일정시간 마다 서버로 핑을 보내는 함수
 	function ping() {
 		stomp.send('/app/ping', {}, "")
 	}
