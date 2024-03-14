@@ -62,26 +62,57 @@ public class AjaxController {
 	}
 
 	@GetMapping(value = "/member/spec", produces = "application/json; charset=utf-8")
-	public ConditionDTO selectSpec(@RequestParam String userid) {
+	public HashMap<String, Object> selectSpec(@RequestParam String userid) {
 		System.out.println(userid);
 		ConditionDTO dto = ms.selectCondition(userid);
-		return dto;
-
+		HashMap<String, Object> map = new HashMap<>();
+		String profile = dto.getProfile();
+		map.put("dto", dto);
+		map.put("profile", profile);
+		return map;
 	}
 
-	@PostMapping("/ajax/mpmodify")
-	public String mypageModify(@RequestBody MemberDTO dto) {
-		System.out.println(dto);
-		System.out.println(dto.getUsername());
-		System.out.println(dto.getGender());
-		System.out.println(dto.getBirthYear());
-		System.out.println(dto.getBirthMonth());
-		System.out.println(dto.getBirthDay());
-		System.out.println(dto.getUserid());
-		int row = ms.mpModify(dto);
-		System.out.println(row != 0 ? "수정 성공" : "수정 실패");
-		return "redirect:/member/mypage/{idx}";
-	}
+	   @PostMapping("/ajax/mpmodify")
+	   public HashMap<String, Object> mypageModify(@RequestBody MemberDTO dto) {
+	      HashMap<String, Object> map = new HashMap<String, Object>();
+	      System.out.println(dto);
+	      System.out.println(dto.getUsername());
+	      System.out.println(dto.getGender());
+	      int row = ms.mpModify(dto);
+	      map.put("message", row == 0 ? "수정 실패하였습니다." : "수정 완료되었습니다. 로그인 페이지로 이동합니다.");
+	      return map;
+	   }
+
+	   @PostMapping("/ajax/newPw")
+	   public HashMap<String, Object> newPwModify(@RequestBody MemberDTO dto) {
+	      HashMap<String, Object> map = new HashMap<String, Object>();
+	      System.out.println(dto);
+	      System.out.println(dto.getUserid());
+	      int row = ms.newPw(dto);
+	      map.put("message", row == 0 ? "비밀번호 변경 실패하였습니다." : "비밀번호 수정 완료되었습니다. 로그인 페이지로 이동합니다.");
+	      return map;
+	   }
+	
+//	@RequestMapping(value = "/member/spec", method= {RequestMethod.POST})
+	   @PostMapping("/member/spec")
+	   public String conditionModify(ConditionDTO dto) {
+	      System.out.println(dto);
+	      System.out.println(dto.getEducation());
+	      System.out.println(dto.getEstate());
+	      System.out.println(dto.getHeight());
+	      System.out.println(dto.getIntroduce());
+	      System.out.println(dto.getMarriedCount());
+	      System.out.println(dto.getOwncar());
+	      System.out.println(dto.getProfile());
+	      System.out.println(dto.getReligion());
+	      System.out.println(dto.getResidence());
+	      System.out.println(dto.getSalary());
+
+
+	      int row = ms.conditionModify(dto);
+	      System.out.println(row != 0 ? "수정 성공" : "수정 실패");
+	      return "redirect:/member/mypage/{idx}";
+	   }
 
 
 
