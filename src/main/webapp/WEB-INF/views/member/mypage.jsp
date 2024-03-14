@@ -297,7 +297,8 @@ textarea.introduce {
 <section id="root">
 	<aside class="menu">
 		<h3>마이페이지</h3>
-		<div class="item selected">내 정보 수정</div>
+		<div class="item selected">내 프로필</div>
+		<div class="item">내 정보 수정</div>
 		<div class="item">스펙 수정</div>
 		<div class="item">신고 목록</div>
 		<div class="item">내가 쓴 글</div>
@@ -325,6 +326,64 @@ textarea.introduce {
 	
 	menuItems.forEach(menuItemsHandler)
 	
+	const myProfileLoadHandler = async function() {
+		var contentDiv = document.querySelector('.content')
+		const url = '${cpath}/ajax/myprofile?userid=${login.userid}'
+		const map = await fetch(url).then(resp => resp.json())
+    	const dto = map.dto
+		
+		const getmyProfileInfo = function() {
+			content.innerHTML = '';
+			
+			let tag = '';
+            tag += '        <h1 align="center">내 프로필</h1>';
+			tag += '<form method="POST" enctype="multipart/form-data">';
+	    	tag += '    <div>';
+	    	tag += '        <h2>프로필 사진</h2>';
+	    	tag += '        <div class="profile">'
+	    	tag += '			<div class="preview" style=\"background-image: url(\'' + cpath + '/upload/' + dto.profile +  '\')\; background-position: center; background-size: 100%;">';
+	    	tag += '            </div>';
+// 	    	tag += '            <input id="profileReg" type="file" name="upload" placeholder="프로필 이미지 선택" style="margin-top: 10px;" required>';
+	    	tag += '        </div>';
+	    	tag += '    </div>';
+	    	tag += '	<div>'
+	    	tag += '	<p style="width: 500px; font-size: 13px; color: #105dae;">이름</p>'
+            tag += '            <input class="inputframe" type="text" value="' + '${login.username}' + '" name="username" required>';
+	    	tag += '	<p style="width: 500px; font-size: 13px; color: #105dae;">등급</p>'            
+            tag += '			<input class="inputframe" type="text" value="' + dto.grade + '" name="grade" required>';
+            tag += '	</div>'
+    	   	tag += '	<p style="width: 500px; font-size: 13px; color: #105dae;">아이디</p>'
+            tag += '            <input class="inputframe" type="text" value="' + '${login.userid}' + '" name="userid" readonly required>';
+            tag += '			<p>가입한 날짜 : ${login.joinDate}</p>'
+            tag += '			<p>최근 접속한 날짜 : ${login.lastLoginDate}</p>'
+	    	tag += '</form>';
+	    	
+	    	contentDiv.innerHTML = tag;
+		}
+		
+		getmyProfileInfo()
+		
+		const form = document.forms[0]
+		form.onsubmit = async function(event) {
+			event.preventDefault()
+			const url = '${cpath}/ajax/myprofile?userid=${login.userid}'
+			const formData = new FormData(event.target)
+			const opt = {
+				method: 'POST',
+				body: formData,
+			}
+			const result = await fetch(url, opt).then(resp => resp.text())
+			if(result == 1){
+				getSpec()
+			}
+			
+		}
+		
+	}
+	
+	document.addEventListener('DOMContentLoaded', myProfileLoadHandler)
+	
+	menuItems[0].onclick = myProfileLoadHandler
 	
 	
    const myInfoLoadHandler = function() {
@@ -418,7 +477,7 @@ textarea.introduce {
      const pwmodifyBtn = document.getElementById('pwmodifyBtn')
      
      
-     pwmodifyBtn.onclick = function() {
+        pwmodifyBtn.onclick = function() {
         content.innerHTML = '';
         
         let tag = '';
@@ -440,16 +499,37 @@ textarea.introduce {
         tag += '          style="width: 500px; font-size: 13px; color: #105dae;">';
         tag += '       비밀번호는 8글자 이상 15글자 이하의 영문자 + 숫자로만 조합할 수 있습니다.</p>';
         
-//         tag += '      <p><input id="inputPw2" class="inputframe" type="password" name="userpw"';
-//         tag += '          placeholder="새 비밀번호 확인" required></p>';
+        tag += '      <p><input id="inputPw2" class="inputframe" type="password"';
+        tag += '          placeholder="새 비밀번호 확인" required></p>';
+        
+        tag += '      <p id="pwConfirmTrue" class="hidden"';
+        tag += '          style="width: 500px; font-size: 13px; color: #105dae;">';
+        tag += '       비밀번호와 비밀번호 확인이 일치합니다.</p>';
+        tag += '      <p id="pwConfirmFalse" class="hidden"';
+        tag += '          style="width: 500px; font-size: 13px; color: red;">';
+        tag += '       비밀번호와 비밀번호 확인이 일치하지 않습니다.</p>';
 
         tag += '      <input type="hidden" value="${login.userid}" name="userid">'
         tag += '      <button id="pwBtn" type="submit" disabled>확인</button>';
-        tag += '      <button id="cancleBtn" disabled>취소</button>';
+        tag += '      <button id="cancleBtn">취소</button>';
         tag += '   </form>';
-          tag += '</div>';
+        tag += '</div>';
         content.innerHTML = tag;
         
+      // 취소
+      const cancleBtn = document.getElementById('cancleBtn')
+      cancleBtn.addEventListener('click', function(event) {
+         const inputPw1 = document.getElementById('inputPw1')
+         const inputPw2 = document.getElementById('inputPw2')
+         
+         inputPw1.removeAttribute('required');
+         inputPw2.removeAttribute('required');
+         history.back();
+      })
+      
+      
+      const pwBtn = document.getElementById('pwForm').querySelector('#pwBtn');
+      // 비밀번호 특정조건 만족
       function PasswordCheckHandler(event){
          var password = event.target.value
          var regex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,15}$/;
@@ -466,12 +546,39 @@ textarea.introduce {
       }
       const pwInput = document.querySelector('input[name="userpw"]')
       pwInput.addEventListener('keyup', PasswordCheckHandler)
+      
+      
+      
+      // 비밀번호 일치여부
+      function ConfirmPwHandler(event) {
+         const pwConfirmTrue = document.getElementById('pwConfirmTrue')
+         const pwConfirmFalse = document.getElementById('pwConfirmFalse')
+         const confirmPassword = document.getElementById('inputPw2').value
+         const password = document.querySelector('input[name="userpw"]').value
+         if(confirmPassword === password) {
+            pwBtn.disabled = false
+            pwConfirmTrue.classList.remove('hidden')
+            pwConfirmFalse.classList.add('hidden')
+         }
+         else {
+            pwBtn.disabled = true
+            pwConfirmTrue.classList.add('hidden')
+            pwConfirmFalse.classList.remove('hidden')
+         }
+      }
+      const confirmPwInput = document.getElementById('inputPw2')
+      confirmPwInput.addEventListener('keyup', ConfirmPwHandler)
         
+      
+      
       const resetPassForm = document.forms[0]
       resetPassForm.onsubmit = async function(event) {
          event.preventDefault()
-         const url = '${cpath}/ajax/newPw?userid=${login.userid}'
-         const ob = { userpw : event.target.querySelector('input[name="userpw"]').value }
+         const url = '${cpath}/ajax/newPw'
+         const ob = { 
+               userid : event.target.querySelector('input[name="userid"]').value,
+               userpw : event.target.querySelector('input[name="userpw"]').value
+         }
          console.log(ob)
          
          const opt = {
@@ -537,10 +644,10 @@ textarea.introduce {
       selectHandler()
    }
    
-   document.addEventListener('DOMContentLoaded', myInfo)
+   
 
 
-   menuItems[0].onclick = myInfo
+   menuItems[1].onclick = myInfo
 	
 	
 	
@@ -711,10 +818,8 @@ textarea.introduce {
     	tag += '    </div>';
     	tag += '    <div>';
     	tag += '        <h2>프로필 사진</h2>';
-    	tag += '        <div class="profile" style=\"background-image: url(\'' + cpath + '/upload/' + profile +  '\')\">;'
-    	tag += '			<div class="preview">';
-    	tag += '                파일을 끌어서 놓거나 <br>';
-    	tag += '                직접 선택하세요.';
+    	tag += '        <div class="profile">'
+    	tag += '			<div class="preview" style=\"background-image: url(\'' + cpath + '/upload/' + profile +  '\')\; background-position: center; background-size: 100%;">';
     	tag += '            </div>';
     	tag += '            <input id="profileReg" type="file" name="upload" placeholder="프로필 이미지 선택" style="margin-top: 10px;" required>';
     	tag += '        </div>';
@@ -777,12 +882,9 @@ textarea.introduce {
    
 }
 	
-	menuItems[1].onclick = specModify
+	menuItems[2].onclick = specModify
 
 
-
-	
-	
 </script>
 
 
