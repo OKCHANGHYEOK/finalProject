@@ -308,8 +308,6 @@ textarea.introduce {
 
 
 <script>
-	const cpath = '${cpath}'
-	
 	const menuItems = document.querySelectorAll('.menu > .item')
 // 	const contentItems = document.querySelectorAll('.content > .item')
     const content = document.querySelector('.content')
@@ -488,6 +486,17 @@ textarea.introduce {
          location.href = '${cpath}/member/logout?mypage=1'
       }
      }
+     
+ 	// 회원 탈퇴
+
+//  	event.preventDefault()
+     const withdrawBtn = document.getElementById('withdrawBtn');
+ 	
+     withdrawBtn.addEventListener('click', function(event) {
+     	event.preventDefault()	
+     	location.href = '${cpath}/member/withdrawMember/${login.idx}'; 
+     })
+
      
    
    
@@ -770,16 +779,7 @@ textarea.introduce {
 	
 	menuItems[1].onclick = specModify
 
-	// 회원 탈퇴
-	document.addEventListener('DOMContentLoaded', function() {
-// 	event.preventDefault()
-    const withdrawBtn = document.getElementById('withdrawBtn');
-	
-    withdrawBtn.addEventListener('click', function(event) {
-    	event.preventDefault()	
-    	location.href = '${cpath}/member/withdrawMember/${login.idx}'; 
-    })
-})
+
 
 	
 	
