@@ -56,15 +56,18 @@ public class ReviewController {
 	public ModelAndView getReviewOne(@PathVariable("idx") int idx, HttpSession session) {
 		ModelAndView mav = new ModelAndView("/review/view");
 		MemberDTO login = (MemberDTO) session.getAttribute("login");
+		String check = "빈하트";
+		if(login != null) {
+			ReviewLikeDTO rld = new ReviewLikeDTO();
+			rld.setBoard_idx(idx);
+			rld.setUserid(login.getUserid());
+			ReviewLikeDTO like = rs.selectLike(rld);
+			if(like != null) check = "꽉찬하트";
+		}
 		ReviewDTO dto = rs.selectOne(idx);
-		ReviewLikeDTO rld = new ReviewLikeDTO();
-		rld.setBoard_idx(idx);
-		rld.setUserid(login.getUserid());
-		ReviewLikeDTO like = rs.selectLike(rld);
 		List<ReviewDTO> list = rs.recommendList(idx);
 		mav.addObject("dto", dto);
 		mav.addObject("list", list);
-		String check = like == null ? "빈하트" : "꽉찬하트";
 		mav.addObject("check", check);
 		return mav;
 	}
