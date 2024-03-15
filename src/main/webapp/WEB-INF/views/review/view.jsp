@@ -115,6 +115,14 @@ textarea[name="content"] {
 #heartIcon > img {
 	width: 30px;
 }
+#reviewsub{
+	display: flex;
+	justify-content: space-between;
+}
+#mfAndDel {
+	display: flex;
+}
+
 
 </style>
 
@@ -124,11 +132,19 @@ textarea[name="content"] {
 		<div id="reviewHeader">
 			<div id="reviewTitle">
 				<div>${dto.title }</div>
-				<div>${dto.writer } 🩷 배우자</div>
+				<div>${dto.writer } 🩷 ${dto.writer == mate.user1 ? mate.user2 : mate.user1}</div>
 			</div>
-			<div id="reviewLike">
-				<div id="heartIcon"><img src="${cpath }/resources/image/${check}.jpg"></div>
-				<div id="heartCount"></div>
+			<div id="reviewsub">
+				<div id="reviewLike">
+					<div id="heartIcon"><img src="${cpath }/resources/image/${check}.jpg"></div>
+					<div id="heartCount"></div>
+				</div>
+				<c:if test="${dto.writer == login.userid }">
+					<div id="mfAndDel">
+						<div><button id="reviewMfBtn">수정</button></div>
+						<div><button id="reviewDelBtn">삭제</button></div>
+					</div>
+				</c:if>
 			</div>
 		</div>
 		<div style="text-align: center;">
@@ -162,7 +178,7 @@ textarea[name="content"] {
 				<div class="reviewRecommendContent">
 					<div class="reviewRecommendImg"><a href="${cpath }/review/view/${dto.idx}" style="background-image: url('${cpath}/upload/${dto.img}');">
 													</a></div>
-					<div style="text-align: center;">${dto.writer } 🩷 배우자 커플</div>
+					<div style="text-align: center;">${dto.title }</div>
 				</div>
 				</c:forEach>
 			</div>
@@ -289,6 +305,18 @@ textarea[name="content"] {
 		}
 		CountLikeHandler();
 	}
+	const reviewDeleteBtn = document.getElementById('reviewDelBtn')
+	reviewDeleteBtn.onclick = function(event){
+		event.preventDefault()
+		location.href = '${cpath}/review/delete/${idx}'
+	}
+	
+	const reviewModifyBtn = document.getElementById('reviewMfBtn')
+	reviewModifyBtn.onclick = function(event){
+		event.preventDefault()
+		location.href = '${cpath}/review/modify/${idx}'
+	}
+	
 	document.addEventListener('DOMContentLoaded', ReplyLoadHandler)
 
 		

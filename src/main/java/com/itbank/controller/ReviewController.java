@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.itbank.component.Paging;
+import com.itbank.model.MarriageDTO;
 import com.itbank.model.MemberDTO;
 import com.itbank.model.ReviewDTO;
 import com.itbank.model.ReviewLikeDTO;
@@ -29,7 +30,6 @@ public class ReviewController {
 	@GetMapping("/list/{page}")
 	public ModelAndView getReviewList(@PathVariable("page") int page, String search) {
 		ModelAndView mav = new ModelAndView("/review/list");
-		
 		if(search == null) {search = "";}
 		int boardCount = rs.getBoardCount(search);
 		Paging paging = new Paging(page, boardCount);
@@ -66,12 +66,37 @@ public class ReviewController {
 		}
 		ReviewDTO dto = rs.selectOne(idx);
 		List<ReviewDTO> list = rs.recommendList(idx);
+		MarriageDTO mate = rs.selectMate(dto.getWriter());
 		mav.addObject("dto", dto);
 		mav.addObject("list", list);
 		mav.addObject("check", check);
+		mav.addObject("mate", mate);
 		return mav;
 	}
-
+	@GetMapping("/modify/{idx}")
+	public ModelAndView reviewModify(@PathVariable("idx") int idx) {
+		ModelAndView mav = new ModelAndView("/review/modify");
+		ReviewDTO dto = rs.selectOne(idx);
+		mav.addObject("dto", dto);
+		return mav;
+	}
+	@PostMapping("/modify/{idx}")
+	public String reviewModify(ReviewDTO dto) {
+		System.out.println(dto.getTitle());
+		System.out.println(dto.getContent());
+		System.out.println(dto.getImg());
+		System.out.println(dto.getWriter());
+		int row = rs.update(dto);
+		System.out.println(row != 0 ? "리뷰 수정 성공" : "리뷰 수정 실패");
+		return "redirect:/review/list/1";
+	}
+	@GetMapping("/delete/{idx}")
+	public String reviewDelete(@PathVariable("idx") int idx) {
+		int row = rs.delete(idx);
+		System.out.println(row != 0 ? "리뷰 작성 성공" : "리뷰 작성 실패");
+		return "redirect:/review/list/1";
+	}
+	
 	
 
 }

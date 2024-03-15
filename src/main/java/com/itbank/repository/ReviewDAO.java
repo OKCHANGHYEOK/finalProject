@@ -6,8 +6,10 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
+import com.itbank.model.MarriageDTO;
 import com.itbank.model.ReviewDTO;
 import com.itbank.model.ReviewLikeDTO;
 
@@ -40,6 +42,21 @@ public interface ReviewDAO {
 	
 	@Select("select count(*) from reviewLike where board_idx = #{board_idx}")
 	int selectCount(ReviewLikeDTO like);
+	
+	@Select("select * from marriage where user1 = #{writer} or user2 = #{writer}")
+	MarriageDTO selectMate(String writer);
+	
+	@Update("update review "
+			+ "set"
+			+ "	title = #{title},"
+			+ "	content = #{content},"
+			+ "	img = #{img}"
+			+ " where"
+			+ "	idx = #{idx} and writer = #{writer}")
+	int update(ReviewDTO dto);
+	
+	@Delete("delete from review where idx = #{idx}")
+	int delete(int idx);
 	
 
 }

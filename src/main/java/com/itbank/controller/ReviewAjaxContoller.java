@@ -1,6 +1,5 @@
 package com.itbank.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +27,12 @@ public class ReviewAjaxContoller {
 		List<ReviewReplyDTO> list = rs.selectList(board_idx); 
 		return list;
 	}
-	@PostMapping("/write")
-	public String replyWrite(@RequestBody ReviewReplyDTO dto) {
-		int row = rs.insertWrite(dto);
-		System.out.println(row != 0 ? "댓글 작성 성공" : "댓글 작성 실패");
-		return "redirect:/review/view/{idx}";
-	}
+   @PostMapping("/write")
+   public int replyWrite(@RequestBody ReviewReplyDTO dto) {
+      int row = rs.insertWrite(dto);
+      System.out.println(row != 0 ? "댓글 작성 성공" : "댓글 작성 실패");
+      return row;
+   }
 	@PostMapping("/like")
 	public String LikeOrUnlike(@RequestBody ReviewLikeDTO like) {
 		String check = "";

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itbank.model.MarriageDTO;
 import com.itbank.model.ReviewDTO;
 import com.itbank.model.ReviewLikeDTO;
 import com.itbank.repository.ReviewDAO;
@@ -52,7 +53,22 @@ public class ReviewService {
 	public int getLikeCount(ReviewLikeDTO like) {
 		return dao.selectCount(like);
 	}
-
-
+	public MarriageDTO selectMate(String writer) {
+		return dao.selectMate(writer);
+	}
+	public int update(ReviewDTO dto) {
+		String img = dto.getUpload().getOriginalFilename();
+		File f = new File(saveDirectory, img);
+		try {
+			dto.getUpload().transferTo(f);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dto.setImg(img);
+		return dao.update(dto);
+	}
+	public int delete(int idx) {
+		return dao.delete(idx);
+	}
 
 }
