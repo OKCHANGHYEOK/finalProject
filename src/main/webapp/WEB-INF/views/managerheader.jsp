@@ -10,6 +10,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 <style>
+	* {
+		user-select: none;
+	}
+
+	a {
+		text-decoration: none;
+		color: inherit;
+	}
+
 	body {
 		margin: 0;
 	}
@@ -55,13 +64,17 @@
 		opacity: 0;
 		z-index: 0;
 	}
+	
+	.hidden {
+		display: none;
+	}
 </style>
 </head>
 <body>
 
 <header>
 	<ul id="managerMenu">
-		<li>회원 목록</li>
+		<li><a href="manage/members">회원 목록</a></li>
 		<li>신고 처리</li>
 		<li>성혼 회원 관리</li>
 	</ul>

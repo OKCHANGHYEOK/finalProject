@@ -5,11 +5,53 @@
 	.memberList {
 		border: 1px solid black;
 		border-collapse: collapse;
+		margin: 0 auto;
 	}
 	
 	.memberList th,
 	.memberList td {
 		border: 1px solid black;
+	}
+	
+	.userlist > tr:hover {
+		background-color: lightskyblue;
+	}
+	
+	.userInfo {
+	    position: fixed;
+	    top: 50%;
+	    left: 50%;
+	    transform: translate(-50%, -50%);
+	    width: 800px;
+	    height: 500px;
+	    background-color: white;
+	    box-shadow: 1px 1px 10px 1px black;
+	    border-radius: 30px;
+	}
+	
+	#userInfoInner {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 100%;
+	}
+	
+	#userInfoInner > div {
+		height: 100%;
+	}
+	
+	#userProfile {
+		flex: 1;
+	}
+	
+	#userProfile > img {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+	}
+	
+	#userDetail {
+		flex: 3;
 	}
 </style>
 
@@ -29,9 +71,9 @@
 			</tr>
 		</thead>
 		
-		<tbody>
+		<tbody class="userlist">
 			<c:forEach var="user" items="${list }">			
-				<tr>
+				<tr value="${user.userid }">
 					<td>${user.userid }</td>
 					<td>${user.username }</td>
 					<td>${user.email }</td>
@@ -44,6 +86,33 @@
 		</tbody>
 	</table>
 </section>
+
+<div class="userInfo hidden">
+	<div id="userInfoInner">
+		<div id="userProfile">
+			<img src="">
+		</div>
+		<div id="userDetail">
+			
+		</div>
+	</div>
+</div>
+
+<script>
+	const userlist = document.querySelectorAll('.userlist > tr')
+	async function profileLoadHandler(event) {
+		const userid = event.target.parentNode.getAttribute('value')
+		const userProfile = document.getElementById('userProfile')
+		const userDetail = document.getElementById('userDetail')
+		
+		const url = '${cpath}/manage/userDetail/' + userid
+		const dto = await fetch(url).then(resp => resp.json())
+		
+		console.log(dto)
+	}
+	
+	userlist.forEach(e => e.onclick = profileLoadHandler)
+</script>
 
 </body>
 </html>

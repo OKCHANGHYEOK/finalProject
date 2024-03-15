@@ -16,7 +16,7 @@ import java.sql.Date;
 //	LASTLOGINDATE          DATE  
 
 
-public class MemberDTO {
+public class MemberDTO extends ConditionDTO {
 	
 	private int idx;
 	private String userid;
@@ -31,6 +31,7 @@ public class MemberDTO {
 	private Date joinDate;
 	private Date lastLoginDate;
 	private int isManager;
+	
 	
 	public int getIsManager() {
 		return isManager;
