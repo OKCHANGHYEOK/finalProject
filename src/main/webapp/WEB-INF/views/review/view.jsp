@@ -200,7 +200,8 @@ textarea[name="content"] {
 		fetch(url)
 			.then(resp => resp.json())
 			.then(json => {
-				const arr = json				
+				const arr = json
+				let rep = ''
 				for(let i = 0; i < arr.length; i++){
 					const dto = arr[i]
 					
@@ -230,10 +231,14 @@ textarea[name="content"] {
 					tag += '		<div>' + longToDateString(dto.writeDate) + '</div>'
 					tag += '	</div>'
 					tag += '</div>'
-					reviewReplyListForm.innerHTML += tag;
+					rep += tag;
 				}
+				reviewReplyListForm.innerHTML = rep
 			}
 		)
+		
+		
+		
 	}
 		
 	const form = document.getElementById('reviewReplyForm')
@@ -305,18 +310,22 @@ textarea[name="content"] {
 		}
 		CountLikeHandler();
 	}
+
 	const reviewDeleteBtn = document.getElementById('reviewDelBtn')
-	reviewDeleteBtn.onclick = function(event){
-		event.preventDefault()
-		location.href = '${cpath}/review/delete/${idx}'
+	if(reviewDeleteBtn != null) {
+		reviewDeleteBtn.onclick = function(event){
+			event.preventDefault()
+			location.href = '${cpath}/review/delete/${idx}'
+		}	
 	}
 	
 	const reviewModifyBtn = document.getElementById('reviewMfBtn')
-	reviewModifyBtn.onclick = function(event){
-		event.preventDefault()
-		location.href = '${cpath}/review/modify/${idx}'
+	if(reviewModifyBtn != null) {
+		reviewModifyBtn.onclick = function(event){
+			event.preventDefault()
+			location.href = '${cpath}/review/modify/${idx}'
+		}		
 	}
-	
 	document.addEventListener('DOMContentLoaded', ReplyLoadHandler)
 
 		
