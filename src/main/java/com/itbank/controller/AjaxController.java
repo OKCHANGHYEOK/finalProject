@@ -109,7 +109,7 @@ public class AjaxController {
 	
 //	@RequestMapping(value = "/member/spec", method= {RequestMethod.POST})
 	   @PostMapping("/member/spec")
-	   public String conditionModify(ConditionDTO dto) {
+	   public int conditionModify(ConditionDTO dto) {
 	      System.out.println(dto);
 	      System.out.println(dto.getEducation());
 	      System.out.println(dto.getEstate());
@@ -125,11 +125,7 @@ public class AjaxController {
 
 	      int row = ms.conditionModify(dto);
 	      System.out.println(row != 0 ? "수정 성공" : "수정 실패");
-	      return "redirect:/member/mypage/{idx}";
+	      return row;
 	   }
 	   
-	   
-
-
-
 }
