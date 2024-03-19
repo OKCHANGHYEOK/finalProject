@@ -342,7 +342,7 @@ p {
 					<span id="timer"></span>
 				</div>
 				<input class="inputframe" type="text" name="phoneNumber"
-					placeholder="전화번호" required>
+					placeholder="전화번호" maxlength="11" required>
 				<button id="joinBtn" disabled>가입하기</button>
 			</form>
 		</div>
@@ -466,6 +466,9 @@ p {
 		if(result == 1){
 			message.innerText = '인증 성공'
 			message.style.color = '#105dae'
+			mailBtn.disabled = true
+			authBtn.disabled = true
+			document.getElementById('timer').style.display = 'none'
 			joinBtn.disabled = false
 		}
 		else {

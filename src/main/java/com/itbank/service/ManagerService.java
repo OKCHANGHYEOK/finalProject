@@ -1,5 +1,7 @@
 package com.itbank.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,10 @@ public class ManagerService {
 
 	public MemberDTO getUserDetail(String userid) {
 		return dao.getUserDetail(userid);
+	}
+
+	public List<MemberDTO> selectUserList() {
+		return dao.selectUserList();
 	}
 	
 	

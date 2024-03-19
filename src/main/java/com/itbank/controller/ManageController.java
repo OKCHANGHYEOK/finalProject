@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.itbank.model.MemberDTO;
-import com.itbank.service.MemberService;
+import com.itbank.service.ManagerService;
 
 @Controller
 @RequestMapping("/manage")
 public class ManageController {
 	
-	@Autowired private MemberService ms;
+	@Autowired private ManagerService ms;
 	
 	@GetMapping("/members")
 	public ModelAndView members() {
 		ModelAndView mav = new ModelAndView();
-		List<MemberDTO> list = ms.selectList();
+		List<MemberDTO> list = ms.selectUserList();
 		mav.addObject("list", list);
 		return mav;
 	}

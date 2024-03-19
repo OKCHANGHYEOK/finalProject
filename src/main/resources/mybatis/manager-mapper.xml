@@ -8,4 +8,9 @@
 	<select id="getUserDetail" resultType="com.itbank.model.MemberDTO">
 		select * from member_con where userid = #{userid}
 	</select>
+	
+	<select id="selectUserList" resultType="com.itbank.model.MemberDTO">
+		select * from member where isManager = 0 
+			order by username
+	</select>
 </mapper>

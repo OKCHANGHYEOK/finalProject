@@ -74,7 +74,7 @@
 
 <header>
 	<ul id="managerMenu">
-		<li><a href="manage/members">회원 목록</a></li>
+		<li><a href="${cpath }/manage/members">회원 목록</a></li>
 		<li>신고 처리</li>
 		<li>성혼 회원 관리</li>
 	</ul>

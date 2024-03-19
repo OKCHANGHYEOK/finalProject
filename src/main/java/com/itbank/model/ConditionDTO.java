@@ -19,9 +19,18 @@ public class ConditionDTO {
 	private String profile;
 	private String introduce;
 	private int isMe;
+	private String grade;
 	
 	private MultipartFile upload;
 	
+	
+	
+	public String getGrade() {
+		return grade;
+	}
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
 	public MultipartFile getUpload() {
 		return upload;
 	}
