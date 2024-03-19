@@ -1,177 +1,325 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ include file="../header.jsp" %>
+	pageEncoding="UTF-8"%>
+<%@ include file="../header.jsp"%>
 <style>
-	table#tableReport {
-		border-collapse: collapse;
-		width: 900px;
-		margin: 20px auto;
-		border: 1px solid black;
-	}
-	
-	table#tableReport td {
-		margin: 10px;
-		border-bottom: 1px dashed lightgrey;
-		text-align: center;
-	}
-	
-	table#tableReport th {
-		padding: 10px;
-		text-align: center;
-	}
-	
-	table#tableReport>tr>td {
-		width: 10px;
-	}
-	
-	div.tablePosition {
-	    position: relative;
-    	top: 150px;
-	}
-	
-	div.tablePosition > h2 {
-		text-align: center;
-	}
-	
-	.buttons {
-		position: relative;
-		top: 215px;
-		left: 193px;
-		z-index: 1;
-	}
-	
-	#modalReport > .contentReport {
-		width: 700px;
-		height: 500px;
-		background-color: white;
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		box-shadow: 20px 20px 0px black;
-		z-index: 3;
-		transition-duration: 0.5s;
-		border-radius: 25px;
-		
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	#modalReport > .overlay {
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.5);
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: 2;
-	}
-	
-	#modalReport.hidden > .contentReport {
-		top: 150%;
-		transition-duration: unset;
-	}
-	#modalReport.hidden > .overlay {
-		display: none;
-	}
+table#tableReport {
+	border-collapse: collapse;
+	width: 900px;
+	margin: 20px auto;
+	border: 1px solid black;
+}
+
+table#tableReport td {
+	margin: 10px;
+	border-bottom: 1px dashed lightgrey;
+	text-align: center;
+}
+
+table#tableReport th {
+	padding: 10px;
+	text-align: center;
+}
+
+table#tableReport>tr>td {
+	width: 10px;
+}
+
+div.tablePosition {
+	position: relative;
+	top: 150px;
+}
+
+div.tablePosition>h2 {
+	text-align: center;
+}
+
+.buttons {
+	position: relative;
+	top: 215px;
+	left: 193px;
+	z-index: 1;
+}
+
+#modalReport>.contentReport {
+	width: 700px;
+	height: 500px;
+	background-color: white;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 20px 20px 0px black;
+	z-index: 3;
+	transition-duration: 0.5s;
+	border-radius: 25px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#modalReport>.overlay {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2;
+}
+
+#modalReport.hidden>.contentReport {
+	top: 150%;
+	transition-duration: unset;
+}
+
+#modalReport.hidden>.overlay {
+	display: none;
+}
+
+#modalReportModify>.contentReport {
+	width: 700px;
+	height: 500px;
+	background-color: white;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 20px 20px 0px black;
+	z-index: 3;
+	transition-duration: 0.5s;
+	border-radius: 25px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#modalReportModify>.overlayModify {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2;
+}
+
+#modalReportModify.hidden>.contentReport {
+	top: 150%;
+	transition-duration: unset;
+}
+
+#modalReportModify.hidden>.overlayModify {
+	display: none;
+}
 </style>
 
 <div id="modalReport" class="hidden">
 	<div class="contentReport">
-		<form id="addReport">
+		<form id="addReport" enctype="multipart/form-data">
 			<h3>신고하기</h3>
-			<p><input type="hidden" name="reporter" value="${login.userid }"></p>
-			<p><input type="text" name="target" placeholder="신고 대상 아이디" required></p>
-			<p><textarea name="content" rows="10" cols="50">신고 내용 입력</textarea>
 			<p>
-				<input type="submit" value="신고">
-				<input id="close" type="button" value="돌아가기">
+				<input type="hidden" name="reporter" value="${login.userid }">
+			</p>
+			<p>
+				<input type="text" name="target" placeholder="신고 대상 아이디" required>
+			</p>
+			<p><input type="file" name="upload"></p>
+			<p>
+				<textarea name="content" rows="10" cols="50" placeholder="신고 내용 입력"></textarea>
+			<p>
+				<input type="submit" value="신고"> <input id="close"
+					type="button" value="돌아가기">
 			</p>
 		</form>
 	</div>
 	<div class="overlay"></div>
 </div>
 
+<div id="modalReportModify" class="hidden">
+</div>
+
 <div class="buttons">
 	<button id="open">신고하기</button>
 </div>
 
-<div class="tablePosition">
-	<table id="tableReport">
-		<h2>📌 ${login.userid }님이 쓴 글</h2>
-		<thead>
-			<tr>
-				<th>번호</th>
-				<th>신고자</th>
-				<th>신고대상</th>
-			</tr>
-		</thead>
-		<c:forEach var="dto" items="${list }">
-			<tr>
-				<td>${dto.idx }</td>
-				<td>${dto.reporter }</td>
-				<td>
-					<div style="display: flex; justify-content: center; align-items: center;">
-						<details>
-							<summary>${dto.target}</summary>
-							<p>${dto.content }</p>
-						</details>
-					</div>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
-</div>
+<div class="tablePosition" id="reportList"></div>
 
 <script>
-	function reportHandler() {
+		async function reportListLoadHandler() {
+			var reportListDiv = document.getElementById('reportList')
+			
+			const url = '${cpath}/reportAjax/list?userid=${login.userid}'
+			const list = await fetch(url).then(resp => resp.json())
+			
+
+			reportListDiv.innerHTML = '';
+			    
+		    let tag = '';
+		    
+		    tag += '<table id="tableReport">';
+		    tag += '    <h2>📌 ${login.userid}님의 신고</h2>';
+		    tag += '    <thead>';
+		    tag += '        <tr>';
+		    tag += '            <th>번호</th>';
+		    tag += '            <th>신고자</th>';
+		    tag += '            <th>신고대상</th>';
+		    tag += '            <th>처리여부</th>';
+		    tag += '        </tr>';
+		    tag += '    </thead>';
+
+			list.forEach(dto => {
+			        tag += '    <tr>';
+			        tag += '        <td>' + dto.idx + '</td>';
+			        tag += '        <td>' + dto.reporter + '</td>';
+			        tag += '        <td>';
+			        tag += '            <div style="display: flex; justify-content: center; align-items: center;">';
+			        tag += '                <details>';
+			        tag += '                    <summary>' + dto.target + '</summary>';
+			        tag += '                    <p>' + dto.content + '</p>';
+			        tag += '                </details>';
+			        tag += '            </div>';
+			        tag += '        </td>';
+			        tag += '        <td>' 
+			        				+ (dto.processed == '0' ? '처리중 <button idx=\"' + dto.idx + '\"class="modifyReport">수정</button> <button idx=\"' + dto.idx + '\"class="deleteReport">삭제</button>' : '처리완료') + 
+			        				'</td>';
+			        tag += '    </tr>';
+			    });
+
+			    tag += '</table>';
+
+			    reportListDiv.innerHTML = tag;
+			    
+				const deleteReportBtns = document.querySelectorAll('.deleteReport')
+				console.log(deleteReportBtns)
+				deleteReportBtns.forEach(e => {
+					e.addEventListener('click', async function(event) {
+					const flag = confirm('정말 삭제하시겠습니까?')
+					if(flag) {
+						const url = '${cpath}/reportAjax/deleteReport?idx=' + event.target.getAttribute('idx')
+						await fetch(url)
+							.then(resp => resp.text())
+							.then(() => reportListLoadHandler());
+					}
+					
+				})
+				
+				})
+				
+				
+				const modifyReportBtns = document.querySelectorAll('.modifyReport')
+				modifyReportBtns.forEach(e => {
+					e.addEventListener('click', async function(event) {
+						const url = '${cpath}/reportAjax/view?idx=' + event.target.getAttribute('idx')
+						await fetch(url)
+							.then(resp => resp.json())
+							.then(dto => {
+								const modalReportModify = document.getElementById('modalReportModify')
+								
+								let tag = '';
+								tag += '<div class="contentReport">';
+								tag += '    <form id="updateReport">';
+								tag += '        <h3>신고하기</h3>';
+								tag += '        <p>';
+								tag += '            <input type="hidden" name="reporter" value="${login.userid }">';
+								tag += '        </p>';
+								tag += '        <p>';
+								tag += '            <input type="text" name="target" value=\"' + dto.target + '\" placeholder="신고 대상 아이디" required>';
+								tag += '        </p>';
+								tag += '		<p><input type="file" name="upload"></p>'
+								tag += '        <p>';
+								tag += '            <textarea name="content" rows="10" cols="50" placeholder="신고 내용 입력">' + dto.content + '</textarea>';
+								tag += '        </p>';
+								tag += '        <p>';
+								tag += '            <input type="submit" value="수정"> <input id="closeModify" type="button" value="돌아가기">';
+								tag += '        </p>';
+								tag += '    </form>';
+								tag += '</div>';
+								tag += '<div class="overlayModify"></div>';
+								
+								modalReportModify.innerHTML = tag;
+								modalReportModify.classList.remove('hidden');
+								
+								const modifyBtns = [
+									document.getElementById('closeModify'),
+									document.querySelector('div.overlayModify'),
+								]
+								modifyBtns.forEach(b => b.onclick = event => modalReportModify.classList.toggle('hidden'))
+								
+								const form = document.getElementById('updateReport')
+								form.onsubmit = async function(event) {
+									event.preventDefault()
+									const url = '${cpath}/reportAjax/reportModify'
+									const formData = new FormData(form)
+									const opt = {
+										method: 'POST',
+										body: formData,
+									}
+									await fetch(url, opt)
+										.then(resp => resp.text())
+										.then(() => reportListLoadHandler())
+										
+									document.getElementById('closeModify').dispatchEvent(new Event('click'))
+								}
+							})
+						
+						
+					})
+				})
+			
+			
+
+			
 		
-		const modalReport = document.getElementById('modalReport')
-		const btns = [
-			document.getElementById('open'),
-			document.getElementById('close'),
-			document.querySelector('div.overlay'),
-		]
-		btns.forEach(b => b.onclick = event => modalReport.classList.toggle('hidden'))
+		}
+			
+			
+		
+		
+		
+	const modalReport = document.getElementById('modalReport')
+	const btns = [
+		document.getElementById('open'),
+		document.getElementById('close'),
+		document.querySelector('div.overlay'),
+	]
+	btns.forEach(b => b.onclick = event => modalReport.classList.toggle('hidden'))
+	
 	
 		
 		
-		async function reportSubmitHandler() {
-			event.preventDefault()
-			
-			const ob = {
-				reporter: event.target.querySelector('input[name="reporter"]').value,
-				target: event.target.querySelector('input[name="target"]').value,
-				content: event.target.querySelector('textarea[name="content"]').value,
-			}
-			
-			const url = '${cpath}/reportAjax/report'
-			const opt = {
-					method: 'POST',
-					body: JSON.stringify(ob),
-					headers: {
-						'Content-Type': 'application/json; charset=utf-8'
-					}
-			}
-			
-			const result = await fetch(url,opt).then(resp => resp.text())
-			
-			
-			
-			document.getElementById('close').dispatchEvent(new Event('click'))
+	async function reportSubmitHandler() {
+		event.preventDefault()
+		
+		const url = '${cpath}/reportAjax/report'
+		const form = document.getElementById('addReport')
+		const formData = new FormData(form)
+		const opt = {
+				method: 'POST',
+				body: formData,
 		}
 		
+		await fetch(url, opt)
+			.then(resp => resp.text())
+			.then(() => {location.href = '${cpath}/report/myreport'});
 		
 		
-		
-		const form = document.forms[0]
-		
-		form.onsubmit = reportSubmitHandler
+		document.getElementById('close').dispatchEvent(new Event('click'))
 	}
+		
+		
+		
+		
+	const form = document.forms[0]
 	
-	window.addEventListener("DOMContentLoaded", reportHandler)
+	form.onsubmit = reportSubmitHandler
+	
+	
+		
+		
+		
+	window.addEventListener("DOMContentLoaded", reportListLoadHandler)
 </script>
 
 

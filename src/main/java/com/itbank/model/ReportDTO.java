@@ -1,5 +1,7 @@
 package com.itbank.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 //이름        널?       유형            
 //--------- -------- ------------- 
 //IDX       NOT NULL NUMBER        
@@ -14,8 +16,23 @@ public class ReportDTO {
 	private String reporter;
 	private String target;
 	private String content;
+	private String img;
 	private int processed;
 	
+	private MultipartFile upload;
+	
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
+	public MultipartFile getUpload() {
+		return upload;
+	}
+	public void setUpload(MultipartFile upload) {
+		this.upload = upload;
+	}
 	public int getIdx() {
 		return idx;
 	}
