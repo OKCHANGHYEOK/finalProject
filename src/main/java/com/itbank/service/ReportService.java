@@ -1,13 +1,13 @@
 package com.itbank.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itbank.model.ReportDTO;
+import com.itbank.model.ReportReplyDTO;
 import com.itbank.repository.ReportDAO;
 
 @Service
@@ -44,8 +44,19 @@ public class ReportService {
 	}
 
 	public int updateModify(ReportDTO dto) {
-		dto.setImg(dto.getUpload().getOriginalFilename());
+		String img = dto.getUpload().getOriginalFilename();
+		File f = new File(saveDirectory, img);
+		try {
+			dto.getUpload().transferTo(f);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dto.setImg(img);
 		return dao.update(dto);
+	}
+
+	public ReportReplyDTO getReportReply(int idx) {
+		return dao.selectReply(idx);
 	}
 	
 }

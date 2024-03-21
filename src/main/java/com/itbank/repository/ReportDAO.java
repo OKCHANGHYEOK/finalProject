@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.itbank.model.ReportDTO;
+import com.itbank.model.ReportReply;
 
 public interface ReportDAO {
 
@@ -26,10 +27,13 @@ public interface ReportDAO {
 	@Update("update report "
 			+ " set "
 			+ " target = #{target},"
-			+ " content = #{content}"
+			+ " content = #{content},"
 			+ " img = #{img}"
 			+ " where"
-			+ " reporter = #{reporter}")
+			+ " idx = #{idx}")
 	int update(ReportDTO dto);
+
+	@Select("select * from reportReply where reportIdx = #{idx}")
+	ReportReply selectReply(int idx);
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itbank.model.ReportDTO;
+import com.itbank.model.ReportReply;
 import com.itbank.service.ReportService;
 
 @RestController
@@ -52,6 +53,15 @@ public class ReportAjaxController {
 		int row = rs.updateModify(dto);
 		System.out.println("row = " + row);
 		return row;
+	}
+	
+	@GetMapping("reportReply")
+	public ReportReply reply(int idx) {
+		ReportReply dto = rs.getReportReply(idx);
+		if(dto == null) {
+			dto = new ReportReply();
+		}
+		return dto;
 	}
 	
 	

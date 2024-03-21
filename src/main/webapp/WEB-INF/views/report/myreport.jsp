@@ -113,6 +113,14 @@ div.tablePosition>h2 {
 #modalReportModify.hidden>.overlayModify {
 	display: none;
 }
+
+#reportImg {
+	background-size: auto 100%;
+	margin: auto;
+	display: block;
+	width: 400px;
+	height: 550px;
+}
 </style>
 
 <div id="modalReport" class="hidden">
@@ -153,6 +161,7 @@ div.tablePosition>h2 {
 			const url = '${cpath}/reportAjax/list?userid=${login.userid}'
 			const list = await fetch(url).then(resp => resp.json())
 			
+			
 
 			reportListDiv.innerHTML = '';
 			    
@@ -168,8 +177,12 @@ div.tablePosition>h2 {
 		    tag += '            <th>처리여부</th>';
 		    tag += '        </tr>';
 		    tag += '    </thead>';
+		    tag += '	<tbody>'	
 
-			list.forEach(dto => {
+// 			list.forEach(async dto => {
+			for(let i = 0; i < list.length; i++) {
+					const dto = list[i]		
+			
 			        tag += '    <tr>';
 			        tag += '        <td>' + dto.idx + '</td>';
 			        tag += '        <td>' + dto.reporter + '</td>';
@@ -177,7 +190,8 @@ div.tablePosition>h2 {
 			        tag += '            <div style="display: flex; justify-content: center; align-items: center;">';
 			        tag += '                <details>';
 			        tag += '                    <summary>' + dto.target + '</summary>';
-			        tag += '                    <p>' + dto.content + '</p>';
+			        const imgUrl = cpath + '/upload/' + dto.img
+			        tag += '                    <p><div id="reportImg" style="background-image: url(\'' + imgUrl + '\');\"></div>' + dto.content + '</p>';
 			        tag += '                </details>';
 			        tag += '            </div>';
 			        tag += '        </td>';
@@ -185,8 +199,26 @@ div.tablePosition>h2 {
 			        				+ (dto.processed == '0' ? '처리중 <button idx=\"' + dto.idx + '\"class="modifyReport">수정</button> <button idx=\"' + dto.idx + '\"class="deleteReport">삭제</button>' : '처리완료') + 
 			        				'</td>';
 			        tag += '    </tr>';
-			    });
-
+					const replyUrl = '${cpath}/reportAjax/reportReply?idx=' + dto.idx
+					const reportReply = await fetch(replyUrl).then(resp => resp.json())
+// 					console.log(reportReply)
+// 					console.log(reportReply.reportIdx)
+// 					console.log(dto.idx)
+					if(reportReply.reportIdx == dto.idx) {
+// 						console.log(333)
+						let tag2 = ''
+				        tag2 += '    <tr>';
+				        tag2 += '        <td>';
+				        tag2 += '            <div class="reportReply">' + reportReply.content + '</div>';
+						tag2 += '		</td>';
+						tag2 += '	</tr>';
+						tag += tag2
+					}
+// 			        console.log(222, tag)
+// 			    });
+				}
+				
+				tag += '</tbody>'
 			    tag += '</table>';
 
 			    reportListDiv.innerHTML = tag;
@@ -197,8 +229,8 @@ div.tablePosition>h2 {
 					e.addEventListener('click', async function(event) {
 					const flag = confirm('정말 삭제하시겠습니까?')
 					if(flag) {
-						const url = '${cpath}/reportAjax/deleteReport?idx=' + event.target.getAttribute('idx')
-						await fetch(url)
+						const deleteUrl = '${cpath}/reportAjax/deleteReport?idx=' + event.target.getAttribute('idx')
+						await fetch(deleteUrl)
 							.then(resp => resp.text())
 							.then(() => reportListLoadHandler());
 					}
@@ -211,8 +243,8 @@ div.tablePosition>h2 {
 				const modifyReportBtns = document.querySelectorAll('.modifyReport')
 				modifyReportBtns.forEach(e => {
 					e.addEventListener('click', async function(event) {
-						const url = '${cpath}/reportAjax/view?idx=' + event.target.getAttribute('idx')
-						await fetch(url)
+						const modifyUrl = '${cpath}/reportAjax/view?idx=' + event.target.getAttribute('idx')
+						await fetch(modifyUrl)
 							.then(resp => resp.json())
 							.then(dto => {
 								const modalReportModify = document.getElementById('modalReportModify')
@@ -222,7 +254,7 @@ div.tablePosition>h2 {
 								tag += '    <form id="updateReport">';
 								tag += '        <h3>신고하기</h3>';
 								tag += '        <p>';
-								tag += '            <input type="hidden" name="reporter" value="${login.userid }">';
+								tag += '            <input type="hidden" name="idx" value=\"' + dto.idx + '\">';
 								tag += '        </p>';
 								tag += '        <p>';
 								tag += '            <input type="text" name="target" value=\"' + dto.target + '\" placeholder="신고 대상 아이디" required>';
