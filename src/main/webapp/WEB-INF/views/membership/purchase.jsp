@@ -5,78 +5,222 @@
 <style>
 
 	section {
-	    padding-top: 95px;
-	    width: 100%;
-	    height: 920px;
-	    justify-content: center;
-	}
-	.bg {
-		background-size: 105% 105%;
-    	background-repeat: no-repeat;
-    	position: absolute;
-    	height: 20%;
-    	width: 105%;
-    	filter: blur(50px);
-     	position: relative; 
-	}
-	.title{
-	  	font-family: "Noto Sans KR", sans-serif;
-	  	font-optical-sizing: auto;
-	  	font-weight: <weight>;
-	  	font-style: normal;
-	  	font-size: 2.5rem;
-	  	margin-top: 40px;
-	  	text-align: center;
-	  	font-weight: 600;
- 	  	position: absolute; 
-	  	top: 100px;
-	  	left: 50%;
-	  	transform: translate(-50%);
-/* 	  	z-index: 2; */
-	}
+       padding-top: 95px;
+       width: 100%;
+       height: 920px;
+       justify-content: center;
+   }
+
 </style>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
 
 <section>
-	<div class ="bg" style="background-image: url(https://www.gstatic.com/youtube/img/promos/growth/premium_lp2_header_background_light_tablet_v1_5760x9600.jpg);
-}"></div>
-	<h1 class="title">결혼해듀세요의 모든 것을 즐겨보세요</h1>
-	
-	<span>총 주문 금액</span>
-	<span>1000원</span>
-	<button id="payment-button">결제하기</button>
+	<button id="goldBtn">GOLD</button>
+	<button id="starBtn">STAR</button>
+	<button id="premiumBtn">PREMIUM</button>
+	<button id="vipBtn">VIP</button>
 </section>
 
 
+
 <script>
-    var clientKey = 'test_ck_PBal2vxj81yyod7kpj5K85RQgOAN' // 테스트용 클라이언트 키
-   	// API 개별 테스트 연동 키
-   	// 토스페이먼츠에 회원 가입하기 전이라면 아래 키는 문서 테스트 키입니다.
-   	// 토스페이먼츠에 회원 가입하고 로그인한 상태라면 아래 키는 내 테스트 키입니다.
-//    	const clientKey = 'test_ck_PBal2vxj81yyod7kpj5K85RQgOAN'
-   	const secretKey = 'test_sk_6BYq7GWPVvGgzPg9vMkwrNE5vbo1'
 
-    var tossPayments = TossPayments(clientKey)
-    var button = document.getElementById('payment-button')	// 결제하기 버튼
-    button.addEventListener('click', function() {
-    	tossPayments.requestPayment('카드', {
-    		amount: 1000,
-    		orderId: 'AD8aZDpbzXs4EQa-UkIX6',
-    		orderName: '매칭 5회권',
-    		customerName: '왕제은',
-    		successUrl: 'http://localhost:8080/duo/membership/purchase',
-    		failUrl: 'http://localhost:8080/fail'
-    	})
-    })
-    
-    
-    
-    
+var IMP = window.IMP; 
+IMP.init("imp54062385");	// 가맹점 식별코드 
 
+const goldBtn = document.getElementById('goldBtn')
 
+function goldRequestPay() {
+IMP.request_pay({
+    pg : 'html5_inicis.INIpayTest', 
+    pay_method : 'card',
+    merchant_uid: 'duo_' + new Date().getTime() , //상점에서 생성한 고유 주문번호
+    name : 'GOLD',
+    amount : 100,
+    buyer_email : '${login.email}',
+    buyer_name : '${login.username}',
+    buyer_tel : '${login.phoneNumber}',   	
+}, function(rsp) { // callback 로직
+	console.log(rsp);
+	if(rsp.success){
+		var msg = '결제가 완료되었습니다.';
+		var result = {
+			"userid": '${login.userid}',	// 아이디
+			"type": rsp.name,			// 멤버십타입
+			"payNum": rsp.merchant_uid,	// 결제번호
+			"payMethod": rsp.pay_method,	// 결제방법
+			"price": rsp.paid_amount,			// 결제금액
+			"matchCount": '10',		// 횟수
+		}
+		console.log(result);
+		console.log(1, rsp);
+		$.ajax({
+	          url:'insertMPayGold',
+	          type:'POST',
+	          contentType: 'application/json',
+	          data:JSON.stringify(result),
+	          success: function (res) {
+	            console.log(res);
+	            location.href=res;
+	          },
+	          error: function (err) {
+	            console.log(err);
+	          }
+	        }); //ajax
+	      } else {
+	          var msg = '결제 실패';
+	          msg += '\n에러내용 : ' + rsp.error_msg;
+	        }
+	      alert(msg);
+		});
+	}
+goldBtn.onclick = goldRequestPay
+
+const starBtn = document.getElementById('starBtn')
+
+function starRequestPay() {
+IMP.request_pay({
+    pg : 'html5_inicis.INIpayTest', 
+    pay_method : 'card',
+    merchant_uid: 'duo_' + new Date().getTime() , //상점에서 생성한 고유 주문번호
+    name : 'STAR',
+    amount : 100,
+    buyer_email : '${login.email}',
+    buyer_name : '${login.username}',
+    buyer_tel : '${login.phoneNumber}',   	
+}, function(rsp) { // callback 로직
+	console.log(rsp);
+	if(rsp.success){
+		var msg = '결제가 완료되었습니다.';
+		var result = {
+			"userid": '${login.userid}',	// 아이디
+			"type": rsp.name,			// 멤버십타입
+			"payNum": rsp.merchant_uid,	// 결제번호
+			"payMethod": rsp.pay_method,	// 결제방법
+			"price": rsp.paid_amount,			// 결제금액
+			"matchCount": '10'		// 횟수
+		}
+		console.log(result);
+		$.ajax({
+	          url:'insertMPayStar',
+	          type:'POST',
+	          contentType: 'application/json',
+	          data:JSON.stringify(result),
+	          success: function (res) {
+	            console.log(res);
+	            location.href=res;
+	          },
+	          error: function (err) {
+	            console.log(err);
+	          }
+	        }); //ajax
+	      } else {
+	          var msg = '결제 실패';
+	          msg += '\n에러내용 : ' + rsp.error_msg;
+	        }
+	      alert(msg);
+		});
+	}
+starBtn.onclick = starRequestPay
+
+const premiumBtn = document.getElementById('premiumBtn')
+
+function premiumRequestPay() {
+IMP.request_pay({
+    pg : 'html5_inicis.INIpayTest', 
+    pay_method : 'card',
+    merchant_uid: 'duo_' + new Date().getTime() , //상점에서 생성한 고유 주문번호
+    name : 'PREMIUM',
+    amount : 100,
+    buyer_email : '${login.email}',
+    buyer_name : '${login.username}',
+    buyer_tel : '${login.phoneNumber}',   	
+}, function(rsp) { // callback 로직
+	console.log(rsp);
+	if(rsp.success){
+		var msg = '결제가 완료되었습니다.';
+		var result = {
+			"userid": '${login.userid}',	// 아이디
+			"type": rsp.name,			// 멤버십타입
+			"payNum": rsp.merchant_uid,	// 결제번호
+			"payMethod": rsp.pay_method,	// 결제방법
+			"price": rsp.paid_amount,			// 결제금액
+			"matchCount": '10'		// 횟수
+		}
+		console.log(result);
+		$.ajax({
+	          url:'insertMPayPm',
+	          type:'POST',
+	          contentType: 'application/json',
+	          data:JSON.stringify(result),
+	          success: function (res) {
+	            console.log(res);
+	            location.href=res;
+	          },
+	          error: function (err) {
+	            console.log(err);
+	          }
+	        }); //ajax
+	      } else {
+	          var msg = '결제 실패';
+	          msg += '\n에러내용 : ' + rsp.error_msg;
+	        }
+	      alert(msg);
+		});
+	}
+premiumBtn.onclick = premiumRequestPay
+
+const vipBtn = document.getElementById('vipBtn')
+
+function vipRequestPay() {
+IMP.request_pay({
+    pg : 'html5_inicis.INIpayTest', 
+    pay_method : 'card',
+    merchant_uid: 'duo_' + new Date().getTime() , //상점에서 생성한 고유 주문번호
+    name : 'VIP',
+    amount : 100,
+    buyer_email : '${login.email}',
+    buyer_name : '${login.username}',
+    buyer_tel : '${login.phoneNumber}',   	
+}, function(rsp) { // callback 로직
+	console.log(rsp);
+	if(rsp.success){
+		var msg = '결제가 완료되었습니다.';
+		var result = {
+			"userid": '${login.userid}',	// 아이디
+			"type": rsp.name,			// 멤버십타입
+			"payNum": rsp.merchant_uid,	// 결제번호
+			"payMethod": rsp.pay_method,	// 결제방법
+			"price": rsp.paid_amount,			// 결제금액
+			"matchCount": '10'		// 횟수
+		}
+		console.log(result);
+		$.ajax({
+	          url:'insertMPayVip',
+	          type:'POST',
+	          contentType: 'application/json',
+	          data:JSON.stringify(result),
+	          success: function (res) {
+	            console.log(res);
+	            location.href=res;
+	          },
+	          error: function (err) {
+	            console.log(err);
+	          }
+	        }); //ajax
+	      } else {
+	          var msg = '결제 실패';
+	          msg += '\n에러내용 : ' + rsp.error_msg;
+	        }
+	      alert(msg);
+		});
+	}
+vipBtn.onclick = vipRequestPay
 
 </script>
-
 
 </body>
 </html>
