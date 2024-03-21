@@ -24,10 +24,12 @@
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-<!-- 		<property name="configLocation" value="classpath:mybatis/config.xml" /> -->
+		<property name="configLocation" value="classpath:mybatis/config.xml" />
 		<property name="mapperLocations">
 		    <list>
 		        <value>classpath:mybatis/manager-mapper.xml</value>
+		        <value>classpath:mybatis/match-mapper.xml</value>
+		        <value>classpath:mybatis/chat-mapper.xml</value>
 		    </list>
 		</property>
 	</bean>

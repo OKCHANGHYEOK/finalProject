@@ -95,6 +95,8 @@
 		ManagerMessage.innerText = text
 		ManagerMessage.style.opacity = 1
 		ManagerMessage.style.zIndex = 3
+		
+		
 		setTimeout(function() {
 			ManagerMessage.style.opacity = 0
 			ManagerMessage.style.zIndex = 0

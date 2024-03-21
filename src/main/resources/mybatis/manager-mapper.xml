@@ -11,6 +11,11 @@
 	
 	<select id="selectUserList" resultType="com.itbank.model.MemberDTO">
 		select * from member where isManager = 0 
-			order by username
+			order by idx desc
 	</select>
+	
+	<update id="grading" parameterType="condition">
+		update condition set grade = #{grade}
+			where userid = #{userid}
+	</update>
 </mapper>

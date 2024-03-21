@@ -134,7 +134,7 @@ header:hover {
 }
 
 .hidden {
-	display: none;
+	display: none !important;
 }
 
 hr {
@@ -167,12 +167,12 @@ h1, h2 {
 					src="https://www.duo.co.kr/html/main_img_2019/logo.svg"></a>
 			</div>
 			<ul id="menu">
-				<li>듀세요소개</li>
+				<li category="match">듀세요소개</li>
 				<li category="guide">가입안내</li>
 				<li>고객문의</li>
 				<li category="marrige">회원&성혼</li>
 				<li>러브테스트</li>
-				<li>파티&이벤트</li>
+				<li category="membership">파티&이벤트</li>
 			</ul>
 			<div id="loginUser">
 				<h2 style="color: inherit;" class="${empty login ? 'hidden' : '' }">${login.username }
@@ -184,7 +184,7 @@ h1, h2 {
 			<div></div>
 			<div>
 				<ul>
-					<li>테스트</li>
+					<li class="link" id="match_mainLink" category="match">매칭</li>
 					<li>테스트</li>
 					<li>테스트</li>
 					<li>테스트</li>
@@ -211,6 +211,7 @@ h1, h2 {
 				<ul>
 					<li class="link" id="marrigeReviewLink" category="marrige">성혼커플
 						인터뷰</li>
+						
 					<li>테스트</li>
 					<li>테스트</li>
 					<li>테스트</li>
@@ -226,9 +227,9 @@ h1, h2 {
 					<li>테스트</li>
 				</ul>
 				<ul>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
+					<li class="link" id="membershipLink" category="membership">멤버십</li>
+               		<li class="link" id="membershipIntroduceLink" category="membership">멤버십 소개</li>
+               		<li class="link" id="myMembershipLink" category="membership">마이멤버십</li>
 					<li>테스트</li>
 					<li>테스트</li>
 					<li>테스트</li>
@@ -258,6 +259,18 @@ h1, h2 {
 	       
 	    const reportLink = document.getElementById('reportLink')
 	    reportLink.onclick = () => {location.href = '${cpath}/report/myreport'}
+	    
+	    const matchLink = document.getElementById('match_mainLink')
+	    matchLink.onclick = () => {location.href = '${cpath}/match/match_main?userid=${login.userid}'}
+	    
+	    const membershipLink = document.getElementById('membershipLink')
+	    membershipLink.onclick = () => {location.href = '${cpath}/membership/purchase'}
+	       
+	    const membershipIntroduceLink = document.getElementById('membershipIntroduceLink')
+	    membershipIntroduceLink.onclick = () => {location.href = '${cpath}/membership/introduce'}
+	       
+	    const myMembershipLink = document.getElementById('myMembershipLink')
+	    myMembershipLink.onclick = () => {location.href = '${cpath}/membership/myMembership'}
 		
 		const links = document.querySelectorAll('.link')
 		const menus = document.querySelectorAll('#menu > li')
@@ -297,5 +310,11 @@ h1, h2 {
 		// 연결 성공 시
 		stomp.connect({}, function() {
 		    console.log('Connected to WebSocket server')
-		})	
+		})
+		
+		function ping() {
+			stomp.send('/app/ping', {}, "")
+		}
+		
+		setInterval(ping, 30000)
 </script>

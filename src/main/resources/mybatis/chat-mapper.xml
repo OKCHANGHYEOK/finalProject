@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.itbank.repository.ChatDAO">
+	<insert id="record" parameterType="msg">
+		insert into	chatting(sendUser, receiveUser, text)
+			values(#{userid}, #{to}, #{text})
+	</insert>
+	
+	<select id="selectChats" parameterType="msg">
+		SELECT c.idx, (select username from member where c.senduser = member.userid) as sendUser, 
+		(select username from member where c.receiveuser = member.userid) as receiveUser,
+		c.text, TO_CHAR(c.sendtime, 'yyyy/MM/dd-AM hh:mm') AS sendTime, d.profile 
+		FROM chatting c
+		JOIN condition d ON c.sendUser = d.userid
+		WHERE (c.sendUser = #{userid} AND c.receiveUser = #{to})
+		OR (c.sendUser = #{to} AND c.receiveUser = #{userid})
+		order by c.sendtime
+	</select>
+	
+	<select id="getMyDetail" resultType="com.itbank.model.MemberDTO">
+      select * from member_con where userid = #{userid}
+   	</select>
+   
+    <select id="selectMatchList" parameterType="com.itbank.model.MemberDTO" resultType="com.itbank.model.MemberDTO">
+       SELECT * FROM member_con
+       <where>
+           <if test="gender == '남성'">
+               gender = '여성'
+           </if>
+           <if test="gender == '여성'">
+               gender = '남성'
+           </if>
+           <!-- 추가적인 조건절 -->
+         AND grade = #{grade}
+       </where>
+    </select>
+   
+    <select id="selectGetUserInfo" resultType="com.itbank.model.MemberDTO">
+      select * from member_con where userid = #{userid}
+    </select>
+</mapper>

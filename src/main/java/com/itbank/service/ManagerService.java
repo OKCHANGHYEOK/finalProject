@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
 import com.itbank.repository.ManagerDAO;
 
@@ -19,6 +20,10 @@ public class ManagerService {
 
 	public List<MemberDTO> selectUserList() {
 		return dao.selectUserList();
+	}
+
+	public int grading(ConditionDTO dto) {
+		return dao.grading(dto);
 	}
 	
 	
