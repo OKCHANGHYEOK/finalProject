@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.itbank.model.MatchDTO;
 import com.itbank.model.MemberDTO;
+import com.itbank.model.MessageDTO;
 import com.itbank.repository.MatchDAO;
 
 @Service
@@ -29,5 +30,17 @@ public class MatchService {
 
 	public List<MatchDTO> selectMatches(String userid) {
 		return dao.selectMatches(userid);
+	}
+
+	public int disconnect(MatchDTO dto) {
+		return dao.disconnect(dto);
+	}
+
+	public int getMatched(MatchDTO dto) {
+		return dao.getMatched(dto);
+	}
+
+	public int insertMatch(MatchDTO dto) {
+		return dao.insertMatch(dto);
 	}
 }

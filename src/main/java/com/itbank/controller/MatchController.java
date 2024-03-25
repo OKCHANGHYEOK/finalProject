@@ -1,5 +1,6 @@
 package com.itbank.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -60,12 +61,31 @@ public class MatchController {
 	public ModelAndView chat(String oponent, String loginUser) {
 		ModelAndView mav = new ModelAndView();
 
-		MessageDTO dto = new MessageDTO();
-		dto.setUserid(loginUser);
-		dto.setTo(oponent);
+		
+		// 방이름 생성
+		String[] names = new String[2];
+		names[0] = loginUser;
+		names[1] = oponent;	
+		Arrays.sort(names);
+		String roomName = names[0] + names[1];
+		
+
+		// 채팅 목록 가져오기
+ 		MatchDTO dto = new MatchDTO();
+		dto.setReqUser(loginUser);
+		dto.setRespUser(oponent);
 		List<ChatDTO> list = cs.selectChats(dto);
+		
+		// 진행중인 매칭인지 확인
+		int matched = ms.getMatched(dto);
+		if(matched == 3) {
+			mav.setViewName("redirect:/match/mymatch");
+			return mav;
+		}
+		
 		mav.addObject("list", list);
 		mav.addObject("oponent", oponent);
+		mav.addObject("roomName", roomName);
 
 		return mav;
 	}

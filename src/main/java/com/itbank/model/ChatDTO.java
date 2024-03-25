@@ -4,9 +4,25 @@ public class ChatDTO {
 	private int idx;
 	private String sendUser;
 	private String receiveUser;
+	private String sendUserId;
+	private String receiveUserId;
 	private String sendTime;
 	private String text;
 	private String profile;
+	
+	public String getSendUserId() {
+		return sendUserId;
+	}
+	public void setSendUserId(String sendUserId) {
+		this.sendUserId = sendUserId;
+	}
+	public String getReceiveUserId() {
+		return receiveUserId;
+	}
+	public void setReceiveUserId(String receiveUserId) {
+		this.receiveUserId = receiveUserId;
+	}
+	
 	
 	public int getIdx() {
 		return idx;

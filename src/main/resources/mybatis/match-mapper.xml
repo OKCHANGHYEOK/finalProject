@@ -6,9 +6,11 @@
 <mapper namespace="com.itbank.repository.MatchDAO">
 	<select id="selectMatches" parameterType="string"
 		resultType="match">
-		select * from matching
-		where reqUser = #{userid}
-		or respUser = #{userid}
+		SELECT matching.*,
+		    (SELECT username FROM member where matching.reqUser =  member.userid) AS requsername,
+		    (SELECT username FROM member where matching.respUser =  member.userid) AS respusername
+		FROM matching
+		WHERE reqUser = #{userid} OR respUser = #{userid}
 	</select>
 
 	<select id="getMyDetail" resultType="com.itbank.model.MemberDTO">
@@ -35,4 +37,21 @@
 		resultType="com.itbank.model.MemberDTO">
 		select * from member_con where userid = #{userid}
 	</select>
+	
+	<update id="disconnect" parameterType="match">
+		update matching set matched = 3
+			where (reqUser = #{reqUser} and respUser = #{respUser})
+			or (reqUser = #{respUser} and respUser = #{reqUser}) 
+	</update>
+	
+	<select id="getMatched" parameterType="msg">
+		select matched from matching
+			where (reqUser = #{reqUser} and respUser = #{respUser})
+			or (reqUser = #{respUser} and respUser = #{reqUser}) 
+	</select>
+	
+	 <insert id="insertMatch" parameterType="com.itbank.model.MatchDTO">
+      insert into matching(requser, respuser)
+         values(#{reqUser}, #{respUser})
+   	 </insert>
 </mapper>

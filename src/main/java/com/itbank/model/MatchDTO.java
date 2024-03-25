@@ -13,6 +13,21 @@ public class MatchDTO {
 	private int idx;
 	private String reqUser;
 	private String respUser;
+	private String reqUsername;
+	private String respUsername;
+	
+	public String getReqUsername() {
+		return reqUsername;
+	}
+	public void setReqUsername(String reqUsername) {
+		this.reqUsername = reqUsername;
+	}
+	public String getRespUsername() {
+		return respUsername;
+	}
+	public void setRespUsername(String respUsername) {
+		this.respUsername = respUsername;
+	}
 	private int matched;
 	
 	public int getIdx() {

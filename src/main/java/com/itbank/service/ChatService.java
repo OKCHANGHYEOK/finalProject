@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itbank.model.ChatDTO;
+import com.itbank.model.MatchDTO;
 import com.itbank.model.MessageDTO;
 import com.itbank.repository.ChatDAO;
 
@@ -18,7 +19,7 @@ public class ChatService {
 		return dao.record(message);
 	}
 
-	public List<ChatDTO> selectChats(MessageDTO dto) {
+	public List<ChatDTO> selectChats(MatchDTO dto) {
 		return dao.selectChats(dto);
 	}
 }

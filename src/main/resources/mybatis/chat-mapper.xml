@@ -9,14 +9,16 @@
 			values(#{userid}, #{to}, #{text})
 	</insert>
 	
-	<select id="selectChats" parameterType="msg">
+	<select id="selectChats" parameterType="match">
 		SELECT c.idx, (select username from member where c.senduser = member.userid) as sendUser, 
 		(select username from member where c.receiveuser = member.userid) as receiveUser,
+		c.sendUser as sendUserID,
+		c.receiveUser as receiveUserID,
 		c.text, TO_CHAR(c.sendtime, 'yyyy/MM/dd-AM hh:mm') AS sendTime, d.profile 
 		FROM chatting c
 		JOIN condition d ON c.sendUser = d.userid
-		WHERE (c.sendUser = #{userid} AND c.receiveUser = #{to})
-		OR (c.sendUser = #{to} AND c.receiveUser = #{userid})
+		WHERE (c.sendUser = #{reqUser} AND c.receiveUser = #{respUser})
+		OR (c.sendUser = #{respUser} AND c.receiveUser = #{reqUser})
 		order by c.sendtime
 	</select>
 	

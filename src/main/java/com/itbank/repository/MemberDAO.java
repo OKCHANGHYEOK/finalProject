@@ -69,6 +69,6 @@ public interface MemberDAO {
 	@Update("update member " + " set" + " lastLoginDate = sysdate" + " where userid = #{userid}")
 	int updateLastLogin(String userid);
 
-	@Select("select * from MemberInfo")
+	@Select("select * from MemberInfo where userid = #{userid}")
 	ProfileDTO selectProfile(String userid);
 }

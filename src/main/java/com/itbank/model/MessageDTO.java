@@ -7,6 +7,15 @@ public class MessageDTO {
 	private String time;
 	private String userid;
 	private String profile;
+	private String roomName;
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
 
 	public String getText() {
 		return text;
