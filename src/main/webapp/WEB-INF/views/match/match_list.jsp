@@ -82,6 +82,14 @@
  		display: flex; 
  		justify-content: space-between; 
  	} 
+ 	
+ 	#tryMatch {
+ 		position: absolute;
+ 		bottom: 10px;
+ 		left: 36%;
+ 		width: 140px;
+ 		height: 60px;
+ 	}
 
 </style>
 
@@ -144,13 +152,44 @@
 		tag += '		<div class="kduserImg" style="background-image: url(\'' + kdImgUrl + '\');\"></div>'
 		tag += '	</div>'
 		tag += '	<div>자기소개 : ' + dto.introduce + '</div>'
+		tag += '	<div><button id="tryMatch" value="' + userid + '">매칭 시도</button></div>'
 		
 		kduserInfo.innerHTML = tag
 		console.log(tag)
 		
 		kdoverlay.classList.toggle('hidden')
 		kduserInfo.style.transitionDuration = '1s'
-		kduserInfo.style.top = '50%'		
+		kduserInfo.style.top = '50%'
+		
+		const tryMatch = document.getElementById('tryMatch')
+		tryMatch.onclick = async function(event) {
+			const requestId = '${login.userid}'
+			const responseId = event.target.getAttribute('value')
+			const reqUser = '${login.userid}'
+			const respUser = event.target.getAttribute('value')
+			console.log(requestId)
+			event.preventDefault()
+			
+			stomp.send('/app/tryMatch/' + respUser, {}, reqUser)
+			
+			const tryMatchUrl = '${cpath}/matchAjax/tryMatch'
+			const tryMatchOb = { reqUser, respUser }
+			
+			const tryMatchOpt = {
+				method: 'POST',
+				body: JSON.stringify(tryMatchOb),
+				headers: {
+					'Content-Type' : 'application/json;charset=utf-8'
+				}
+			}
+			const map = await fetch(tryMatchUrl, tryMatchOpt).then(resp => resp.json())
+			
+			kdoverlay.classList.toggle('hidden')
+			kduserInfo.style.transitionDuration = 'unset'
+			kduserInfo.style.top = '200%'
+			
+			alert(map.message)
+		}
 	}
 	
 	userImgList.forEach(e => e.onclick = kdprofileLoadHandler)
@@ -160,6 +199,8 @@
 		kduserInfo.style.transitionDuration = 'unset'
 		kduserInfo.style.top = '200%'
 	}
+	
+
 </script>
 
 </body>
