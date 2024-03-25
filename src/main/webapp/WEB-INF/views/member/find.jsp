@@ -65,6 +65,57 @@
 		</div>
 	</section>
 	
+	
+	<script>
+    document.getElementById('findID').addEventListener('click', function() {
+        // 작은 윈도우 창 열기
+        const popup = window.open('', 'findIDPopup', 'width=400,height=300');
+        
+        // 작은 윈도우 창에 HTML 삽입
+        popup.document.write(`
+            <html>
+            <head>
+                <title>ID 찾기</title>
+            </head>
+            <body>
+                <h2 align="center" style="font-weight: 200;">ID 찾기</h2>
+                <div>
+                    <form id="findIDForm">
+                        <p><input type="text" name="username" placeholder="이름"></p>
+                        <p><input type="email" name="email" placeholder="이메일"></p>
+                        <input style="margin-top: 10px;" type="submit" value="찾기">
+                    </form>
+                </div>
+            </body>
+            </html>
+        `);
+
+        // 작은 윈도우 창에서 폼 제출 시 처리
+        popup.document.getElementById('findIDForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const url = '${cpath}/findID'; // 데이터베이스에서 아이디 찾는 엔드포인트
+            const ob = {
+                username: event.target.querySelector('input[name="username"]').value,
+                email: event.target.querySelector('input[name="email"]').value
+            };
+            const opt = {
+                method: 'POST',
+                body: JSON.stringify(ob),
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            };
+            const result = await fetch(url, opt).then(resp => resp.text());
+            if (result !== 'not_found') {
+                alert('ID가 이메일로 전송되었습니다.');
+            } else {
+                alert('일치하는 정보가 없습니다.');
+            }
+            popup.close(); // 작은 윈도우 창 닫기
+        };
+    });
+</script>
+	
 	<script>
 		const sec = document.querySelector('section')
 		const findPW = document.getElementById('findPW')

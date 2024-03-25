@@ -292,6 +292,24 @@ textarea.introduce {
    margin-top: 0;
    color: #ABABAB;
 }
+.box {
+	width: 300px;
+	height: 250px;
+	background-color: white;
+	background-position: center;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
 </style>
 
 <section id="root">
@@ -306,7 +324,15 @@ textarea.introduce {
    <div class="content"></div>
 </section>
 
-<div class="modal"></div>
+<div class="modal hidden">
+	<div class="box">
+		<p align="center">
+			수정이 완료되었습니다. <br>
+			등급 재측정은 최대 2일간 소요됩니다.		
+		</p>
+		<p align="center"><button id="close">닫기</button></p>
+	</div>
+</div>
 
 
 <script>
@@ -375,7 +401,7 @@ textarea.introduce {
          }
          const result = await fetch(url, opt).then(resp => resp.text())
          if(result == 1){
-            getSpec()
+        	 myProfileLoadHandler()
          }
          
       }
@@ -825,13 +851,15 @@ textarea.introduce {
        tag += '            <input id="profileReg" type="file" name="upload" placeholder="프로필 이미지 선택" style="margin-top: 10px;" required>';
        tag += '        </div>';
        tag += '    </div>';
+       tag += '   <p style="width: 500px; font-size: 13px; color: #105dae;">등급</p>'            
+       tag += '         <input class="inputframe" type="text" value="' + dto.grade + '" name="grade" required>';
        tag += '    <div>';
        tag += '        <h2>자기소개</h2>';
        tag += '      <textarea name="introduce" class="introduce" placeholder="자기소개를 작성하세요." required>' + dto.introduce + '</textarea>';
        tag += '    </div>';
-        tag += '    <div class="modifyBtn">';
-        tag += '        <button id="specmodifyBtn" type="submit">스펙 수정</button>';
-        tag += '     </div>';
+       tag += '    <div class="modifyBtn">';
+       tag += '        <button id="specmodifyBtn" type="submit">스펙 수정</button>';
+       tag += '     </div>';
        tag += '</form>';
        
 //        content.innerHTML += tag
@@ -844,13 +872,27 @@ textarea.introduce {
     const form = document.forms[0]
     form.onsubmit = async function(event){
        event.preventDefault()
+       const closeBtn = document.getElementById('close')
+       const modal = document.querySelector('.modal')
+       
+       const closeclickHandler = function(event){
+    	   modal.classList.add('hidden')
+       }
        const flag = confirm('정말로 변경하시겠습니까?')
        if(flag){
-    	   
+    	   modal.classList.remove('hidden')
+    	   closeBtn.onclick = closeclickHandler
        }
        const url = '${cpath}/member/spec?userid=${login.userid}'
        
        const formData = new FormData(event.target)
+       
+       // 기존의 등급을 제거한 후,
+       formData.delete('grade');
+       
+       // 등급을 U로 설정
+       formData.append('grade', 'U')
+       
        const opt = {
           method: 'POST',
           body: formData,
@@ -858,9 +900,11 @@ textarea.introduce {
 //                'Content-Type' : 'multipart/form-data; charset=utf-8'
 //             }
        }
+       body: JSON.stringify({ grade: 'U' }) // "U" 값을 전달
+       
        const result = await fetch(url, opt).then(resp => resp.text())
        if(result == 1){
-          getSpec()
+          specModify()
        }
     }
     

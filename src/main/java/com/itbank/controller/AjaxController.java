@@ -109,7 +109,7 @@ public class AjaxController {
 	
 //	@RequestMapping(value = "/member/spec", method= {RequestMethod.POST})
 	   @PostMapping("/member/spec")
-	   public int conditionModify(ConditionDTO dto) {
+	   public int conditionModify(ConditionDTO dto, @RequestParam String grade) {
 	      System.out.println(dto);
 	      System.out.println(dto.getEducation());
 	      System.out.println(dto.getEstate());
@@ -121,8 +121,10 @@ public class AjaxController {
 	      System.out.println(dto.getReligion());
 	      System.out.println(dto.getResidence());
 	      System.out.println(dto.getSalary());
-
-
+	      System.out.println(dto.getGrade());
+	      
+	      dto.setGrade(grade);
+	      
 	      int row = ms.conditionModify(dto);
 	      System.out.println(row != 0 ? "수정 성공" : "수정 실패");
 	      return row;

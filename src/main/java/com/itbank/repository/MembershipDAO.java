@@ -28,4 +28,8 @@ public interface MembershipDAO {
    @Select("select * from membership where payNum = #{payNum}")
    MembershipDTO selectPayment();
 
+   @Select("select * from membership where userid = #{userid}")
+   MembershipDTO selectPayOne(String userid);
+
+
 }
