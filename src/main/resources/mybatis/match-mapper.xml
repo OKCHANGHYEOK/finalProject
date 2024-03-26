@@ -51,7 +51,13 @@
 	</select>
 	
 	 <insert id="insertMatch" parameterType="com.itbank.model.MatchDTO">
-      insert into matching(requser, respuser)
-         values(#{reqUser}, #{respUser})
+      	insert into matching(requser, respuser)
+         	values(#{reqUser}, #{respUser})
    	 </insert>
+   	 
+   	 <update id="refuseUpdate" parameterType="com.itbank.model.MatchDTO">
+   	 	update matching set matched = 2
+   	 		where (reqUser = #{reqUser} and respUser = #{respUser})
+   	 		or (reqUser = #{respUser} and respUser = #{reqUser})
+   	 </update>
 </mapper>

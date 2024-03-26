@@ -43,4 +43,12 @@ public class MatchService {
 	public int insertMatch(MatchDTO dto) {
 		return dao.insertMatch(dto);
 	}
+
+	public int refuseUpdate(String reqUser, String respUser) {
+		MatchDTO dto = new MatchDTO();
+		dto.setReqUser(reqUser);
+		dto.setRespUser(respUser);
+//		System.out.println("matchService에서 요청은" + dto.getReqUser());
+		return dao.refuseUpdate(dto);
+	}
 }

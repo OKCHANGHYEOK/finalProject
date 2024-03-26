@@ -47,11 +47,11 @@ public class StompController {
 		MatchDTO mat = new MatchDTO();
 		mat.setReqUser(message.getUserid());
 		mat.setRespUser(message.getTo());
-		int matched = matchservice.getMatched(mat);
-		if (matched == 3) {
-			message.setText("이미 끝난 매칭입니다");
-			return message;
-		}
+//		int matched = matchservice.getMatched(mat);
+//		if (matched == 3) {
+//			message.setText("이미 끝난 매칭입니다");
+//			return message;
+//		}
 		MemberDTO dto = ms.getUserDetail(message.getUserid());
 		int record = cs.record(message);
 		message.setProfile(dto.getProfile());
@@ -67,9 +67,9 @@ public class StompController {
 
 	@MessageMapping("/tryMatch/{respUser}")
 	@SendTo("/broker/{respUser}")
-	public MessageDTO tryMatch(String reqUser) {
-		MessageDTO dto = new MessageDTO();
-		dto.setText(reqUser + "님의 대화 요청이 있습니다!");
+	public MessageDTO tryMatch(MessageDTO dto) {
+//		System.out.println("respUser는" + dto.getTo() + " reqUser는 " + dto.getFrom());
+		dto.setText(dto.getFrom() + "님의 대화 요청이 있습니다!");
 		return dto;
 	}
 }

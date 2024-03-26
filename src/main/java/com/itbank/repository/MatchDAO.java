@@ -21,4 +21,6 @@ public interface MatchDAO {
 	int getMatched(MatchDTO dto);
 
 	int insertMatch(MatchDTO dto);
+
+	int refuseUpdate(MatchDTO dto);
 }

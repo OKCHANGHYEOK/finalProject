@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itbank.model.MatchDTO;
@@ -48,9 +49,15 @@ public class MatchAjaxController {
 	@PostMapping("/tryMatch")
 	public HashMap<String, Object> tryMatch(@RequestBody MatchDTO dto) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		System.out.println("requestId 는 " + dto.getReqUser() + "responseId 는 " + dto.getRespUser());
+//		System.out.println("requestId 는 " + dto.getReqUser() + "responseId 는 " + dto.getRespUser());
 		int row = ms.insertMatch(dto);
 		map.put("message", row == 0 ? "매칭 실패 오류." : "상대방에게 알림을 보냈어요 ! 마이 매칭을 확인하세요 :)");
 		return map;
+	}
+	
+	@GetMapping("/refuse")
+	public int refuse(@RequestParam String reqUser, @RequestParam String respUser) {
+		int row = ms.refuseUpdate(reqUser, respUser);
+		return row;
 	}
 }
