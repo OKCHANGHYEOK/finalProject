@@ -27,8 +27,8 @@
 
 	async function receiveChat(chat) {
 		const content = JSON.parse(chat.body)
-		let roomName = content.roomName
 		const from = content.from
+		let roomName = content.roomName
 		const time = content.time
 		const profile = content.profile
 		const profileUrl = cpath + '/upload/' + profile
@@ -37,28 +37,28 @@
 		const messageArea = document.querySelector('.messageArea[roomname="' + roomName +'"]')
 		
 		// 상대방과 매칭 종료시
-//		if(from == 'admin') {
-//			const url = '${cpath}/matchAjax/disconnect'
-//			const ob = {
-//					reqUser: '${login.userid}',
-//					respUser: '${oponent}'
-//			}
-//			
-//			const opt = {
-//					method: "POST",
-//					body: JSON.stringify(ob),
-//					headers: {
-//						"Content-Type" : "application/json; charset=utf-8"
-//					}
-//			}
-//			
-//			const result = await fetch(url, opt).then(resp => resp.text())
-//			if(result == 1) {				
-//				const disconnect = document.querySelector('.disconnect')
-//				disconnect.classList.remove('hidden')
-//			}
-//			return
-//		}
+		if(text == '매칭종료') {
+			if(room.classList.contains('hidden')) {
+				const talkAlarm = document.querySelector('.talkAlarm')
+				const alarmBtn = talkAlarm.children[1].children[0]
+				alarmBtn.setAttribute('roomname', roomName)
+				let content = ''
+				content +=   '<div id="ch_matching_end">' + from +'님이 매칭을 종료하셨습니다.</div>'
+				talkAlarm.children[0].innerHTML = content
+				talkAlarm.style.zIndex = 10
+				talkAlarm.style.opacity = 1
+			}
+			const disconnect = room.querySelector('.disconnect')
+			disconnect.classList.remove('hidden')							
+			const matchingEnd = room.querySelector('.matchingEnd')
+			matchingEnd.classList.add('hidden')
+			stomp.unsubscribe('/broker/chat/' + roomName)
+			return;
+		}
+		
+		
+		
+
 		
 		// 현재 상대방과의 채팅방이 숨김 상태일때 알림 표시
 		if(room.classList.contains('hidden')) {
@@ -91,19 +91,6 @@
 		messageArea.scrollTop = messageArea.scrollHeight
 	}
 
-	function entering() {
-		console.log('채팅방 입장~')
-		stomp.subscribe('/broker/chat/${roomName}', receiveChat)
-		stomp.send('/app/enter', {}, "")
-	}
-
-	function matchOver() {
-		stomp.send('/app/matchover/${roomName}', {}, JSON.stringify({
-			text: "상대방과의 매칭이 종료되었습니다."
-		}))
-	}
-	
-	
 	function onInput(event){
 		// 입력이 발생한 대상의 방 이름을 가져온다
 		let roomName = event.target.parentNode.getAttribute('roomname')
@@ -135,7 +122,20 @@
 		if(event.key == 'Enter') onInput(event)		
 	}
 	
+	
 	function messageAreaHandler() {
 		const areas = document.querySelectorAll('.messageArea')
 		areas.forEach(e => e.scrollTop = e.scrollHeight)
 	}
+	
+	// 채팅 리스트 가져오는 함수
+	const getList = async function() {
+		const url =  cpath + '/matchAjax/matchList/' + user
+		
+		const list = await fetch(url).then(resp => resp.json())
+		
+		return list
+	}
+
+	
+	
