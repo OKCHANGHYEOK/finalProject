@@ -39,21 +39,7 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
-<script>
-    function cancelPay() {
-        jQuery.ajax({
-            // 예: http://www.myservice.com/payments/cancel
-            "url": "${cpath}/membership/refund",
-            "type": "POST",
-            "contentType": "application/json",
-            "data": JSON.stringify({
-                "merchant_uid": "${dto.payNum}" // 예: ORD20180131-0000011
-                // 나머지 필드는 필요에 따라 추가할 수 있습니다
-            }),
-            "dataType": "json"
-        });
-    }
-</script>
+
 
 <section>
     <h3 align="center">결제 내역</h3>
@@ -77,8 +63,34 @@
         
     </table>
     
-    <button id="refundBtn" onclick="cancelPay()">환불하기</button>
+    <button id="refundBtn">환불하기</button>
 </section>
+
+<script>
+    
+    const refundBtn = document.getElementById('refundBtn');
+    
+    async function cancelPay() {
+        const response = await fetch('${cpath}/membership/refund', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                merchant_uid: '${dto.payNum}' // 예: ORD20180131-0000011
+                // 필요에 따라 추가 필드를 넣을 수 있습니다.
+            })
+        })
+    }
+
+	const deletePay = function(){
+		location.href = '${cpath}/membership/delete/${dto.payNum}'
+	} 
+	refundBtn.addEventListener('click', cancelPay)
+	refundBtn.addEventListener('click', deletePay)
+    
+    
+</script>
 
 </body>
 </html>

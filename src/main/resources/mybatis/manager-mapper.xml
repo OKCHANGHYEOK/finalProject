@@ -18,4 +18,14 @@
 		update condition set grade = #{grade}
 			where userid = #{userid}
 	</update>
+	<select id="selectReportList" resultType="com.itbank.model.ReportDTO">
+		select * from report order by idx desc
+	</select>
+	<select id="selectReportOne" resultType="com.itbank.model.ReportDTO">
+		select * from report where idx = #{idx}
+	</select>
+	<update id="modifyProcessed" parameterType="condition">
+		update condition set grade = #{grade}
+			where userid = #{userid}
+	</update>
 </mapper>

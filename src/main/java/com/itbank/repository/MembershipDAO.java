@@ -1,5 +1,6 @@
 package com.itbank.repository;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -30,6 +31,9 @@ public interface MembershipDAO {
 
    @Select("select * from membership where userid = #{userid}")
    MembershipDTO selectPayOne(String userid);
+   
+   @Delete("delete from membership where payNum = #{payNum}")
+   int delete(String payNum);
 
 
 }

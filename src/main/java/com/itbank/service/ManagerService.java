@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
+import com.itbank.model.ReportDTO;
 import com.itbank.repository.ManagerDAO;
 
 @Service
@@ -24,6 +25,18 @@ public class ManagerService {
 
 	public int grading(ConditionDTO dto) {
 		return dao.grading(dto);
+	}
+
+	public List<ReportDTO> selectReportList() {
+		return dao.selectReportList();
+	}
+
+	public ReportDTO getView(int idx) {
+		return dao.selectReportOne(idx);
+	}
+
+	public int modifyProcessed(ReportDTO dto) {
+		return dao.modifyProcessed(dto);
 	}
 	
 	

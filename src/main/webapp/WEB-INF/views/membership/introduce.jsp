@@ -80,7 +80,41 @@
 	.checkList {
 		padding-right: 10px;
 	}
-   
+
+	.mbsIntroduceBox{
+		width: 650px;
+		display: flex;
+		padding: 10px;
+		margin: 20px auto;
+	}
+   	.mbsIntroduceBoxcontent {
+   		width: 300px;
+   		height: 150px;
+   		margin: 0 auto;
+   		background-color: #f2f2f0;
+   		box-shadow: 5px 8px 9px 0px rgba(0,0,0,0.14);
+   		border-radius: 10px;
+   		text-align: center;
+   		font-weight: 500;
+   		font-size: 40px;
+    	color: #0192ab; 
+   	}
+   	.mbsIntroduceBox_title {
+   		text-align: center;
+   		font-weight: 600;
+   		font-size: 40px;
+    	color: #0192ab; 
+   	}
+   	.mbsIntroduceBox_count{
+   		color: black;
+   		font-weight: 200;
+   		font-size: 18px;
+   	}
+   	.mbsIntroduceBoxcontent > div{
+   		margin: 17px auto;
+   	
+   	}
+}
 </style>
 
 <section>
@@ -131,12 +165,25 @@
 		<div style="text-align: center; font-size: 35px;">멤버십 소개</div>
 		<div class="mbsIntroduce">
 			<div class="mbsIntroduceBox">
-				<div class="mbsIntroduceBoxName">GOLD</div>
-				<div class="mbsIntroduceBoxcontent"></div>
+				<div class="mbsIntroduceBoxcontent">
+					<div class="mbsIntroduceBox_title">GOLD</div>
+					<div class="mbsIntroduceBox_count">상대방 매칭권 5회</div>
+				</div>
+				<div class="mbsIntroduceBoxcontent">
+					<div class="mbsIntroduceBox_title">STAR</div>
+					<div class="mbsIntroduceBox_count">상대방 매칭권 10회</div>
+				</div>
 			</div>
 			<div class="mbsIntroduceBox">
-				<div class="mbsIntroduceBoxName">STAR</div>
-				<div class="mbsIntroduceBoxcontent"></div>
+				<div class="mbsIntroduceBoxcontent">
+					<div class="mbsIntroduceBox_title">PREMIUM</div>
+					<div class="mbsIntroduceBox_count">상대방 매칭권 20회</div>
+				</div>
+				<div class="mbsIntroduceBoxcontent">
+					<div class="mbsIntroduceBox_title">VIP</div>
+					<div class="mbsIntroduceBox_count">상대방 매칭권 30회</div>
+				</div>
+				
 			</div>
 		</div>
 	</div>

@@ -38,4 +38,8 @@ public class MembershipService {
 		return msDao.selectPayOne(userid);
 	}
 
+	public int deletePaymentInfo(String payNum) {
+		return msDao.delete(payNum);
+	}
+
 }

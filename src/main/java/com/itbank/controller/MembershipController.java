@@ -1,23 +1,12 @@
 package com.itbank.controller;
 
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.HashMap;
 
-import javax.json.Json;
-import javax.json.JsonBuilderFactory;
-import javax.json.JsonObject;
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +85,7 @@ public class MembershipController {
    @PostMapping("/refund")
    @ResponseBody
    public String refund(@RequestBody String requestBody) {
-       try {
+	   try {
            // JSON 요청 본문 파싱
            ObjectMapper objectMapper = new ObjectMapper();
            JsonNode jsonNode = objectMapper.readTree(requestBody);
@@ -138,6 +127,20 @@ public class MembershipController {
            return "환불 처리 중 오류가 발생하였습니다."; // 환불 실패 메시지 반환
        }
    }
+   
+   @GetMapping("/delete/{payNum}")
+   public ModelAndView delete(@PathVariable("payNum") String payNum) {
+	   ModelAndView mav = new ModelAndView("/membership/delete");
+	   int row = ms.deletePaymentInfo(payNum);
+	   String message = row != 0 ? "환불 성공" : "환불 실패";
+	   mav.addObject("message", message);
+	   return mav;
+   }
+   
+   
+   
+   
+   
 
 
 
