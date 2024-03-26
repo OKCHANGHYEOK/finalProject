@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -71,4 +72,15 @@ public interface MemberDAO {
 
 	@Select("select * from MemberInfo where userid = #{userid}")
 	ProfileDTO selectProfile(String userid);
+
+//	@Select("select userid from member where username = #{username} and email=#{email})")
+//	String findUserId(String username, String email);
+	
+
+//	SELECT user_id FROM members WHERE email = #{email,
+//		select userid from member where username = #{username} and email = #{email}
+	@Select("select userid from member where username = #{username} and email = #{email}")
+	String findUserId(MemberDTO dto);
+
+	
 }

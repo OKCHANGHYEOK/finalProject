@@ -95,7 +95,21 @@ public class MemberService {
 	}
 
 	public int conditionModify(ConditionDTO dto) {
-		dto.setProfile(dto.getUpload().getOriginalFilename());
+		String fileName = dto.getUpload().getOriginalFilename();
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss_");
+		String today = sdf.format(date);
+
+		fileName = today + fileName;
+
+		File f = new File(saveDirectory, fileName);
+
+		try {
+			dto.getUpload().transferTo(f);
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		dto.setProfile(fileName);
 		int row = dao.conditionUpdate(dto);
 		return row;
 	}
@@ -124,4 +138,20 @@ public class MemberService {
 	public ProfileDTO selectProfile(String userid) {
 		return dao.selectProfile(userid);
 	}
+
+	// 아이디 찾기
+	public String findID(MemberDTO dto) {
+	    // 데이터베이스에서 사용자의 아이디를 찾는 쿼리를 실행하여 결과를 가져옵니다.
+	    String userId = dao.findUserId(dto);
+
+	    if (userId != null) {
+	        // 사용자의 아이디가 존재하는 경우에는 해당 아이디를 반환합니다.
+	        return userId;
+	    } else {
+	        // 사용자의 아이디가 존재하지 않는 경우를 처리할 수 있는 방법에 따라 적절한 처리를 수행합니다.
+	        // 예를 들어, 사용자에게 존재하지 않는 아이디임을 알리는 메시지를 반환하거나, 특정 값을 반환할 수 있습니다.
+	        return "not_found";
+	    }
+	}
+
 }

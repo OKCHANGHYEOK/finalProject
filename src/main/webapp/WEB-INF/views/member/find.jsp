@@ -93,7 +93,7 @@
         // 작은 윈도우 창에서 폼 제출 시 처리
         popup.document.getElementById('findIDForm').onsubmit = async function(event) {
             event.preventDefault();
-            const url = '${cpath}/findID'; // 데이터베이스에서 아이디 찾는 엔드포인트
+            const url = '${cpath}/member/findID'; // 데이터베이스에서 아이디 찾는 엔드포인트
             const ob = {
                 username: event.target.querySelector('input[name="username"]').value,
                 email: event.target.querySelector('input[name="email"]').value
@@ -116,62 +116,62 @@
     });
 </script>
 	
-	<script>
-		const sec = document.querySelector('section')
-		const findPW = document.getElementById('findPW')
-		findPW.onclick = () => {
-			sec.innerHTML = ''
-			let tag = ''
-			tag += '<h2 align="center" style="font-weight: 200;">PW찾기</h2>'
-			tag += '<div>'
-			tag += '	<form>'
-			tag += '		<p><input type="text" name="userid" placeholder="ID"></p>'
-			tag += '		<p><input type="text" name="username" placeholder="NAME"></p>'
-			tag += '		<p><input type="email" name="email" placeholder="EMAIL"></p>'
-			tag += '		<input style="margin-top: 10px;" type="submit" value="찾기">'
-			tag += '	</form>'
-			tag += '	<div style="display: flex; width: 300px; margin: 10px auto;">'
-			tag += '		<input type="text" name="verify" placeholder="인증번호 입력" disabled="true">'
-			tag += '		<button style="margin-left: 10px;" id="verify">확인</button>'
-			tag += '	</div>'
-			tag += '</div>'
-			sec.innerHTML = tag
-			sec.querySelector('form').onsubmit = async function(event) {
-				event.preventDefault()
-				const url = '${cpath}/sendEmail'
-				const ob = {
-						userid: event.target.querySelector('input[name="userid"]').value,
-						username: event.target.querySelector('input[name="username"]').value,
-						email: event.target.querySelector('input[name="email"]').value
-				}
-				const opt = {
-					method: 'POST',
-					body: JSON.stringify(ob),
-					headers: {
-						'Content-Type': 'application/json; charset=utf-8'
-					}
-				}
-				const result = await fetch(url,opt).then(resp => resp.text())
-				if(result == 'fail') {
-					alert('계정정보가 일치하지 않습니다. 올바르게 입력해주세요')
-				}
-				else {
-					const verify = event.target.parentNode.querySelector('input[name="verify"]')
-					verify.disabled = false
-					alert('인증 번호를 발송했습니다. 메일을 확인해주세요')
-					const verifyBtn = document.getElementById('verify')
-					verifyBtn.onclick = function() {
-						if(verify.value == result) {
-							location.href = '${cpath}/member/resetPass'
-						}
-						else {
-							alert('인증번호를 잘못 입력하셨습니다. 다시 확인해주세요.')
-						}
-					}
-				}
-			}
-		}
-	</script>
+<script>
+   const sec = document.querySelector('section')
+   const findPW = document.getElementById('findPW')
+   findPW.onclick = () => {
+      sec.innerHTML = ''
+      let tag = ''
+      tag += '<h2 align="center" style="font-weight: 200;">PW찾기</h2>'
+      tag += '<div>'
+      tag += '   <form>'
+      tag += '      <p><input type="text" name="userid" placeholder="ID"></p>'
+      tag += '      <p><input type="text" name="username" placeholder="NAME"></p>'
+      tag += '      <p><input type="email" name="email" placeholder="EMAIL"></p>'
+      tag += '      <input style="margin-top: 10px;" type="submit" value="찾기">'
+      tag += '   </form>'
+      tag += '   <div style="display: flex; width: 300px; margin: 10px auto;">'
+      tag += '      <input type="text" name="verify" placeholder="인증번호 입력" disabled="true">'
+      tag += '      <button style="margin-left: 10px;" id="verify">확인</button>'
+      tag += '   </div>'
+      tag += '</div>'
+      sec.innerHTML = tag
+      sec.querySelector('form').onsubmit = async function(event) {
+         event.preventDefault()
+         const url = '${cpath}/member/findPW'
+         const ob = {
+               userid: event.target.querySelector('input[name="userid"]').value,
+               username: event.target.querySelector('input[name="username"]').value,
+               email: event.target.querySelector('input[name="email"]').value
+         }
+         const opt = {
+            method: 'POST',
+            body: JSON.stringify(ob),
+            headers: {
+               'Content-Type': 'application/json; charset=utf-8'
+            }
+         }
+         const result = await fetch(url,opt).then(resp => resp.text())
+         if(result == 'fail') {
+            alert('계정정보가 일치하지 않습니다. 올바르게 입력해주세요')
+         }
+         else {
+            const verify = event.target.parentNode.querySelector('input[name="verify"]')
+            verify.disabled = false
+            alert('인증 번호를 발송했습니다. 메일을 확인해주세요')
+            const verifyBtn = document.getElementById('verify')
+            verifyBtn.onclick = function() {
+               if(verify.value == result) {
+                  location.href = '${cpath}/member/resetPass'
+               }
+               else {
+                  alert('인증번호를 잘못 입력하셨습니다. 다시 확인해주세요.')
+               }
+            }
+         }
+      }
+   }
+</script>
 
 </body>
 </html>

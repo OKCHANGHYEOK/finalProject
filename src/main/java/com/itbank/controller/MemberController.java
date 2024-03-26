@@ -6,14 +6,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itbank.component.MailComponent;
 import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
 import com.itbank.service.MemberService;
@@ -27,6 +31,9 @@ public class MemberController {
 
 	@Autowired
 	private StompController sc;
+	
+	@Autowired
+	private MailComponent mailComponent;
 
 	@GetMapping("/join")
 	public void join() {
@@ -127,4 +134,43 @@ public class MemberController {
 		System.out.println(row != 0 ? "삭제 성공" : "삭제 실패");
 		return "redirect:/member/logout";
 	}
+	
+	@PostMapping("/findID")
+	@ResponseBody
+	public ModelAndView findID(@RequestBody	MemberDTO dto) {
+	    ModelAndView mav = new ModelAndView("alert");
+	    try {
+	        String userId = ms.findID(dto);
+	        System.out.println(userId);
+	        if(userId != null) {
+	            // 아이디가 존재하는 경우 해당 이메일 주소로 아이디 발송
+	            sendIdToEmail(dto.getEmail(), userId); // 이메일 발송
+	            mav.addObject("msg", "아이디가 이메일로 전송되었습니다.");
+	        } else {
+	            mav.addObject("msg", "일치하는 정보가 없습니다.");
+	        }
+	        mav.addObject("url", ""); // 필요에 따라 URL 설정
+	    } catch (Exception e) {
+	        // 예외가 발생한 경우 적절한 처리를 수행합니다.
+	        mav.addObject("msg", "오류가 발생했습니다: " + e.getMessage());
+	        mav.addObject("url", ""); // 필요에 따라 URL 설정
+	    }
+	    return mav;
+	}
+
+	private void sendIdToEmail(String email, String userId) {
+	    try {
+	        // 이메일 발송 코드 추가
+	        // 메일 컴포넌트를 사용하여 아이디를 이메일로 발송
+	        // email 매개변수로 받은 이메일 주소로 아이디를 발송
+	        // userId 매개변수로 받은 아이디를 해당 이메일 주소로 발송
+	        mailComponent.sendIdToEmail(email, userId);
+	    } catch (Exception e) {
+	        // 예외가 발생한 경우 적절한 처리를 수행합니다.
+	        throw new RuntimeException("이메일 발송 중 오류가 발생했습니다: " + e.getMessage());
+	    }
+	}
+	
+
+	
 }

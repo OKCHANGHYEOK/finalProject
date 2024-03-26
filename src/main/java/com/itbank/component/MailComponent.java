@@ -86,4 +86,14 @@ public class MailComponent {
 		
 	}
 	
+	public void sendIdToEmail(String email, String userId) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put("address", email);
+        param.put("subject", "아이디 찾기 결과");
+        param.put("content", "귀하의 아이디는 " + userId + " 입니다.");
+
+        // sendMimeMessage 메서드 호출하여 이메일 발송
+        sendMimeMessage(param);
+    }
+	
 }
