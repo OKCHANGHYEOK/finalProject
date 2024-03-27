@@ -26,6 +26,7 @@
 	body {
 		margin: 0;
 		font-family: 'Noto Sans KR', sans-serif;
+		overflow-x: hidden;
 	}
 	
 	body, h1, h2, h3, h4, h5, h6, input, textarea, select {
@@ -34,6 +35,7 @@
 	
 	header {
 		position: fixed;
+		background-color: white;
 		color: black;
 		z-index: 1;
 		top: 0;
@@ -75,6 +77,7 @@
 	}
 	
 	#menu {
+		flex: 4;
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
@@ -82,7 +85,6 @@
 		list-style: none;
 		color: inherit;
 		font-size: 22px;
-		flex: 4;
 	}
 	
 	#menu>li {
@@ -91,10 +93,65 @@
 	}
 	
 	#loginUser {
+		flex: 1;
+	}
+	
+	#ch_login_user {
+		width: 100%;
+		height: 100%;
+		position: relative;
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+	}
+	
+	#ch_user_profile {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+	}
+	
+	#ch_user_alarm {
+		all: unset;
+		display: inline-block;
+		width: 60px;
+		height: 60px;
+		font-size: 36px;
+		text-align: center;
+		transition-duration: 0.5s;
+	}
+	
+	#ch_user_alarm:hover {
+		cursor: pointer;
+		font-size: 40px;
+	}
+	
+	.ch_user_news {
+		position: absolute;
+		box-shadow: 0px 0px 8px black;
+    	border-radius: 10px;
+		top: 82%;
+		left: -70%;
+		background-color: white;
+		width: 250px;
+		height: 40px;
+		z-index: 10;
+		color: black;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		flex: 1;
+	}
+	
+	.ch_user_news::before {
+		content: '';
+	    position: absolute;
+	    right: 100%;
+	    margin-top: -8px;
+	    border: 1px solid black;
+	    border-width: 10px;
+	    border-style: solid;
+	    border-color: transparent transparent transparent #ffffff;
+	    transform: rotate(-79deg) translate(68px, 243px);
 	}
 	
 	.link:hover {
@@ -126,7 +183,7 @@
 	}
 	
 	header:hover>.drop {
-		height: 300px;
+		height: 150px;
 	}
 	
 	header:hover {
@@ -584,37 +641,60 @@
 		color: white;
 		font-weight: bold;
 	}
+		
+ 	.tryMatchSb {
+      display: flex;
+      justify-content: space-around;
+      position: absolute;
+      left: 21%;
+      bottom: 10px;
+      width: 300px;
+   }
+   
+   .tryMatchSb>div {
+      cursor: pointer;
+      font-size: 17px;
+   }
 	
-	#matchingMessage {
-		position: fixed;
-		left: 30%;
-		bottom: 200%;
-		width: 500px;
-		height: 200px;
-		background-color: white;
-		box-shadow: 1px 1px 1px grey;
-		border-radius: 20px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-size: 14px;
-		transition-duration: 1s;
-		z-index: 3;
-	}
-	
-	.tryMatchSb {
-		display: flex;
-		justify-content: space-between;
-	}
-	
-	.tryMatchSb>div {
-		cursor: pointer;
-		margin-top: 20px;
-	}
-	
-	.requestText {
-		font-size: 15px;
-	}
+   .reqUserInfo {
+      position: fixed;
+      top: 200%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 600px;
+      background-color: white;
+      box-shadow: 1px 1px 10px 1px black;
+      z-index: 2;
+      transition-duration: 1s;
+   }
+   
+   .reqUseroverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+   }  
+    
+    .reqUserImg { 
+       background-size: auto 100%; 
+       display: block;  
+       width: 150px; 
+       height: 200px;   
+       border: 1px solid black; 
+    } 
+    
+    .reqUserSb {
+       display: flex;
+       justify-content: space-between;
+    }
+    
+    .userRequest {
+       font-weight: bold;
+    }
+
 </style>
 </head>
 <body>
@@ -627,16 +707,22 @@
 					src="https://www.duo.co.kr/html/main_img_2019/logo.svg"></a>
 			</div>
 			<ul id="menu">
-				<li category="match">듀세요소개</li>
+				<li category="match">매칭시스템</li>
 				<li category="guide">가입안내</li>
 				<li>고객문의</li>
 				<li category="marrige">회원&성혼</li>
-				<li>러브테스트</li>
-				<li category="membership">파티&이벤트</li>
+<!-- 				<li>러브테스트</li> -->
+				<li category="membership">멤버쉽</li>
 			</ul>
 			<div id="loginUser">
-				<h2 style="color: inherit;" class="${empty login ? 'hidden' : '' }">${login.username }
-					님 로그인 중</h2>
+				<div class="${empty login ? 'hidden' : ''}" id="ch_login_user">
+					<button id="ch_user_alarm" onclick="newsAppearHandler()">🔔</button>
+					<div class="ch_user_news hidden">
+						
+					</div>
+					<h2 style="color: inherit; font-size: 20px;">${login.username }님</h2>				
+					<img id="ch_user_profile" src="${cpath }/upload/${login.profile }">
+				</div>
 			</div>
 		</div>
 		<hr style="border: 0; height: 1px; background-color: lightgrey;">
@@ -645,53 +731,45 @@
 			<div>
 				<ul>
 					<li class="link" id="match_mainLink" category="match"><a
-						href="${cpath}/match/match_main?userid=${login.userid}">매칭</a></li>
-					<li class="link"><a href="${cpath }/match/mymatch">나의 매칭</a></li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
+						href="${cpath}/match/match_main?userid=${login.userid}">매칭 홈</a></li>
+					<li class="link"><a href="${cpath }/match/mymatch">매칭 현황</a></li>
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
 				</ul>
 				<ul>
 					<li class="link" id="logLink"
 						value="${empty login ? 'login' : 'logout' }" category="guide">
-						<a href="${cpath }/member/${empty login ? '/login' : '/logout'}">${empty login ? '로그인' : '로그아웃' }</a>
+						<a href="${cpath }/member/${empty login ? 'login' : 'logout'}">${empty login ? '로그인' : '로그아웃' }</a>
 
 					</li>
 					<li class="link" id="joinLink" category="guide"><a
 						href="${cpath }/member/join">회원가입</a></li>
 					<li class="link" id="mypageLink" category="guide"><a
 						href="${cpath }/member/mypage">마이페이지</a></li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
 				</ul>
 				<ul>
 					<li class="link" id="reportLink" category="inquiry"><a
-						href="${cpath }/report/myreport">신고</a></li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
+						href="${cpath }/report/myreport">회원신고</a></li>
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
 				</ul>
 				<ul>
 					<li class="link" id="marrigeReviewLink" category="marrige"><a
 						href="${cpath }/review/list/1">성혼커플 인터뷰</a></li>
 
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
-				</ul>
-				<ul>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
 				</ul>
 				<ul>
 					<li class="link" id="membershipLink" category="membership"><a
@@ -700,11 +778,11 @@
 						<a href="${cpath }/membership/introduce">멤버십 소개</a>
 					</li>
 					<li class="link" id="myMembershipLink" category="membership">
-						<a href="${cpath }/membership/myMembership">마이멤버십</a>
+						<a href="${cpath }/membership/myMembership/">마이멤버십</a>
 					</li>
-					<li>테스트</li>
-					<li>테스트</li>
-					<li>테스트</li>
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
+<!-- 					<li>테스트</li> -->
 				</ul>
 			</div>
 			<div></div>
@@ -730,7 +808,6 @@
 		<span id="chat_heart">💗</span> <span>CHAT</span>
 	</div>
 
-	<div id="matchingMessage"></div>
 
 	<div class="talkAlarm">
 		<div id="ch_alarm">상대방으로부터 메시지가 왔습니다</div>
@@ -740,7 +817,8 @@
 		</div>
 	</div>
 
-
+    <div class="reqUserInfo"></div>
+    <div class="reqUseroverlay hidden"></div>
 
 	<script>
 		// 로그인 중인 유저 확인
@@ -753,4 +831,6 @@
 		if (user != '') {
 			stomp.connect({}, chatListLoadHandler)
 		}
+		
+		
 	</script>

@@ -23,4 +23,16 @@ public interface MatchDAO {
 	int insertMatch(MatchDTO dto);
 
 	int refuseUpdate(MatchDTO dto);
+
+	int matchCount(MatchDTO dto);
+
+	int consentUpdate(MatchDTO dto);
+
+	int getMatchingCount(String userid);
+
+	int matchtTryUpdate(MatchDTO dto);
+
+	int consentMatchCountUpdate(MatchDTO dto);
+
+	int getWaitingMatchCount(String userid);
 }

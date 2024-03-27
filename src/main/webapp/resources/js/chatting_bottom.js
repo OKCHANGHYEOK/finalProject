@@ -223,3 +223,18 @@ async function chatListLoadHandler() {
 		document.body.innerHTML += room
 	}
 }
+
+async function newsAppearHandler() {
+	const userNews = document.querySelector('.ch_user_news')
+	userNews.innerText = ''
+	const url = cpath + '/matchAjax/waiting?userid=' + user
+	const news = await fetch(url).then(resp => resp.text())
+	if(news == 0) {
+		userNews.innerText = '현재는 아무런 소식이 없습니다.'
+	}
+	else {				
+		userNews.innerText = '대기중인 매칭이 ' + news + '건 있습니다.'
+	}
+	
+	userNews.classList.toggle('hidden')
+}

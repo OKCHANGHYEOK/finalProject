@@ -54,10 +54,29 @@ public class MatchAjaxController {
 		map.put("message", row == 0 ? "매칭 실패 오류." : "상대방에게 알림을 보냈어요 ! 마이 매칭을 확인하세요 :)");
 		return map;
 	}
-	
+
 	@GetMapping("/refuse")
 	public int refuse(@RequestParam String reqUser, @RequestParam String respUser) {
 		int row = ms.refuseUpdate(reqUser, respUser);
 		return row;
+	}
+
+	@GetMapping("/matchCount")
+	public int matchCount(@RequestParam String reqUser, @RequestParam String respUser) {
+		System.out.println("reqUser는" + reqUser + " respUser는" + respUser);
+		int row = ms.matchCount(reqUser, respUser);
+		return row;
+	}
+
+	@GetMapping("/consent")
+	public int consent(@RequestParam String reqUser, @RequestParam String respUser) {
+		int row = ms.consentUpdate(reqUser, respUser);
+		return row;
+	}
+
+	@GetMapping("/waiting")
+	public int waiting(String userid) {
+		int waitMatches = ms.getWaitingMatchCount(userid);
+		return waitMatches;
 	}
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itbank.component.HashComponent;
+import com.itbank.component.MailComponent;
 import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
 import com.itbank.model.ProfileDTO;
@@ -23,7 +24,9 @@ public class MemberService {
 	private MemberDAO dao;
 	@Autowired
 	private HashComponent hash;
-
+	@Autowired
+	private MailComponent mail;
+	
 	private String saveDirectory = "C:\\upload";
 
 	public int join(MemberDTO dto) {
@@ -141,17 +144,53 @@ public class MemberService {
 
 	// 아이디 찾기
 	public String findID(MemberDTO dto) {
-	    // 데이터베이스에서 사용자의 아이디를 찾는 쿼리를 실행하여 결과를 가져옵니다.
-	    String userId = dao.findUserId(dto);
+		// 데이터베이스에서 사용자의 아이디를 찾는 쿼리를 실행하여 결과를 가져옵니다.
+		String userId = dao.findUserId(dto);
 
-	    if (userId != null) {
-	        // 사용자의 아이디가 존재하는 경우에는 해당 아이디를 반환합니다.
-	        return userId;
-	    } else {
-	        // 사용자의 아이디가 존재하지 않는 경우를 처리할 수 있는 방법에 따라 적절한 처리를 수행합니다.
-	        // 예를 들어, 사용자에게 존재하지 않는 아이디임을 알리는 메시지를 반환하거나, 특정 값을 반환할 수 있습니다.
-	        return "not_found";
-	    }
+		if (userId != null) {
+			// 사용자의 아이디가 존재하는 경우에는 해당 아이디를 반환합니다.
+			return userId;
+		} else {
+			// 사용자의 아이디가 존재하지 않는 경우를 처리할 수 있는 방법에 따라 적절한 처리를 수행합니다.
+			// 예를 들어, 사용자에게 존재하지 않는 아이디임을 알리는 메시지를 반환하거나, 특정 값을 반환할 수 있습니다.
+			return "not_found";
+		}
+	}
+
+	public String resetPassword(MemberDTO dto) {
+		String newPassword = generateRandomPassword(); // 임시 비밀번호 생성
+		String hashedPassword = hash.getHash(newPassword); // 비밀번호를 해시화
+
+		// 비밀번호 업데이트
+		dto.setUserpw(hashedPassword);
+		int result = dao.newPw(dto);
+
+		// 비밀번호 업데이트 성공하면 임시 비밀번호 반환
+		return result != 0 ? newPassword : null;
+	}
+
+	// 임시 비밀번호 생성 메서드
+	private String generateRandomPassword() {
+		String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		StringBuilder newPassword = new StringBuilder();
+		for (int i = 0; i < 8; i++) {
+			int index = (int) (Math.random() * characters.length());
+			newPassword.append(characters.charAt(index));
+		}
+		return newPassword.toString();
+	}
+
+	// 이메일로 임시 비밀번호 전송
+	public void sendTemporaryPasswordByEmail(String email, String newPassword) {
+		mail.sendPasswordResetEmail(email, newPassword);
+	}
+
+	public List<String> getProfiles(String gender) {
+		return dao.getProfiles(gender);
+	}
+
+	public int getMemberCount() {
+		return dao.getMemberCount();
 	}
 
 }

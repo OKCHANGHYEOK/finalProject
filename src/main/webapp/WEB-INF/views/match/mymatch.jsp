@@ -34,37 +34,51 @@
 		width: 100%;
 	}
 	
-	#oponent:hover {
-		cursor: pointer;
-		background-color: lightgrey;
+	.ch_match_btns > a {
+		text-decoration: none;
+		color: white;
+		font-size: 14px;
+		font-weight: bold;
 	}
 	
-	.enter {
+	.ch_match_btns {
+		margin-right: -70px;
+		transform: translate(6px);
+	}
+	
+	.ch_match_btns button {
 		all: unset;
-		position: relative;
-		width: 30px;
+		display: inline-block;
+		width: 40px;
 		height: 30px;
-		background-image: url('${cpath}/upload/door.png');
-		background-position: center;
-		background-size: 100%;
-		margin-left: 10px;
+		text-align: center;
+		background-color: black;
+		border-radius: 5px;
 	}
 	
-	.enter:hover {
-	  cursor: pointer;
+	.ch_match_btns button:hover {
+		cursor: pointer;
+		background-color: rgba(0, 0, 0, 0.7);
 	}
 	
-	.enter:hover::after {
-	  content: "채팅방 입장";
-	  position: absolute;
-	  background-color: #000;
-	  color: #fff;
-	  padding: 5px;
-	  border-radius: 5px;
-	  top: 100%;
-	  left: 50%;
-	  transform: translateX(-50%);
-	  white-space: nowrap;
+	.ch_profile_view {
+		all: unset;
+		display: inline-block;
+		width: 60px;
+		height: 30px;
+		text-align: center;
+		background-color: black;
+		border-radius: 5px;
+		font-size: 14px;
+		font-weight: bold;
+		color: white;
+		margin-right: -60px;
+    	transform: translate(10px);
+	}
+	
+	.ch_profile_view:hover {
+		cursor: pointer;
+		background-color: rgba(0, 0, 0, 0.7);
 	}
 </style>
 
@@ -79,28 +93,38 @@
 	</div>
 	<c:forEach var="match" items="${list }">
 	<div class="mymatches">
-		<form action="${cpath }/match/chat" method="POST">
-			<input type="hidden" name="loginUser" value="${login.userid }">
-			<input type="hidden" name="oponent" value="${match.reqUser == login.userid ? match.respUser : match.reqUser }">		
 			<ul class="matchingList" style="height: 40px;">
 				<li id="oponent">		
-					${match.reqUser == login.userid ? match.respUser : match.reqUser }
+					${match.reqUser == login.userid ? match.respUsername : match.reqUsername }
+					<button class="ch_profile_view" value="${match.reqUser == login.userid ? match.respUser : match.reqUser }">프로필</button>
 				</li>
 				<li>${match.reqUser == login.userid ? '보냄' : '받음' }</li>
 				<li>
 					<span>				
 						${match.matched == 0 ? '매칭 대기' : (match.matched == 1 ? '매칭중' : (match.matched == 2 ? '매칭거부' : '매칭종료')) }
 					</span>
-					<button class="enter ${match.matched == 1 ? '' : 'hidden'}">
-						
-					</button>
+					<span class="ch_match_btns ${match.matched != 0 or match.reqUser == login.userid ? 'hidden' : '' }">
+						<a href="${cpath }/match/accept"><button>수락</button></a>
+						<a href="${cpath }/match/deny"><button>거절</button></a>
+					</span>
 				</li>
 			</ul>
-		</form>
 	</div>	
 	</c:forEach>
 </section>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const profileBtns = document.querySelectorAll('.ch_profile_view');
 
+        function ChProfileLoadHandler(event) {
+            console.log(event.target.getAttribute('value'));
+        }
+
+        profileBtns.forEach(btn => {
+            btn.addEventListener('click', ChProfileLoadHandler);
+        });
+    });
+</script>
 </body>
 </html>

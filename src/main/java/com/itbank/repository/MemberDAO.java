@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -27,7 +26,9 @@ public interface MemberDAO {
 	@Select("select count(*) from member " + "where userid = #{userid}")
 	int check(String userid);
 
-	@Select("select * from member where userid = #{userid} and userpw = #{userpw}")
+	@Select("select member.*, condition.profile from member" + "    join condition "
+			+ "    on member.userid = condition.userid"
+			+ "    where member.userid = #{userid} and member.userpw = #{userpw}")
 	MemberDTO selectOne(MemberDTO dto);
 
 	@Select("select * from member where userid = #{userid} and username = #{username} and email = #{email}")
@@ -75,12 +76,20 @@ public interface MemberDAO {
 
 //	@Select("select userid from member where username = #{username} and email=#{email})")
 //	String findUserId(String username, String email);
-	
 
 //	SELECT user_id FROM members WHERE email = #{email,
 //		select userid from member where username = #{username} and email = #{email}
 	@Select("select userid from member where username = #{username} and email = #{email}")
 	String findUserId(MemberDTO dto);
 
-	
+	@Update("update member set userpw = #{userpw} where userid = #{userid}")
+	int newPw(MemberDTO user);
+
+	@Select("select profile from member_con" + "    where gender = #{gender} and userid like '%user%'"
+			+ "    order by DBMS_RANDOM.RANDOM" + "    fetch next 10 rows only")
+	List<String> getProfiles(String gender);
+
+	@Select("select count(*) from member")
+	int getMemberCount();
+
 }

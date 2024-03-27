@@ -10,11 +10,7 @@
     </c:otherwise>
 </c:choose>
 <style>
-   header {
-   		color: white;
-   }
-
-   main {
+   #ch_main {
       position: absolute;
       top: -200px;
       left: 0;
@@ -27,12 +23,108 @@
       width: 100%;
       height: 100%;
    }
+   
+   #ch_member_slide {
+   	  position: absolute;
+   	  top: 1000px;
+   	  width: 130%;
+   	  height: 800px;
+   	  background-color: white;
+   }
+   
+   .profiles {
+   	  width: 200%;
+   	  display: flex;
+   }
+   
+   #ch_member_women {
+	  position: absolute;
+      top: 0;
+      left: 0px;
+   }
+   
+   #ch_member_men {
+   	  position: absolute;
+   	  top: 55%;
+   	  left: -2446px;
+   }
+   
+   .ch_profile_img {
+   	  width: 400px;
+   	  height: 400px;
+   	  background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   	  box-sizing: border-box;
+   	  padding: 5px;
+   	  box-shadow: 1px 1px 10px grey;
+   	  margin-right: 15px;
+   }
 </style>
 
-<main>
+<section id="ch_main">
    <video src="${cpath }/upload/duseo_main.mp4" autoplay loop muted></video>
-</main>
+</section>
 
+<section id="ch_member_slide">
+	<div class="profiles" id="ch_member_women">
+		<c:forEach var="img" items="${wProfiles }">
+			<div class="ch_profile_img" style="background-image: url('${cpath}/upload/${img}');"></div>
+		</c:forEach>
+	</div>
+	<div class="profiles" id="ch_member_men">
+		<c:forEach var="img" items="${mProfiles }">
+			<div class="ch_profile_img" style="background-image: url('${cpath}/upload/${img}');"></div>
+		</c:forEach>
+	</div>
+</section>
+
+<script>
+	function profileSlideHandlerW() {
+		const wProfile = document.querySelector('#ch_member_women')
+		const currentLeft = parseFloat(wProfile.style.left) || 0; 
+		wProfile.style.left = (currentLeft - 1) + 'px'; 
+		const firstImg = wProfile.children[0]	// wProfile의 첫번째 요소
+		let firstImgRect = firstImg.getBoundingClientRect()	
+		let firstImgX = firstImgRect.left + window.pageXOffset // 그 요소의 X축 값
+		
+		// 첫번째 요소가 화면을 벗어나면
+		if(firstImgX <= -415) {
+			const firstClone = firstImg.cloneNode(true)
+			wProfile.appendChild(firstClone)
+			wProfile.removeChild(firstImg)
+			wProfile.style.left = 0
+		}
+}
+	
+	function profileSlideHandlerM() {
+		const mProfile = document.querySelector('#ch_member_men')
+		const currentLeft = parseFloat(mProfile.style.left) || 0; 
+		mProfile.style.left = (currentLeft + 1) + 'px'; 
+		const lastImg = mProfile.lastElementChild
+		let lastImgRect = lastImg.getBoundingClientRect()	
+		let lastImgX = lastImgRect.left + window.pageXOffset // 그 요소의 X축 값
+		
+		// 마지막 요소가 화면을 벗어나면
+		if(lastImgX >= window.innerWidth) {
+			const lastClone = lastImg.cloneNode(true)
+			mProfile.insertBefore(lastClone, mProfile.children[0])
+			mProfile.removeChild(lastImg)
+			mProfile.style.left = '-2446px'
+		}
+}
+	
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	    setInterval(profileSlideHandlerW, 10);
+	});
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	    setInterval(profileSlideHandlerM, 10);
+	});
+</script>
 
 </body>
 </html>
