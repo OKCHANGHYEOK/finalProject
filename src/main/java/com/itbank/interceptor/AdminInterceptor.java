@@ -14,10 +14,10 @@ public class AdminInterceptor implements HandlerInterceptor {
     
 	@Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String url = request.getRequestURI();
 		HttpSession session = request.getSession();
         MemberDTO login = (MemberDTO) session.getAttribute("login");
-        if ((url.contains("/manage/members") && login.getIsManager() == 0) || login == null || login.getIsManager() == 0) {
+        
+        if (login == null || login.getIsManager() == 0) {
         	 String path = "/WEB-INF/views/manageAlert.jsp";
              RequestDispatcher rd = request.getRequestDispatcher(path);
              request.setAttribute("msg", "관리자만 접속 가능합니다");

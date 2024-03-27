@@ -62,7 +62,6 @@
       </interceptor>
       <interceptor>
          <mapping path="/manage/**"/>
-         <mapping path="/manage/members"/>
          <beans:bean class="com.itbank.interceptor.AdminInterceptor" />
       </interceptor>
       
