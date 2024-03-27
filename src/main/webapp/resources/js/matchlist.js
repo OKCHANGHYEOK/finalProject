@@ -3,8 +3,8 @@ async function kdprofileLoadHandler(event) {
       const kduserInfo = document.querySelector('.kduserInfo')
       const kdoverlay = document.querySelector('.kdoverlay')
       
-      console.log(userid)
-      
+//    console.log(userid)
+
       const url = cpath + '/matchAjax/userInfo/' + userid
       const dto = await fetch(url).then(resp => resp.json())
       console.log(dto)
@@ -28,8 +28,19 @@ async function kdprofileLoadHandler(event) {
       tag += '      <div class="kduserImg" style="background-image: url(\'' + kdImgUrl + '\');\"></div>'
       tag += '   </div>'
       tag += '   <div>자기소개 : ' + dto.introduce + '</div>'
-      tag += '   <div><button onclick="tryMatchHandler(event)" id="tryMatch" value="' + userid + '">매칭 시도</button></div>'
-//      
+      
+      const reqUser = user
+      const respUser = userid
+      const matchCountUrl = cpath + '/matchAjax/matchCount?reqUser=' + reqUser + '&respUser=' + respUser
+	  const matchCount = await fetch(matchCountUrl).then(resp => resp.text())
+
+      if(matchCount === '0') {
+      	tag += '   <div><button onclick="tryMatchHandler(event)" id="tryMatch" value="' + userid + '">매칭 시도</button></div>'
+      } else {
+      	tag += '	<div class="alreadyMatch">이미 매칭시도중인 상대입니다</div>'
+      }
+      
+      
       kduserInfo.innerHTML = tag
 //      console.log(kduserInfo)
 //      console.log(tag)

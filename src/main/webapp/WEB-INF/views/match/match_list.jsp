@@ -91,6 +91,29 @@
        width: 140px;
        height: 60px;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    .alreadyMatch {
+       position: absolute;
+       bottom: 10px;
+       left: 32%;
+       text-align: center;
+       font-size: 15px;
+       width: 192px;
+       height: 60px;
+    }
 
 </style>
 
