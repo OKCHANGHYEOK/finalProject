@@ -24,8 +24,11 @@
 	<select id="selectReportOne" resultType="com.itbank.model.ReportDTO">
 		select * from report where idx = #{idx}
 	</select>
-	<update id="modifyProcessed" parameterType="condition">
-		update condition set grade = #{grade}
-			where userid = #{userid}
+	<update id="modifyProcessed" parameterType="com.itbank.model.ReportReplyDTO">
+		update report set processed = '1'
+			where idx = #{reportIdx}
 	</update>
+	<insert id="insertReply" parameterType="com.itbank.model.ReportReplyDTO">
+		insert into reportReply (reportIdx, content) values (#{reportIdx}, #{content})
+	</insert>
 </mapper>

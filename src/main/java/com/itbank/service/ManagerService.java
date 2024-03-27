@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.itbank.model.ConditionDTO;
 import com.itbank.model.MemberDTO;
 import com.itbank.model.ReportDTO;
+import com.itbank.model.ReportReplyDTO;
 import com.itbank.repository.ManagerDAO;
 
 @Service
@@ -35,8 +36,10 @@ public class ManagerService {
 		return dao.selectReportOne(idx);
 	}
 
-	public int modifyProcessed(ReportDTO dto) {
-		return dao.modifyProcessed(dto);
+	public int modifyProcessed(ReportReplyDTO dto) {
+		int num = dao.insertReply(dto);
+		int row = dao.modifyProcessed(dto);
+		return row; 
 	}
 	
 	

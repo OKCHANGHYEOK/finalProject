@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.itbank.model.MemberDTO;
 import com.itbank.model.ReportDTO;
+import com.itbank.model.ReportReplyDTO;
 import com.itbank.service.ManagerService;
 
 @Controller
@@ -42,8 +43,9 @@ public class ManageController {
 		return mav;
 	}
 	@PostMapping("/reportView/{idx}")
-	public String reportProcessed(ReportDTO dto) {
+	public String reportProcessed(ReportReplyDTO dto) {
 		int row = ms.modifyProcessed(dto);
+		System.out.println(row != 0 ? "수정 완료" : "수정 실패" );
 		return "redirect:/manage/report";
 	}
 }

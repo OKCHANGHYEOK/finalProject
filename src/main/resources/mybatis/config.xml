@@ -9,5 +9,6 @@
 		<typeAlias type="com.itbank.model.ConditionDTO" alias="condition"/>
 		<typeAlias type="com.itbank.model.MatchDTO" alias="match"/>
 		<typeAlias type="com.itbank.model.MessageDTO" alias="msg"/>
+		<typeAlias type="com.itbank.model.ReportDTO" alias="report"/>
 	</typeAliases>
 </configuration>

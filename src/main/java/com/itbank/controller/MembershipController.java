@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.itbank.component.MembershipComponent;
+import com.itbank.model.MemberDTO;
 import com.itbank.model.MembershipDTO;
 import com.itbank.service.MembershipService;
 
@@ -72,20 +73,21 @@ public class MembershipController {
       
    }
    
-   @GetMapping("/myMembership/{userid}")
-   public ModelAndView myMembership(@PathVariable("userid") String userid) {
-	   ModelAndView mav = new ModelAndView("/membership/myMembership");
-	   MembershipDTO dto = ms.getmyMembership(userid);
-	   mav.addObject("dto", dto);
-	   
-	   return mav;
+   @GetMapping("/myMembership")
+   public ModelAndView myMembership(HttpSession session) {
+      ModelAndView mav = new ModelAndView("/membership/myMembership");
+      MemberDTO mdto = (MemberDTO)session.getAttribute("login");
+      String userid = mdto.getUserid();
+      MembershipDTO dto = ms.getmyMembership(userid);
+      mav.addObject("dto", dto);
+      return mav;
    }
    
 
    @PostMapping("/refund")
    @ResponseBody
    public String refund(@RequestBody String requestBody) {
-	   try {
+      try {
            // JSON 요청 본문 파싱
            ObjectMapper objectMapper = new ObjectMapper();
            JsonNode jsonNode = objectMapper.readTree(requestBody);
@@ -130,18 +132,11 @@ public class MembershipController {
    
    @GetMapping("/delete/{payNum}")
    public ModelAndView delete(@PathVariable("payNum") String payNum) {
-	   ModelAndView mav = new ModelAndView("/membership/delete");
-	   int row = ms.deletePaymentInfo(payNum);
-	   String message = row != 0 ? "환불 성공" : "환불 실패";
-	   mav.addObject("message", message);
-	   return mav;
+      ModelAndView mav = new ModelAndView("/membership/delete");
+      int row = ms.deletePaymentInfo(payNum);
+      String message = row != 0 ? "환불 성공" : "환불 실패";
+      mav.addObject("message", message);
+      return mav;
    }
-   
-   
-   
-   
-   
-
-
 
 }

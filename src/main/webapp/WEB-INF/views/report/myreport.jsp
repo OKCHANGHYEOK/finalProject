@@ -125,7 +125,7 @@ div.tablePosition>h2 {
 
 <div id="modalReport" class="hidden">
 	<div class="contentReport">
-		<form id="addReport" enctype="multipart/form-data">
+		<form id="addReport" method="POST" enctype="multipart/form-data">
 			<h3>신고하기</h3>
 			<p>
 				<input type="hidden" name="reporter" value="${login.userid }">
@@ -209,7 +209,7 @@ div.tablePosition>h2 {
 						let tag2 = ''
 				        tag2 += '    <tr>';
 				        tag2 += '        <td>';
-				        tag2 += '            <div class="reportReply">' + reportReply.content + '</div>';
+				        tag2 += '            <div class="reportReply">' + 'Re: ' + reportReply.content + '</div>';
 						tag2 += '		</td>';
 						tag2 += '	</tr>';
 						tag += tag2
@@ -321,7 +321,7 @@ div.tablePosition>h2 {
 	
 		
 		
-	async function reportSubmitHandler() {
+	async function reportSubmitHandler(event) {
 		event.preventDefault()
 		
 		const url = '${cpath}/reportAjax/report'
