@@ -130,10 +130,10 @@
       tag += '      <p><input type="email" name="email" placeholder="EMAIL"></p>'
       tag += '      <input style="margin-top: 10px;" type="submit" value="찾기">'
       tag += '   </form>'
-      tag += '   <div style="display: flex; width: 300px; margin: 10px auto;">'
-      tag += '      <input type="text" name="verify" placeholder="인증번호 입력" disabled="true">'
-      tag += '      <button style="margin-left: 10px;" id="verify">확인</button>'
-      tag += '   </div>'
+//       tag += '   <div style="display: flex; width: 300px; margin: 10px auto;">'
+//       tag += '      <input type="text" name="verify" placeholder="인증번호 입력" disabled="true">'
+//       tag += '      <button style="margin-left: 10px;" id="verify">확인</button>'
+//       tag += '   </div>'
       tag += '</div>'
       sec.innerHTML = tag
       sec.querySelector('form').onsubmit = async function(event) {
@@ -158,11 +158,11 @@
          else {
             const verify = event.target.parentNode.querySelector('input[name="verify"]')
             verify.disabled = false
-            alert('인증 번호를 발송했습니다. 메일을 확인해주세요')
+            alert('임시 비밀번호를 발송했습니다. 메일을 확인해주세요')
             const verifyBtn = document.getElementById('verify')
             verifyBtn.onclick = function() {
                if(verify.value == result) {
-                  location.href = '${cpath}/member/resetPass'
+                  location.href = '${cpath}/member/findresetPass'
                }
                else {
                   alert('인증번호를 잘못 입력하셨습니다. 다시 확인해주세요.')

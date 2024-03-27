@@ -96,4 +96,14 @@ public class MailComponent {
         sendMimeMessage(param);
     }
 	
+	public void sendPasswordResetEmail(String email, String newPassword) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put("address", email);
+        param.put("subject", "비밀번호 재설정 안내");
+        param.put("content", "귀하의 새로운 비밀번호는 " + newPassword + " 입니다.");
+
+        // sendMimeMessage 메서드 호출하여 이메일 발송
+        sendMimeMessage(param);
+    }
+	
 }
