@@ -53,6 +53,15 @@
 		align-items: center;
 		flex-direction: column;
 	}
+	.inputframe{
+		width: 150px;
+		height: 60px;
+		border: 1px solid lightgrey;
+		box-sizing: border-box;
+		padding: 5px 10px;
+		color: black;
+		font-size: 16px;
+	}
 </style>
 </head>
 <body>
@@ -77,11 +86,22 @@
             <head>
                 <title>ID 찾기</title>
             </head>
+            <style>
+	            .inputframe{
+	        		width: 150px;
+	        		height: 60px;
+	        		border: 1px solid lightgrey;
+	        		box-sizing: border-box;
+	        		padding: 5px 10px;
+	        		color: black;
+	        		font-size: 16px;
+	        	}
+            </style>
             <body>
                 <h2 align="center" style="font-weight: 200;">ID 찾기</h2>
                 <div>
                     <form id="findIDForm">
-                        <p><input type="text" name="username" placeholder="이름"></p>
+                        <p><input class="inputframe" type="text" name="username" placeholder="이름"></p>
                         <p><input type="email" name="email" placeholder="이메일"></p>
                         <input style="margin-top: 10px;" type="submit" value="찾기">
                     </form>

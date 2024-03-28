@@ -9,8 +9,8 @@ aside {
    left: 0;
    width: 300px;
    height: 100%;
-   background-color: lightpink;
-   box-shadow: 1px 1px 1px black;
+/*    background-color: lightgray; */
+/*    box-shadow: 1px 1px 1px black; */
    z-index: 3;
    transition-duration: 0.5s;
 }
@@ -21,18 +21,25 @@ aside>* {
 
 #root {
    display: flex;
+   width: 156px;
+   padding: 0;
 }
 
 aside>div.item {
    text-align: center;
+   height: 30px;
+   border-bottom-color: white;
 }
 
 aside>div.item.selected {
    font-weight: bold;
+   color: #FD2B75;
 }
 
 aside>div.item:hover {
    cursor: pointer;
+   background-color: #FB4357;
+   color: white;
 }
 
 div.content {
@@ -105,9 +112,6 @@ input[type="radio"]:checked+span {
    align-items: center;
 }
 
-#mpmodifyBtn {
-   
-}
 
 button:hover {
    cursor: pointer;
@@ -318,8 +322,8 @@ textarea.introduce {
       <div class="item selected">내 프로필</div>
       <div class="item">내 정보 수정</div>
       <div class="item">스펙 수정</div>
-      <div class="item">신고 목록</div>
-      <div class="item">내가 쓴 글</div>
+<!--       <div class="item">신고 목록</div> -->
+<!--       <div class="item">내가 쓴 글</div> -->
    </aside>
    <div class="content"></div>
 </section>
@@ -375,7 +379,7 @@ textarea.introduce {
           tag += '    </div>';
           tag += '   <div>'
           tag += '   <p style="width: 500px; font-size: 13px; color: #105dae;">이름</p>'
-            tag += '            <input class="inputframe" type="text" value="' + '${login.username}' + '" name="username" required>';
+          tag += '            <input class="inputframe" type="text" value="' + '${login.username}' + '" name="username" required>';
           tag += '   <p style="width: 500px; font-size: 13px; color: #105dae;">등급</p>'            
             tag += '         <input class="inputframe" type="text" value="' + dto.grade + '" name="grade" required>';
             tag += '   </div>'
@@ -630,11 +634,6 @@ textarea.introduce {
         event.preventDefault()   
         location.href = '${cpath}/member/withdrawMember/${login.idx}'; 
      })
-
-     
-   
-   
-   
    
    }
    
