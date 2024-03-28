@@ -157,7 +157,7 @@ textarea[name="content"] {
 		<div class="reviewReply">
 		    <div class="reviewReplyWrite ${empty login ? 'hidden' : ''}">
 		    	<form id="reviewReplyForm">
-		    		<div style="display: flex; justify-content: space-between; width: 150px; margin: 5px;">
+		    		<div style="display: flex; justify-content: space-between; width: 170px; margin: 5px;">
 		    			<div>🧑🏻 ${login.userid }</div>
 		    			<div><button id="reviewReplyBtn" type="submit">댓글 작성</button></div>
 		    		</div>

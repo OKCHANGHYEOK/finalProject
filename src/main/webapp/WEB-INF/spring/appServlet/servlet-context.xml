@@ -56,7 +56,8 @@
          <mapping path="/member/mypage"/>
          <mapping path="/report/**"/>
          <mapping path="/match/**"/>
-         <mapping path="/membership/**"/>
+         <mapping path="/membership/myMembership/"/>
+         <mapping path="/membership/purchase"/>
          <exclude-mapping path="/membership/introduce"/>
          <beans:bean class="com.itbank.interceptor.LoginInterceptor" />
       </interceptor>
@@ -64,7 +65,11 @@
          <mapping path="/manage/**"/>
          <beans:bean class="com.itbank.interceptor.AdminInterceptor" />
       </interceptor>
-      
+      <interceptor>
+         <mapping path="/membership/myMembership/"/>
+         <mapping path="/match/**"/>
+         <beans:bean class="com.itbank.interceptor.MembershipInterceptor" />
+      </interceptor>
       <interceptor>
          <mapping path="/"/>
          <beans:bean class="com.itbank.interceptor.HomeInterceptor" />

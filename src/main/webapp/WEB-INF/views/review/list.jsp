@@ -36,6 +36,39 @@
 	.marriageContent {
 		padding: 5px 30px;
 	}
+/* 	#marriageWrite { */
+/* 		width: 0; */
+/* 		margin: auto; */
+/* 	} */
+	#marriageWriteBtn {
+		width: 400px;
+		height: 30px;
+		margin: 35px 400px;
+		border: white;
+		color: black;
+		padding: 5px 10px;
+		font-size: 14px;
+		font-weight: 300;
+	}
+	#marriageWriteBtn:hover {
+		cursor: pointer;
+		font-weight: bolder;
+	}
+	#marriageListPage {
+		width: 500px;
+		display: flex;
+		justify-content: space-between;
+		padding: 8px;
+		margin: 30px auto;
+	}
+/* 	#marrriageSearch { */
+/* 		padding-left: 210px; */
+/* 	} */
+	#marriageListPage > a{
+		text-decoration: none;
+		color: black;
+		width: 30px;
+	}
 </style>
 
 <section>
@@ -44,21 +77,17 @@
 		<span id="nocontent"></span>
 	</div>
     <div id="marriage_inner">
-    	<div><a href="${cpath }/review/write"><button>커플후기작성</button></a></div>
+    	<div id="marriageWrite"><a href="${cpath }/review/write"><button id="marriageWriteBtn">듀세요 고객님의 달달한 결혼후기를 남겨듀세요</button></a></div>
    		<div id="marriageList">
     	<c:forEach var="dto" items="${list }">
 	    	<div class="marriageContent">
 	        	<div class="marriageImg"><a href="${cpath }/review/view/${dto.idx}" style="background-image: url('${cpath}/upload/${dto.img}');"></a></div>
-	       		<div>${dto.title }</div>
-	   			<div>${dto.writer }</div>
+	       		<div style="text-align: center; font-weight: 600;">${dto.title }</div>
+	   			<div style="text-align: center;">${dto.writer }</div>
 	    	</div>
     	</c:forEach>
    		</div>
    		<div id="marriageListPage">
-   			<form>
-   				<input type="text" name="search" value="${param.search }">
-   				<button>검색</button>
-   			</form>
    			<c:if test="${paging.prev }">
    				<a href="${cpath }/review/list/${paging.begin - 3}">◀</a>
    			</c:if>
@@ -69,6 +98,10 @@
 			<c:if test="${paging.next }">
 				<a href="${cpath }/review/list/${paging.end + 1}?search=${param.search}">▶</a>
 			</c:if>
+			<form id="marrriageSearch">
+   				<input type="text" name="search" value="${param.search }">
+   				<button>검색</button>
+   			</form>
 		</div>
      </div>
 </section>
