@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>duo</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
 <script
@@ -29,7 +30,7 @@
 		overflow-x: hidden;
 	}
 	
-	body, h1, h2, h3, h4, h5, h6, input, textarea, select {
+	body, h1, h2, h3, h4, h5, h6, input, textarea, select, pre {
 		font-family: 'Noto Sans KR', sans-serif;
 	}
 	
@@ -47,6 +48,10 @@
 	header a {
 		text-decoration: none;
 		color: inherit;
+	}
+	
+	button:hover {
+		cursor: pointer !important;
 	}
 	
 	.header {
@@ -233,6 +238,7 @@
 	
 	/* 채팅 */
 	.room { /* 특정 상대방과의 채팅방 */
+		padding: 0 !important;
 		display: flex;
 		position: fixed;
 		width: 400px;
@@ -246,6 +252,7 @@
 	}
 	
 	.chat { /* 채팅방 메인화면 */
+		padding: 0 !important;
 		display: flex;
 		position: fixed;
 		width: 400px;
@@ -256,6 +263,11 @@
 		align-items: center;
 		flex-direction: column;
 		z-index: 5;
+	}
+	
+	.chat label {
+		border: 0 !important;
+		color: black !important;
 	}
 	
 	.chat>div {

@@ -103,7 +103,7 @@
 	
 	<select id="getWaitingMatchCount" parameterType="String">
 		select count(*) from matching
-		where (reqUser = #{userid} or respUser = #{userid})
+		where respUser = #{userid}
 		and matched = 0
 	</select>
 </mapper>

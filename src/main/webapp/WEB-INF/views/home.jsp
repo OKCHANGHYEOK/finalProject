@@ -30,6 +30,7 @@
    	  width: 130%;
    	  height: 800px;
    	  background-color: white;
+   	  opacity: 0.6;
    }
    
    .profiles {
@@ -63,7 +64,6 @@
    	  margin-right: 15px;
    }
 </style>
-
 <section id="ch_main">
    <video src="${cpath }/upload/duseo_main.mp4" autoplay loop muted></video>
 </section>
@@ -82,6 +82,30 @@
 </section>
 
 <script>
+	let waitCount = '${wait_count}'
+	function showConfirm() {
+	    // SweetAlert를 사용하여 confirm 창 표시
+	    Swal.fire({
+	        title: '매칭알림',
+	        html: "신청받은 매칭이 " + waitCount + '건 있습니다. <br>확인 페이지로 이동하시겠습니까?',
+	        showCancelButton: true,
+	        confirmButtonText: '네',
+	        cancelButtonText: '아니오',
+	      }).then((result) => {
+	        if (result.isConfirmed) {
+	          // 확인 버튼이 클릭되었을 때 수행할 동작
+			  location.href = cpath + '/match/mymatch'
+	        } else if (result.dismiss === Swal.DismissReason.cancel) {
+	          // 취소 버튼이 클릭되었을 때 수행할 동작
+				return false
+	        }
+	      });
+	    }
+	
+	if(waitCount != '') {
+		setTimeout(showConfirm, 500)
+	}
+
 	function profileSlideHandlerW() {
 		const wProfile = document.querySelector('#ch_member_women')
 		const currentLeft = parseFloat(wProfile.style.left) || 0; 

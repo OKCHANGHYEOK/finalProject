@@ -61,6 +61,8 @@ public class StompController {
 	@MessageMapping("/matchover/{roomName}")
 	@SendTo("/broker/chat/{roomName}")
 	public MessageDTO matchOver(MessageDTO message) {
+		message.setUserid(message.getFrom());
+		System.out.println(message.getFrom());
 		message.setFrom("admin");
 		return message;
 	}
@@ -68,8 +70,15 @@ public class StompController {
 	@MessageMapping("/tryMatch/{respUser}")
 	@SendTo("/broker/{respUser}")
 	public MessageDTO tryMatch(MessageDTO dto) {
-//		System.out.println("respUser는" + dto.getTo() + " reqUser는 " + dto.getFrom());
-		dto.setText(dto.getFrom() + "님의 대화 요청이 있습니다!");
+//	      System.out.println("respUser는" + dto.getTo() + " reqUser는 " + dto.getFrom());
+		dto.setText(dto.getTime() + "님의 대화 요청이 있습니다!");
+		return dto;
+	}
+
+	@MessageMapping("/refuseMessage/{userid}")
+	@SendTo("/broker/{userid}")
+	public MessageDTO refuseMessage(MessageDTO dto) {
+		dto.setText(dto.getTo() + "님이 매칭을 거부했습니다..!");
 		return dto;
 	}
 }

@@ -111,6 +111,8 @@ function chatreloadHandler() {
 	chatArea.querySelector('.chat_main').innerHTML = ''
 	chatListLoadHandler()
 	showMainChatHandler()
+	const closeBtn = document.getElementById('chat_close_btn')
+	closeBtn.classList.remove('hidden')
 }
 
 async function chatListLoadHandler() {

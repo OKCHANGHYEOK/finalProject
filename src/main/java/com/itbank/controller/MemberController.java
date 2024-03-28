@@ -72,8 +72,7 @@ public class MemberController {
 			response.addCookie(cookie);
 		}
 		session.setAttribute("login", login);
-		System.out.println(login.getIsManager());
-
+		session.setAttribute("dologin", 1);
 		return "redirect:/";
 	}
 

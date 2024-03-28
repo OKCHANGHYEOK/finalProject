@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itbank.model.ChatDTO;
 import com.itbank.model.MatchDTO;
@@ -57,36 +58,20 @@ public class MatchController {
 		return mav;
 	}
 
-//	@PostMapping("/chat")
-//	public ModelAndView chat(String oponent, String loginUser) {
-//		ModelAndView mav = new ModelAndView();
-//
-//		
-//		// 방이름 생성
-//		String[] names = new String[2];
-//		names[0] = loginUser;
-//		names[1] = oponent;	
-//		Arrays.sort(names);
-//		String roomName = names[0] + names[1];
-//		
-//
-//		// 채팅 목록 가져오기
-// 		MatchDTO dto = new MatchDTO();
-//		dto.setReqUser(loginUser);
-//		dto.setRespUser(oponent);
-//		List<ChatDTO> list = cs.selectChats(dto);
-//		
-//		// 진행중인 매칭인지 확인
-//		int matched = ms.getMatched(dto);
-//		if(matched == 3) {
-//			mav.setViewName("redirect:/match/mymatch");
-//			return mav;
-//		}
-//		
-//		mav.addObject("list", list);
-//		mav.addObject("oponent", oponent);
-//		mav.addObject("roomName", roomName);
-//
-//		return mav;
-//	}
+	@GetMapping("/accept")
+	public String accept(String reqUser, HttpSession session, RedirectAttributes rttr) {
+		MemberDTO login = (MemberDTO) session.getAttribute("login");
+		String respUser = login.getUserid();
+		int row = ms.consentUpdate(reqUser, respUser);
+		rttr.addFlashAttribute("matching", "matching");
+		return "redirect:/match/mymatch";
+	}
+	
+	@GetMapping("/deny")
+	public String deny(String reqUser, HttpSession session) {
+		MemberDTO login = (MemberDTO) session.getAttribute("login");
+		String respUser = login.getUserid();
+		int row = ms.refuseUpdate(reqUser, respUser);
+		return "redirect:/match/mymatch";
+	}
 }

@@ -43,7 +43,7 @@
 				const alarmBtn = talkAlarm.children[1].children[0]
 				alarmBtn.setAttribute('roomname', roomName)
 				let content = ''
-				content +=   '<div id="ch_matching_end">' + from +'님이 매칭을 종료하셨습니다.</div>'
+				content +=   '<div id="ch_matching_end">' + content.userid +'님이 매칭을 종료하셨습니다.</div>'
 				talkAlarm.children[0].innerHTML = content
 				talkAlarm.style.zIndex = 10
 				talkAlarm.style.opacity = 1
