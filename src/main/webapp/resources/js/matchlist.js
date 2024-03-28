@@ -55,12 +55,15 @@ async function tryMatchHandler(event) {
     const kduserInfo = document.querySelector('.kduserInfo')
     const kdoverlay = document.querySelector('.kdoverlay')
     const reqUser = user
+    const reqUsername = username
     const respUser = event.target.getAttribute('value')
     event.preventDefault()
+  
     
     stomp.send('/app/tryMatch/' + respUser, {}, JSON.stringify({
             from: reqUser,
-            to: respUser
+            to: respUser,
+            time: reqUsername
     }))
     
     const tryMatchUrl = cpath + '/matchAjax/tryMatch'

@@ -4,6 +4,10 @@ async function onReceive(chat) {
    const userid = content.from
    const respUser = content.to
            
+   if (text.includes('거부')) {
+   		return alert(text)
+   }
+           
   const reqUserInfo = document.querySelector('.reqUserInfo')
   const reqUseroverlay = document.querySelector('.reqUseroverlay')
 
@@ -65,6 +69,10 @@ async function onReceive(chat) {
    
    
    refuse.onclick = async function(event) {
+   		stomp.send('/app/refuseMessage/' + userid, {}, JSON.stringify({
+   			to: username
+   		}))
+   
    		const refuseUrl = cpath + '/matchAjax/refuse?reqUser=' + userid + '&respUser=' + respUser
    		console.log(refuseUrl)
    

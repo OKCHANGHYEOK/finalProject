@@ -43,6 +43,7 @@
       display: block;
       width: 340px;
       height: 440px;
+      cursor: pointer;
    }
    
    .matchContent > div {
@@ -90,20 +91,8 @@
        left: 36%;
        width: 140px;
        height: 60px;
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+       cursor: pointer;
+    } 
     
     .alreadyMatch {
        position: absolute;
